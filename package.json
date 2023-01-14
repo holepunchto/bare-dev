@@ -1,0 +1,22 @@
+{
+  "name": "@pearjs/dev",
+  "version": "0.0.0",
+  "description": "Dev tooling for PearJS",
+  "main": "bin.js",
+  "bin": {
+    "pearjs-dev": "./bin.js"
+  },
+  "dependencies": {
+    "minimist": "^1.2.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holepunchto/pearjs-dev.git"
+  },
+  "author": "Holepunch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/holepunchto/pearjs-dev/issues"
+  },
+  "homepage": "https://github.com/holepunchto/pearjs-dev#readme"
+}
