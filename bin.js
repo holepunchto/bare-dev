@@ -8,7 +8,8 @@ const args = minimist(process.argv, {
   boolean: ['include'],
   alias: {
     include: 'i',
-    require: 'r'
+    require: 'r',
+    cwd: 'c'
   }
 })
 
@@ -17,5 +18,5 @@ if (args.include) {
 }
 
 if (args.require) {
-  console.log(dev.require(args.require))
+  dev.require(args.require, args.cwd)
 }
