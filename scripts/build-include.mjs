@@ -38,8 +38,3 @@ function moveToInclude (from) {
     fs.renameSync(path.join(from, name), path.join(incl, name))
   }
 }
-// console.log({
-//   UV,
-//   JS,
-//   PEAR
-// })
