@@ -2,6 +2,7 @@
 
 const minimist = require('minimist')
 const path = require('path')
+const dev = require('./')
 
 const args = minimist(process.argv, {
   boolean: ['include'],
@@ -11,5 +12,5 @@ const args = minimist(process.argv, {
 })
 
 if (args.include) {
-  console.log(path.join(__dirname, 'include'))
+  process.stdout.write(dev.include)
 }
