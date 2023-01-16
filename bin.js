@@ -7,10 +7,15 @@ const dev = require('./')
 const args = minimist(process.argv, {
   boolean: ['include'],
   alias: {
-    include: 'i'
+    include: 'i',
+    require: 'r'
   }
 })
 
 if (args.include) {
-  process.stdout.write(dev.include)
+  console.log(dev.include)
+}
+
+if (args.require) {
+  console.log(dev.require(args.require))
 }
