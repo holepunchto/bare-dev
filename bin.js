@@ -14,7 +14,7 @@ const args = minimist(process.argv, {
 })
 
 if (args.include) {
-  console.log(dev.include)
+  process.stdout.write(dev.include)
 }
 
 if (args.require) {
