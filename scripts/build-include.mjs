@@ -3,7 +3,6 @@
 import fs from 'fs'
 import path from 'path'
 import url from 'url'
-import { tmpdir } from 'os'
 import { spawnSync } from 'child_process'
 
 const __filename = url.fileURLToPath(import.meta.url)
@@ -16,7 +15,7 @@ try {
   fs.rmSync(tmp, { recursive: true })
 } catch {}
 
-const { status } = spawnSync('git', ['clone', '--recurse-submodules', 'git@github.com:holepunchto/pearjs-experiment.git', tmp], {
+const { status } = spawnSync('git', ['clone', '--recurse-submodules', 'git@github.com:holepunchto/pearjs-next.git', tmp], {
   stdio: 'inherit'
 })
 
