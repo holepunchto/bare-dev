@@ -64,6 +64,7 @@ function(pear_include_directories result)
   execute_process(
     COMMAND pear-dev --include
     OUTPUT_VARIABLE pear
+    OUTPUT_STRIP_TRAILING_WHITESPACE
   )
 
   list(APPEND ${result} ${pear})
@@ -71,6 +72,7 @@ function(pear_include_directories result)
   execute_process(
     COMMAND pear-dev --require napi-macros --cwd ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE napi_macros
+    OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
   )
 
