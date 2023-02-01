@@ -10,12 +10,12 @@ function(add_pear_module name)
     SUFFIX ".pear"
   )
 
-  pear_include_directories(PEAR_INCLUDE)
+  pear_include_directories(includes)
 
   target_include_directories(
     ${name}
     PUBLIC
-      ${PEAR_INCLUDE}
+      ${includes}
   )
 
   if(APPLE)
@@ -30,18 +30,20 @@ endfunction()
 function(pear_include_directories result)
   execute_process(
     COMMAND pear-dev --include
-    OUTPUT_VARIABLE PEAR_INCLUDE
+    OUTPUT_VARIABLE pear
   )
+
+  list(APPEND ${result} ${pear})
 
   execute_process(
     COMMAND pear-dev --require napi-macros --cwd ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE NAPI_MACROS_INCLUDE
+    OUTPUT_VARIABLE napi_macros
+    ERROR_QUIET
   )
 
-  list(APPEND ${result}
-    ${PEAR_INCLUDE}
-    ${NAPI_MACROS_INCLUDE}
-  )
+  if(napi_macros_include)
+    list(APPEND ${result} ${napi_macros})
+  endif()
 
   return(PROPAGATE ${result})
 endfunction()
