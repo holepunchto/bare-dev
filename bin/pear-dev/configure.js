@@ -17,26 +17,5 @@ module.exports = createCommand('configure')
   .action(action)
 
 function action (_, cmd) {
-  const childProcess = require('child_process')
-  const dev = require('../..')
-
-  const options = cmd.optsWithGlobals()
-
-  const args = [
-    '-S', options.source,
-    '-B', options.build,
-    `-DCMAKE_BUILD_TYPE=${options.debug ? 'Debug' : 'Release'}`,
-    `-DCMAKE_MODULE_PATH=${dev.cmake.modulePath}`
-  ]
-
-  if (options.debug) {
-    args.push('-DPEAR_ENABLE_ASAN=ON')
-  }
-
-  const proc = childProcess.spawnSync('cmake', args, {
-    stdio: 'inherit',
-    cwd: options.cwd
-  })
-
-  if (proc.status) process.exitCode = proc.status
+  require('../..').configure(cmd.optsWithGlobals())
 }

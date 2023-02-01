@@ -13,22 +13,5 @@ module.exports = createCommand('build')
   .action(action)
 
 function action (_, cmd) {
-  const childProcess = require('child_process')
-
-  const options = cmd.optsWithGlobals()
-
-  const args = [
-    '--build', options.build
-  ]
-
-  if (options.verbose) {
-    args.push('--verbose')
-  }
-
-  const proc = childProcess.spawnSync('cmake', args, {
-    stdio: 'inherit',
-    cwd: options.cwd
-  })
-
-  if (proc.status) process.exitCode = proc.status
+  require('../..').build(cmd.optsWithGlobals())
 }
