@@ -6,9 +6,9 @@ Development tooling for :pear:.js.
 Usage: pear-dev [options] [command]
 
 Options:
+  -c, --cwd <path>        the path to the working directory (default: process.cwd())
   -i, --include           print the include path
   -r, --require <module>  require and run a local module
-  -c, --cwd <path>        the path to the working directory (default: process.cwd())
   --cmake-module-path     print the CMake module path
   -h, --help              display help for command
 

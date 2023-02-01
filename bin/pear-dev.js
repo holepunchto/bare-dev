@@ -4,6 +4,10 @@ const { program, createOption } = require('commander')
 
 program
   .addOption(
+    createOption('-c, --cwd <path>', 'the path to the working directory')
+      .default(process.cwd(), 'process.cwd()')
+  )
+  .addOption(
     createOption('-i, --include', 'print the include path')
       .conflicts(['require', 'cmake-module-path'])
   )
@@ -12,11 +16,8 @@ program
       .conflicts(['include', 'cmake-module-path'])
   )
   .addOption(
-    createOption('-c, --cwd <path>', 'the path to the working directory')
-      .default(process.cwd(), 'process.cwd()')
-  )
-  .addOption(
     createOption('--cmake-module-path', 'print the CMake module path')
+      .conflicts(['include', 'require'])
   )
   .addCommand(require('./pear-dev/init'))
   .addCommand(require('./pear-dev/configure'))
