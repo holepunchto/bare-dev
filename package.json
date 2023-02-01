@@ -1,14 +1,14 @@
 {
   "name": "@pearjs/dev",
   "version": "0.0.10",
-  "description": "Dev tooling for PearJS",
+  "description": "Development tooling for 🍐.js",
   "main": "index.js",
   "bin": {
-    "pearjs-dev": "./bin.js"
+    "pear-dev": "./bin/pear-dev.js"
   },
   "files": [
-    "bin.js",
     "index.js",
+    "bin",
     "cmake",
     "include"
   ],
@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/holepunchto/pearjs-dev#readme",
   "dependencies": {
-    "minimist": "^1.2.7"
+    "commander": "^10.0.0"
   }
 }
