@@ -18,6 +18,8 @@ program
   .addOption(
     createOption('--cmake-module-path', 'print the CMake module path')
   )
+  .addCommand(require('./pear-dev/configure'))
+  .addCommand(require('./pear-dev/build'))
   .action(action)
   .parseAsync()
   .catch(err => {
