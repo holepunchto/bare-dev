@@ -15,8 +15,8 @@ module.exports = createCommand('configure')
       .default(false)
   )
   .addOption(
-    createOption('--asan', 'enable AddressSanitizer')
-      .default(false)
+    createOption('-s, --sanitize', 'enable sanitizer')
+      .choices(['address'])
   )
   .action(action)
 

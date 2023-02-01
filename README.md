@@ -34,10 +34,11 @@ Usage: pear-dev configure [options]
 configure a build
 
 Options:
-  -s, --source  the path to the source tree
-  -b, --build   the path to the build tree
-  --debug       configure a debug build (default: false)
-  -h, --help    display help for command
+  -s, --source    the path to the source tree
+  -b, --build     the path to the build tree
+  -d, --debug     configure a debug build (default: false)
+  -s, --sanitize  enable sanitizer (choices: "address")
+  -h, --help      display help for command
 ```
 
 ```sh
