@@ -11,6 +11,9 @@ module.exports = createCommand('configure')
       .default('build')
   )
   .addOption(
+    createOption('-g, --generator <name>', 'the build generator to use')
+  )
+  .addOption(
     createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )

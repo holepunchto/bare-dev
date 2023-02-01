@@ -55,6 +55,7 @@ exports.configure = function configure (opts = {}) {
   const {
     source = '.',
     build = 'build',
+    generator = null,
     debug = false,
     sanitize = null,
     cwd = process.cwd()
@@ -66,6 +67,8 @@ exports.configure = function configure (opts = {}) {
     `-DCMAKE_BUILD_TYPE=${debug ? 'Debug' : 'Release'}`,
     `-DCMAKE_MODULE_PATH=${cmake.modulePath}`
   ]
+
+  if (generator) args.push('-G', generator)
 
   if (sanitize === 'address') args.push('-DPEAR_ENABLE_ASAN=ON')
 
