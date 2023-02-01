@@ -24,7 +24,8 @@ Usage: pear-dev init [options]
 initialize a build definition
 
 Options:
-  -h, --help  display help for command
+  -f, --force  overwrite any existing build definition (default: false)
+  -h, --help   display help for command
 ```
 
 ```sh

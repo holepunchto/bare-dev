@@ -19,6 +19,7 @@ const cmake = exports.cmake = {
 
 exports.init = function init (opts = {}) {
   const {
+    force = false,
     cwd = process.cwd()
   } = opts
 
@@ -29,7 +30,11 @@ exports.init = function init (opts = {}) {
     .replace(/_+/, '_')
     .replace(/^_|_$/, '')
 
-  fs.writeFileSync(path.join(cwd, 'CMakeLists.txt'), `
+  const definition = path.join(cwd, 'CMakeLists.txt')
+
+  if (fs.existsSync(definition) && !force) throw new Error(`refusing to overwrite ${definition}`)
+
+  fs.writeFileSync(definition, `
 cmake_minimum_required(VERSION 3.25)
 
 project(${name} C)
