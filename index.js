@@ -43,31 +43,44 @@ target_sources(
 }
 
 exports.configure = function configure (opts = {}) {
+  const {
+    source = '.',
+    build = 'build',
+    debug = false,
+    cwd
+  } = opts
+
   const args = [
-    '-S', opts.source,
-    '-B', opts.build,
-    `-DCMAKE_BUILD_TYPE=${opts.debug ? 'Debug' : 'Release'}`,
+    '-S', source,
+    '-B', build,
+    `-DCMAKE_BUILD_TYPE=${debug ? 'Debug' : 'Release'}`,
     `-DCMAKE_MODULE_PATH=${cmake.modulePath}`
   ]
 
-  if (opts.debug) args.push('-DPEAR_ENABLE_ASAN=ON')
+  if (debug) args.push('-DPEAR_ENABLE_ASAN=ON')
 
   const proc = childProcess.spawnSync('cmake', args, {
     stdio: 'inherit',
-    cwd: opts.cwd
+    cwd
   })
 
   if (proc.status) throw new Error('configure() failed')
 }
 
 exports.build = function build (opts = {}) {
-  const args = ['--build', opts.build]
+  const {
+    build = 'build',
+    verbose = false,
+    cwd
+  } = opts
 
-  if (opts.verbose) args.push('--verbose')
+  const args = ['--build', build]
+
+  if (verbose) args.push('--verbose')
 
   const proc = childProcess.spawnSync('cmake', args, {
     stdio: 'inherit',
-    cwd: opts.cwd
+    cwd
   })
 
   if (proc.status) throw new Error('build() failed')
