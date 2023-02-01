@@ -1,8 +1,8 @@
-function(add_pear_module name)
-  add_library(${name} MODULE)
+function(add_pear_module target)
+  add_library(${target} MODULE)
 
   set_target_properties(
-    ${name}
+    ${target}
     PROPERTIES
     C_STANDARD 99
     POSITION_INDEPENDENT_CODE ON
@@ -13,16 +13,16 @@ function(add_pear_module name)
   pear_include_directories(includes)
 
   target_include_directories(
-    ${name}
+    ${target}
     PUBLIC
       ${includes}
   )
 
-  add_debug_options(${name})
+  add_debug_options(${target})
 
   if(APPLE)
     target_link_options(
-      ${name}
+      ${target}
       PUBLIC
         -undefined dynamic_lookup
     )
@@ -46,14 +46,14 @@ endfunction()
 function(add_debug_options target)
   if(PEAR_ENABLE_ASAN)
     target_compile_options(
-      ${name}
+      ${target}
       PUBLIC
         -fsanitize=address
         -fno-omit-frame-pointer
     )
 
     target_link_options(
-      ${name}
+      ${target}
       PUBLIC
         -fsanitize=address
     )
