@@ -12,6 +12,9 @@
     "cmake",
     "include"
   ],
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/holepunchto/pearjs-dev.git"
