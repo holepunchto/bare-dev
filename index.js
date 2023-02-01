@@ -83,11 +83,14 @@ exports.configure = function configure (opts = {}) {
 exports.build = function build (opts = {}) {
   const {
     build = 'build',
+    target = null,
     verbose = false,
     cwd = process.cwd()
   } = opts
 
   const args = ['--build', build]
+
+  if (target) args.push('--target', target)
 
   if (verbose) args.push('--verbose')
 

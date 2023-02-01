@@ -34,11 +34,12 @@ Usage: pear-dev configure [options]
 configure a build
 
 Options:
-  -s, --source    the path to the source tree
-  -b, --build     the path to the build tree
-  -d, --debug     configure a debug build (default: false)
-  -s, --sanitize  enable sanitizer (choices: "address")
-  -h, --help      display help for command
+  -s, --source            the path to the source tree
+  -b, --build             the path to the build tree
+  -g, --generator <name>  the build generator to use
+  -d, --debug             configure a debug build (default: false)
+  -s, --sanitize          enable sanitizer (choices: "address")
+  -h, --help              display help for command
 ```
 
 ```sh
@@ -47,8 +48,10 @@ Usage: pear-dev build [options]
 perform a build
 
 Options:
-  -b, --build  the path to the build tree
-  -h, --help   display help for command
+  -b, --build          the path to the build tree
+  -t, --target <name>  the target to build
+  -v, --verbose        spill the beans (default: false)
+  -h, --help           display help for command
 ```
 
 ## License
