@@ -14,6 +14,10 @@ module.exports = createCommand('configure')
     createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )
+  .addOption(
+    createOption('--asan', 'enable AddressSanitizer')
+      .default(false)
+  )
   .action(action)
 
 function action (_, cmd) {

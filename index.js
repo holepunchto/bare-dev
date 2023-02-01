@@ -56,6 +56,7 @@ exports.configure = function configure (opts = {}) {
     source = '.',
     build = 'build',
     debug = false,
+    asan = false,
     cwd = process.cwd()
   } = opts
 
@@ -66,7 +67,7 @@ exports.configure = function configure (opts = {}) {
     `-DCMAKE_MODULE_PATH=${cmake.modulePath}`
   ]
 
-  if (debug) args.push('-DPEAR_ENABLE_ASAN=ON')
+  if (asan) args.push('-DPEAR_ENABLE_ASAN=ON')
 
   const proc = childProcess.spawnSync('cmake', args, {
     stdio: 'inherit',
