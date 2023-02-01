@@ -28,9 +28,9 @@ try {
 
 fs.mkdirSync(incl)
 
-moveToInclude(path.join(tmp, 'deps/libjs/vendor/libuv/include'))
-moveToInclude(path.join(tmp, 'deps/libjs/include'))
-moveToInclude(path.join(tmp, 'deps/libnapi/include'))
+moveToInclude(path.join(tmp, 'vendor/libuv/include'))
+moveToInclude(path.join(tmp, 'vendor/libjs/include'))
+moveToInclude(path.join(tmp, 'vendor/libnapi/include'))
 moveToInclude(path.join(tmp, 'include'))
 
 function moveToInclude (from) {
