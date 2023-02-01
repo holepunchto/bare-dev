@@ -10,3 +10,7 @@ exports.require = function (name, cwd = process.cwd()) {
   process.chdir(old)
   return m
 }
+
+exports.cmake = {
+  modulePath: path.join(__dirname, 'cmake')
+}

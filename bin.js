@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 const minimist = require('minimist')
-const path = require('path')
-const dev = require('./')
+const dev = require('.')
 
 const args = minimist(process.argv, {
-  boolean: ['include'],
+  boolean: ['include', 'cmake-module-path'],
   alias: {
     include: 'i',
     require: 'r',
@@ -19,4 +18,8 @@ if (args.include) {
 
 if (args.require) {
   dev.require(args.require, args.cwd)
+}
+
+if (args['cmake-module-path']) {
+  process.stdout.write(dev.cmake.modulePath)
 }
