@@ -6,6 +6,10 @@ module.exports = createCommand('build')
     createOption('-b, --build', 'the path to the build tree')
       .default('build')
   )
+  .addOption(
+    createOption('-v, --verbose', 'spill the beans')
+      .default(false)
+  )
   .action(action)
 
 function action (_, cmd) {
@@ -13,9 +17,15 @@ function action (_, cmd) {
 
   const options = cmd.optsWithGlobals()
 
-  const proc = childProcess.spawnSync('cmake', [
+  const args = [
     '--build', options.build
-  ], {
+  ]
+
+  if (options.verbose) {
+    args.push('--verbose')
+  }
+
+  const proc = childProcess.spawnSync('cmake', args, {
     stdio: 'inherit',
     cwd: options.cwd
   })

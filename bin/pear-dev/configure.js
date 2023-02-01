@@ -11,7 +11,7 @@ module.exports = createCommand('configure')
       .default('build')
   )
   .addOption(
-    createOption('--debug', 'configure a debug build')
+    createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )
   .action(action)
@@ -22,12 +22,18 @@ function action (_, cmd) {
 
   const options = cmd.optsWithGlobals()
 
-  const proc = childProcess.spawnSync('cmake', [
+  const args = [
     '-S', options.source,
     '-B', options.build,
     `-DCMAKE_BUILD_TYPE=${options.debug ? 'Debug' : 'Release'}`,
     `-DCMAKE_MODULE_PATH=${dev.cmake.modulePath}`
-  ], {
+  ]
+
+  if (options.debug) {
+    args.push('-DPEAR_ENABLE_ASAN=ON')
+  }
+
+  const proc = childProcess.spawnSync('cmake', args, {
     stdio: 'inherit',
     cwd: options.cwd
   })

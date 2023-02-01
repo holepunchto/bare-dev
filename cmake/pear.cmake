@@ -18,6 +18,21 @@ function(add_pear_module name)
       ${includes}
   )
 
+  if(PEAR_ENABLE_ASAN)
+    target_compile_options(
+      ${name}
+      PUBLIC
+        -fsanitize=address
+        -fno-omit-frame-pointer
+    )
+
+    target_link_options(
+      ${name}
+      PUBLIC
+        -fsanitize=address
+    )
+  endif()
+
   if(APPLE)
     target_link_options(
       ${name}
