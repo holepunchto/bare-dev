@@ -29,12 +29,12 @@ endfunction()
 
 function(pear_include_directories result)
   execute_process(
-    COMMAND pearjs-dev --include
+    COMMAND pear-dev --include
     OUTPUT_VARIABLE PEAR_INCLUDE
   )
 
   execute_process(
-    COMMAND pearjs-dev --require napi-macros --cwd ${CMAKE_SOURCE_DIR}
+    COMMAND pear-dev --require napi-macros --cwd ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE NAPI_MACROS_INCLUDE
   )
 
