@@ -41,7 +41,7 @@ function(pear_include_directories result)
     ERROR_QUIET
   )
 
-  if(napi_macros_include)
+  if(napi_macros)
     list(APPEND ${result} ${napi_macros})
   endif()
 
