@@ -18,14 +18,18 @@ const cmake = exports.cmake = {
 }
 
 exports.init = function init (opts = {}) {
-  const pkg = require(path.join(opts.cwd, 'package.json'))
+  const {
+    cwd = process.cwd()
+  } = opts
+
+  const pkg = require(path.join(cwd, 'package.json'))
 
   const name = pkg.name
     .replace(/[^a-z]/ig, '_')
     .replace(/_+/, '_')
     .replace(/^_|_$/, '')
 
-  fs.writeFileSync(path.join(opts.cwd, 'CMakeLists.txt'), `
+  fs.writeFileSync(path.join(cwd, 'CMakeLists.txt'), `
 cmake_minimum_required(VERSION 3.25)
 
 project(${name} C)
@@ -47,7 +51,7 @@ exports.configure = function configure (opts = {}) {
     source = '.',
     build = 'build',
     debug = false,
-    cwd
+    cwd = process.cwd()
   } = opts
 
   const args = [
@@ -71,7 +75,7 @@ exports.build = function build (opts = {}) {
   const {
     build = 'build',
     verbose = false,
-    cwd
+    cwd = process.cwd()
   } = opts
 
   const args = ['--build', build]
