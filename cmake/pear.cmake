@@ -42,6 +42,20 @@ function(add_pear_module name)
   endif()
 endfunction()
 
+function(bundle_pear_module target path)
+  add_subdirectory(
+    ${CMAKE_SOURCE_DIR}/${path}
+    ${path}
+    EXCLUDE_FROM_ALL
+  )
+
+  target_compile_definitions(
+    ${target}
+    PUBLIC
+      NAPI_MODULE_FILENAME="/${path}"
+  )
+endfunction()
+
 function(pear_include_directories result)
   execute_process(
     COMMAND pear-dev --include
