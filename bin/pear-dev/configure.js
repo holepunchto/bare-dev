@@ -25,7 +25,7 @@ function action(_, cmd) {
   const proc = childProcess.spawnSync('cmake', [
     '-S', options.source,
     '-B', options.build,
-    `-DCMAKE_BUILD_TYPE=${options.debug ? 'Debug' : 'Release'}`
+    `-DCMAKE_BUILD_TYPE=${options.debug ? 'Debug' : 'Release'}`,
     `-DCMAKE_MODULE_PATH=${dev.cmake.modulePath}`
   ], {
     stdio: 'inherit',
