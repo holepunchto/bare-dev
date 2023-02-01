@@ -13,8 +13,18 @@ Options:
   -h, --help              display help for command
 
 Commands:
+  init                    initialize a build definition
   configure [options]     configure a build
   build [options]         perform a build
+```
+
+```sh
+Usage: pear-dev init [options]
+
+initialize a build definition
+
+Options:
+  -h, --help  display help for command
 ```
 
 ```sh

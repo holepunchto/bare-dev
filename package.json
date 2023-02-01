@@ -13,6 +13,7 @@
     "include"
   ],
   "scripts": {
+    "test": "standard",
     "build": "node scripts/build.mjs"
   },
   "repository": {
@@ -27,5 +28,8 @@
   "homepage": "https://github.com/holepunchto/pearjs-dev#readme",
   "dependencies": {
     "commander": "^10.0.0"
+  },
+  "devDependencies": {
+    "standard": "^17.0.0"
   }
 }

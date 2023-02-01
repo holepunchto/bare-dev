@@ -16,7 +16,7 @@ module.exports = createCommand('configure')
   )
   .action(action)
 
-function action(_, cmd) {
+function action (_, cmd) {
   const childProcess = require('child_process')
   const dev = require('../..')
 

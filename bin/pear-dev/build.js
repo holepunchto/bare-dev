@@ -8,13 +8,13 @@ module.exports = createCommand('build')
   )
   .action(action)
 
-function action(_, cmd) {
+function action (_, cmd) {
   const childProcess = require('child_process')
 
   const options = cmd.optsWithGlobals()
 
   const proc = childProcess.spawnSync('cmake', [
-    '--build', options.build,
+    '--build', options.build
   ], {
     stdio: 'inherit',
     cwd: options.cwd
