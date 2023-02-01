@@ -18,20 +18,7 @@ function(add_pear_module name)
       ${includes}
   )
 
-  if(PEAR_ENABLE_ASAN)
-    target_compile_options(
-      ${name}
-      PUBLIC
-        -fsanitize=address
-        -fno-omit-frame-pointer
-    )
-
-    target_link_options(
-      ${name}
-      PUBLIC
-        -fsanitize=address
-    )
-  endif()
+  add_debug_options(${name})
 
   if(APPLE)
     target_link_options(
@@ -54,6 +41,23 @@ function(bundle_pear_module target path)
     PUBLIC
       NAPI_MODULE_FILENAME="/${path}"
   )
+endfunction()
+
+function(add_debug_options target)
+  if(PEAR_ENABLE_ASAN)
+    target_compile_options(
+      ${name}
+      PUBLIC
+        -fsanitize=address
+        -fno-omit-frame-pointer
+    )
+
+    target_link_options(
+      ${name}
+      PUBLIC
+        -fsanitize=address
+    )
+  endif()
 endfunction()
 
 function(pear_include_directories result)
