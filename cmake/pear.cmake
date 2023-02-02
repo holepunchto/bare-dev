@@ -14,7 +14,7 @@ function(add_pear_module target)
 
   target_include_directories(
     ${target}
-    PUBLIC
+    PRIVATE
       ${includes}
   )
 

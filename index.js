@@ -45,7 +45,7 @@ add_pear_module(${name})
 
 target_sources(
   ${name}
-  PUBLIC
+  PRIVATE
     binding.c
 )
   `.trim() + '\n')
