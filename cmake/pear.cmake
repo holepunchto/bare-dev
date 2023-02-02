@@ -26,6 +26,14 @@ function(add_pear_module target)
       PUBLIC
         -undefined dynamic_lookup
     )
+
+    if(CMAKE_HOST_SYSTEM_VERSION VERSION_GREATER_EQUAL 21)
+      target_link_options(
+        ${target}
+        PUBLIC
+          -Xlinker -no_fixup_chains
+      )
+    endif()
   endif()
 
   install(TARGETS ${target} LIBRARY DESTINATION lib)
