@@ -101,3 +101,25 @@ exports.build = function build (opts = {}) {
 
   if (proc.status) throw new Error('build() failed')
 }
+
+exports.prebuild = function prebuild (opts = {}) {
+  const {
+    build = 'build',
+    prebuilds = 'prebuilds',
+    cwd = process.cwd()
+  } = opts
+
+  exports.build(opts)
+
+  const args = [
+    '--install', build,
+    '--prefix', path.resolve(cwd, prebuilds, `${process.platform}-${process.arch}`)
+  ]
+
+  const proc = childProcess.spawnSync('cmake', args, {
+    stdio: 'inherit',
+    cwd
+  })
+
+  if (proc.status) throw new Error('prebuild() failed')
+}

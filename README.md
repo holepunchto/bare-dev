@@ -13,9 +13,10 @@ Options:
   -h, --help              display help for command
 
 Commands:
-  init                    initialize a build definition
+  init [options]          initialize a build definition
   configure [options]     configure a build
   build [options]         perform a build
+  prebuild [options]      perform a prebuild for the current platform and architecture
 ```
 
 ```sh
@@ -52,6 +53,18 @@ Options:
   -t, --target <name>  the target to build
   -v, --verbose        spill the beans (default: false)
   -h, --help           display help for command
+```
+
+```sh
+Usage: pear-dev prebuild [options]
+
+perform a prebuild for the current platform and architecture
+
+Options:
+  -b, --build      the path to the build tree
+  -p, --prebuilds  the path to the prebuilds directory
+  -v, --verbose    spill the beans (default: false)
+  -h, --help       display help for command
 ```
 
 ## License

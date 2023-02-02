@@ -22,6 +22,7 @@ program
   .addCommand(require('./pear-dev/init'))
   .addCommand(require('./pear-dev/configure'))
   .addCommand(require('./pear-dev/build'))
+  .addCommand(require('./pear-dev/prebuild'))
   .action(action)
   .parseAsync()
   .catch(err => {

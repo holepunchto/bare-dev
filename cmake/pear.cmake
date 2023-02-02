@@ -27,6 +27,8 @@ function(add_pear_module target)
         -undefined dynamic_lookup
     )
   endif()
+
+  install(TARGETS ${target} LIBRARY DESTINATION lib)
 endfunction()
 
 function(bundle_pear_module target path)
