@@ -49,6 +49,7 @@ function(bundle_pear_module target path)
   target_compile_definitions(
     ${target}
     PUBLIC
+      PEAR_MODULE_FILENAME="/${path}"
       NAPI_MODULE_FILENAME="/${path}"
   )
 endfunction()
