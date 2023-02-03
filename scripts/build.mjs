@@ -31,7 +31,7 @@ moveToInclude(path.join(tmp, 'vendor/libnapi/include'))
 moveToInclude(path.join(tmp, 'include'))
 
 // For compatibility with existing Node-API modules
-fs.cpSync(path.join(incl, 'napi.h'), path.join(incl, 'node_api.h'))
+fs.cpSync(path.join(__dirname, '../node_api.h'), path.join(incl, 'node_api.h'))
 
 function moveToInclude (from) {
   for (const name of fs.readdirSync(from)) {
