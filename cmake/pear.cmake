@@ -39,7 +39,7 @@ function(add_pear_module target)
   install(TARGETS ${target} LIBRARY DESTINATION lib)
 endfunction()
 
-function(bundle_pear_module target path)
+function(include_pear_module target path)
   add_subdirectory(
     ${CMAKE_SOURCE_DIR}/${path}
     ${path}
@@ -51,6 +51,17 @@ function(bundle_pear_module target path)
     PUBLIC
       PEAR_MODULE_FILENAME="/${path}"
       NAPI_MODULE_FILENAME="/${path}"
+  )
+endfunction()
+
+function(link_pear_module receiver target path)
+  include_pear_module(${target} ${path})
+
+  target_link_libraries(
+    ${receiver}
+    PUBLIC
+      $<TARGET_OBJECTS:${target}>
+      $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
   )
 endfunction()
 
