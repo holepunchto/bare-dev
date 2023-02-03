@@ -8,6 +8,10 @@ program
       .default(process.cwd(), 'process.cwd()')
   )
   .addOption(
+    createOption('-q, --quiet', 'stay silent')
+      .default(false)
+  )
+  .addOption(
     createOption('-i, --include', 'print the include path')
       .conflicts(['require', 'cmake-module-path'])
   )
@@ -23,6 +27,8 @@ program
   .addCommand(require('./pear-dev/configure'))
   .addCommand(require('./pear-dev/build'))
   .addCommand(require('./pear-dev/prebuild'))
+  .addCommand(require('./pear-dev/clean'))
+  .addCommand(require('./pear-dev/rebuild'))
   .action(action)
   .parseAsync()
   .catch(err => {

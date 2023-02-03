@@ -58,7 +58,8 @@ exports.configure = function configure (opts = {}) {
     generator = null,
     debug = false,
     sanitize = null,
-    cwd = process.cwd()
+    cwd = process.cwd(),
+    quiet = false
   } = opts
 
   const args = [
@@ -73,7 +74,7 @@ exports.configure = function configure (opts = {}) {
   if (sanitize === 'address') args.push('-DPEAR_ENABLE_ASAN=ON')
 
   const proc = childProcess.spawnSync('cmake', args, {
-    stdio: 'inherit',
+    stdio: quiet ? null : 'inherit',
     cwd
   })
 
@@ -85,7 +86,8 @@ exports.build = function build (opts = {}) {
     build = 'build',
     target = null,
     verbose = false,
-    cwd = process.cwd()
+    cwd = process.cwd(),
+    quiet = false
   } = opts
 
   const args = ['--build', build]
@@ -95,7 +97,7 @@ exports.build = function build (opts = {}) {
   if (verbose) args.push('--verbose')
 
   const proc = childProcess.spawnSync('cmake', args, {
-    stdio: 'inherit',
+    stdio: quiet ? null : 'inherit',
     cwd
   })
 
@@ -106,7 +108,8 @@ exports.prebuild = function prebuild (opts = {}) {
   const {
     build = 'build',
     prebuilds = 'prebuilds',
-    cwd = process.cwd()
+    cwd = process.cwd(),
+    quiet = false
   } = opts
 
   exports.build(opts)
@@ -117,9 +120,22 @@ exports.prebuild = function prebuild (opts = {}) {
   ]
 
   const proc = childProcess.spawnSync('cmake', args, {
-    stdio: 'inherit',
+    stdio: quiet ? null : 'inherit',
     cwd
   })
 
   if (proc.status) throw new Error('prebuild() failed')
+}
+
+exports.clean = function clean (opts = {}) {
+  exports.build({ ...opts, target: 'clean' })
+}
+
+exports.rebuild = function clean (opts = {}) {
+  try {
+    exports.clean({ ...opts, quiet: true })
+  } catch {}
+
+  exports.configure(opts)
+  exports.build(opts)
 }
