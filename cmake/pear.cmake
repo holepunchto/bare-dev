@@ -88,7 +88,7 @@ function(pear_include_directories result)
   )
 
   if(napi_macros)
-    list(APPEND ${result} ${napi_macros})
+    list(APPEND ${result} ${CMAKE_SOURCE_DIR}/${napi_macros})
   endif()
 
   return(PROPAGATE ${result})
