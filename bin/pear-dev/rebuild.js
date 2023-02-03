@@ -21,7 +21,7 @@ module.exports = createCommand('rebuild')
       .default(false)
   )
   .addOption(
-    createOption('-s, --sanitize', 'enable sanitizer')
+    createOption('-s, --sanitize <type>', 'enable sanitizer')
       .choices(['address'])
   )
   .addOption(

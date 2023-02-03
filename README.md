@@ -42,7 +42,7 @@ Options:
   -b, --build             the path to the build tree
   -g, --generator <name>  the build generator to use
   -d, --debug             configure a debug build (default: false)
-  -s, --sanitize          enable sanitizer (choices: "address")
+  -s, --sanitize <type>   enable sanitizer (choices: "address")
   -h, --help              display help for command
 ```
 
@@ -92,7 +92,7 @@ Options:
   -t, --target <name>     the target to build
   -g, --generator <name>  the build generator to use
   -d, --debug             configure a debug build (default: false)
-  -s, --sanitize          enable sanitizer (choices: "address")
+  -s, --sanitize <type>   enable sanitizer (choices: "address")
   -v, --verbose           spill the beans (default: false)
   -h, --help              display help for command
 ```
