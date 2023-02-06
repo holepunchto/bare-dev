@@ -12,6 +12,7 @@ module.exports = createCommand('configure')
   )
   .addOption(
     createOption('-g, --generator <name>', 'the build generator to use')
+      .choices(['make', 'ninja', 'xcode'])
   )
   .addOption(
     createOption('-d, --debug', 'configure a debug build')

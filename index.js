@@ -69,7 +69,7 @@ exports.configure = function configure (opts = {}) {
     `-DCMAKE_MODULE_PATH=${cmake.modulePath}`
   ]
 
-  if (generator) args.push('-G', generator)
+  if (generator) args.push('-G', toGenerator(generator))
 
   if (sanitize === 'address') args.push('-DPEAR_ENABLE_ASAN=ON')
 
@@ -138,4 +138,17 @@ exports.rebuild = function clean (opts = {}) {
 
   exports.configure(opts)
   exports.build(opts)
+}
+
+function toGenerator (name) {
+  switch (name) {
+    case 'make':
+      return 'Unix Makefiles'
+    case 'ninja':
+      return 'Ninja'
+    case 'xcode':
+      return 'Xcode'
+    default:
+      throw new Error(`unknown generator "${name}"`)
+  }
 }
