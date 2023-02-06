@@ -55,6 +55,8 @@ exports.configure = function configure (opts = {}) {
   const {
     source = '.',
     build = 'build',
+    platform = process.platform,
+    simulator = false,
     generator = null,
     debug = false,
     sanitize = null,
@@ -64,14 +66,28 @@ exports.configure = function configure (opts = {}) {
 
   const args = [
     '-S', source,
-    '-B', build,
-    `-DCMAKE_BUILD_TYPE=${debug ? 'Debug' : 'Release'}`,
+    '-B', path.resolve(cwd, build),
     `-DCMAKE_MODULE_PATH=${cmake.modulePath}`
   ]
 
-  if (generator) args.push('-G', toGenerator(generator))
+  if (generator !== 'xcode') {
+    args.push(`-DCMAKE_BUILD_TYPE=${debug ? 'Debug' : 'Release'}`)
+  }
 
-  if (sanitize === 'address') args.push('-DPEAR_ENABLE_ASAN=ON')
+  args.push(`-DCMAKE_SYSTEM_NAME=${toSystem(platform)}`)
+
+  switch (platform) {
+    case 'ios':
+      args.push(`-DCMAKE_OSX_SYSROOT=iphone${simulator ? 'simulator' : 'os'}`)
+  }
+
+  if (generator) {
+    args.push('-G', toGenerator(generator))
+  }
+
+  if (sanitize === 'address') {
+    args.push('-DPEAR_ENABLE_ASAN=ON')
+  }
 
   const proc = childProcess.spawnSync('cmake', args, {
     stdio: quiet ? null : 'inherit',
@@ -90,7 +106,7 @@ exports.build = function build (opts = {}) {
     quiet = false
   } = opts
 
-  const args = ['--build', build]
+  const args = ['--build', path.resolve(cwd, build)]
 
   if (target) args.push('--target', target)
 
@@ -115,8 +131,8 @@ exports.prebuild = function prebuild (opts = {}) {
   exports.build(opts)
 
   const args = [
-    '--install', build,
-    '--prefix', path.resolve(cwd, prebuilds, `${process.platform}-${process.arch}`)
+    '--install', path.resolve(cwd, build),
+    '--prefix', path.resolve(cwd, prebuilds)
   ]
 
   const proc = childProcess.spawnSync('cmake', args, {
@@ -140,8 +156,8 @@ exports.rebuild = function clean (opts = {}) {
   exports.build(opts)
 }
 
-function toGenerator (name) {
-  switch (name) {
+function toGenerator (generator) {
+  switch (generator) {
     case 'make':
       return 'Unix Makefiles'
     case 'ninja':
@@ -149,6 +165,23 @@ function toGenerator (name) {
     case 'xcode':
       return 'Xcode'
     default:
-      throw new Error(`unknown generator "${name}"`)
+      throw new Error(`unknown generator "${generator}"`)
+  }
+}
+
+function toSystem (platform) {
+  switch (platform) {
+    case 'darwin':
+      return 'Darwin'
+    case 'ios':
+      return 'iOS'
+    case 'linux':
+      return 'Linux'
+    case 'android':
+      return 'Android'
+    case 'win32':
+      return 'Windows'
+    default:
+      throw new Error(`unknown platform "${platform}"`)
   }
 }

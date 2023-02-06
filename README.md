@@ -40,9 +40,12 @@ configure a build
 Options:
   -s, --source            the path to the source tree
   -b, --build             the path to the build tree
-  -g, --generator <name>  the build generator to use
+  -p, --platform <name>   the operating system platform to build for (choices: "darwin", "ios", "linux", "android", "win32", default:
+                          "darwin")
+  --simulator             build for a simulator
+  -g, --generator <name>  the build generator to use (choices: "make", "ninja", "xcode")
   -d, --debug             configure a debug build (default: false)
-  -s, --sanitize <type>   enable sanitizer (choices: "address")
+  --sanitize <type>       enable sanitizer (choices: "address")
   -h, --help              display help for command
 ```
 
@@ -90,7 +93,10 @@ Options:
   -s, --source            the path to the source tree
   -b, --build             the path to the build tree
   -t, --target <name>     the target to build
-  -g, --generator <name>  the build generator to use
+  -p, --platform <name>   the operating system platform to build for (choices: "darwin", "ios", "linux", "android", "win32", default:
+                          "darwin")
+  --simulator             build for a simulator
+  -g, --generator <name>  the build generator to use (choices: "make", "ninja", "xcode")
   -d, --debug             configure a debug build (default: false)
   -s, --sanitize <type>   enable sanitizer (choices: "address")
   -v, --verbose           spill the beans (default: false)

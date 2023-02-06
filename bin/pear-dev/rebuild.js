@@ -14,7 +14,16 @@ module.exports = createCommand('rebuild')
     createOption('-t, --target <name>', 'the target to build')
   )
   .addOption(
+    createOption('-p, --platform <name>', 'the operating system platform to build for')
+      .choices(['darwin', 'ios', 'linux', 'android', 'win32'])
+      .default(process.platform)
+  )
+  .addOption(
+    createOption('--simulator', 'build for a simulator')
+  )
+  .addOption(
     createOption('-g, --generator <name>', 'the build generator to use')
+      .choices(['make', 'ninja', 'xcode'])
   )
   .addOption(
     createOption('-d, --debug', 'configure a debug build')

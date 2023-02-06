@@ -11,6 +11,14 @@ module.exports = createCommand('configure')
       .default('build')
   )
   .addOption(
+    createOption('-p, --platform <name>', 'the operating system platform to build for')
+      .choices(['darwin', 'ios', 'linux', 'android', 'win32'])
+      .default(process.platform)
+  )
+  .addOption(
+    createOption('--simulator', 'build for a simulator')
+  )
+  .addOption(
     createOption('-g, --generator <name>', 'the build generator to use')
       .choices(['make', 'ninja', 'xcode'])
   )
@@ -19,7 +27,7 @@ module.exports = createCommand('configure')
       .default(false)
   )
   .addOption(
-    createOption('-s, --sanitize <type>', 'enable sanitizer')
+    createOption('--sanitize <type>', 'enable sanitizer')
       .choices(['address'])
   )
   .action(action)
