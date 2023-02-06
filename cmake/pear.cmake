@@ -40,7 +40,7 @@ function(add_pear_module target)
       ${includes}
   )
 
-  add_library(${target}_module MODULE $<TARGET_OBJECTS:${target}>)
+  add_library(${target}_module MODULE)
 
   set_target_properties(
     ${target}_module
@@ -51,6 +51,12 @@ function(add_pear_module target)
   )
 
   add_debug_options(${target}_module)
+
+  target_link_libraries(
+    ${target}_module
+    PUBLIC
+      ${target}
+  )
 
   if(APPLE)
     target_link_options(
@@ -69,7 +75,7 @@ function(add_pear_module target)
   endif()
 
   install(
-    TARGETS ${target}
+    TARGETS ${target}_module
     LIBRARY DESTINATION ${PEAR_TARGET}
   )
 endfunction()
