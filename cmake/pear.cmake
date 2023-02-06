@@ -40,44 +40,47 @@ function(add_pear_module target)
       ${includes}
   )
 
-  add_library(${target}_module MODULE)
+  if(NOT IOS)
+    add_library(${target}_module MODULE)
 
-  set_target_properties(
-    ${target}_module
-    PROPERTIES
-    OUTPUT_NAME ${target}
-    PREFIX ""
-    SUFFIX ".pear"
-  )
-
-  add_debug_options(${target}_module)
-
-  target_link_libraries(
-    ${target}_module
-    PUBLIC
-      ${target}
-  )
-
-  if(APPLE)
-    target_link_options(
+    set_target_properties(
       ${target}_module
-      PUBLIC
-        -undefined dynamic_lookup
+      PROPERTIES
+      OUTPUT_NAME ${target}
+      PREFIX ""
+      SUFFIX ".pear"
     )
 
-    if(CMAKE_HOST_SYSTEM_VERSION VERSION_GREATER_EQUAL 21)
+    add_debug_options(${target}_module)
+
+    target_link_libraries(
+      ${target}_module
+      PUBLIC
+        $<TARGET_OBJECTS:${target}>
+        $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
+    )
+
+    if(APPLE)
       target_link_options(
         ${target}_module
         PUBLIC
-          -Xlinker -no_fixup_chains
+          -undefined dynamic_lookup
       )
-    endif()
-  endif()
 
-  install(
-    TARGETS ${target}_module
-    LIBRARY DESTINATION ${PEAR_TARGET}
-  )
+      if(CMAKE_HOST_SYSTEM_VERSION VERSION_GREATER_EQUAL 21)
+        target_link_options(
+          ${target}_module
+          PUBLIC
+            -Xlinker -no_fixup_chains
+        )
+      endif()
+    endif()
+
+    install(
+      TARGETS ${target}_module
+      LIBRARY DESTINATION ${PEAR_TARGET}
+    )
+  endif()
 endfunction()
 
 function(include_pear_module target path)
