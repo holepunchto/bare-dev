@@ -1,26 +1,53 @@
-if(APPLE)
-  if(IOS)
-    set(PEAR_PLATFORM "ios")
-  else()
-    set(PEAR_PLATFORM "darwin")
+function(pear_platform result)
+  set(platform ${CMAKE_SYSTEM_NAME})
+
+  if(NOT platform)
+    set(platform ${CMAKE_HOST_SYSTEM_NAME})
   endif()
-elseif(WIN32)
-  set(PEAR_PLATFORM "win32")
-elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  set(PEAR_PLATFORM "linux")
-else()
-  set(PEAR_PLATFORM "unknown")
-endif()
 
-if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
-  set(PEAR_ARCH "arm64")
-elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
-  set(PEAR_ARCH "x64")
-else()
-  set(PEAR_ARCH "unknown")
-endif()
+  if(platform MATCHES "Darwin")
+    set(${result} "darwin")
+  elseif(platform MATCHES "iOS")
+    set(${result} "ios")
+  elseif(platform MATCHES "Linux")
+    set(${result} "linux")
+  elseif(platform MATCHES "Android")
+    set(${result} "android")
+  elseif(platform MATCHES "Windows")
+    set(${result} "win32")
+  else()
+    set(${result} "unknown")
+  endif()
 
-set(PEAR_TARGET ${PEAR_PLATFORM}-${PEAR_ARCH})
+  return(PROPAGATE ${result})
+endfunction()
+
+function(pear_arch result)
+  set(arch ${CMAKE_SYSTEM_PROCESSOR})
+
+  if(NOT arch)
+    set(arch ${CMAKE_HOST_SYSTEM_PROCESSOR})
+  endif()
+
+  if(arch MATCHES "arm64|aarch64")
+    set(${result} "arm64")
+  elseif(arch MATCHES "x86_64")
+    set(${result} "x64")
+  else()
+    set(${result} "unknown")
+  endif()
+
+  return(PROPAGATE ${result})
+endfunction()
+
+function(pear_target result)
+  pear_platform(platform)
+  pear_arch(arch)
+
+  set(${result} ${platform}-${arch})
+
+  return(PROPAGATE ${result})
+endfunction()
 
 function(add_pear_module target)
   add_library(${target} OBJECT)
@@ -75,9 +102,11 @@ function(add_pear_module target)
       endif()
     endif()
 
+    pear_target(destination)
+
     install(
       TARGETS ${target}_module
-      LIBRARY DESTINATION ${PEAR_TARGET}
+      LIBRARY DESTINATION ${destination}
     )
   endif()
 endfunction()
