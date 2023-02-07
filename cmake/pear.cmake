@@ -41,7 +41,7 @@ function(add_pear_module target)
   )
 
   if(NOT IOS)
-    add_library(${target}_module MODULE)
+    add_library(${target}_module MODULE $<TARGET_OBJECTS:${target}>)
 
     set_target_properties(
       ${target}_module
@@ -56,7 +56,6 @@ function(add_pear_module target)
     target_link_libraries(
       ${target}_module
       PUBLIC
-        $<TARGET_OBJECTS:${target}>
         $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
     )
 
