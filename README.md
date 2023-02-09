@@ -6,20 +6,22 @@ Development tooling for :pear:.js.
 Usage: pear-dev [options] [command]
 
 Options:
-  -c, --cwd <path>        the path to the working directory (default: process.cwd())
-  -q, --quiet             stay silent (default: false)
-  -i, --include           print the include path
-  -r, --require <module>  require and run a local module
-  --cmake-module-path     print the CMake module path
-  -h, --help              display help for command
+  -c, --cwd <path>          the path to the working directory (default: process.cwd())
+  -q, --quiet               stay silent (default: false)
+  -i, --include             print the include path
+  -r, --require <module>    require and run a local module
+  --cmake-module-path       print the CMake module path
+  -h, --help                display help for command
 
 Commands:
-  init [options]          initialize a build definition
-  configure [options]     configure a build
-  build [options]         perform a build
-  prebuild [options]      perform a prebuild for the current platform and architecture
-  clean [options]         clean build artifacts
-  rebuild [options]       clean, configure, and build
+  init [options]            initialize a build definition
+  configure [options]       configure a build
+  build [options]           perform a build
+  prebuild [options]        perform a prebuild for the current platform and architecture
+  clean [options]           clean build artifacts
+  rebuild [options]         clean, configure, and build
+  link [options] <entry>    link together a module tree
+  bundle [options] <entry>  bundle a module tree to a single module
 ```
 
 ```sh
@@ -101,6 +103,36 @@ Options:
   -s, --sanitize <type>   enable sanitizer (choices: "address")
   -v, --verbose           spill the beans (default: false)
   -h, --help              display help for command
+```
+
+```sh
+Usage: pear-dev link [options] <entry>
+
+link together a module tree
+
+Arguments:
+  entry             the entry point to the module tree
+
+Options:
+  --print           write the manifest to stdout (default: true)
+  -o, --out <path>  write the manifest to a file
+  --indent <n>      number of spaces to use for indents (default: 2)
+  -h, --help        display help for command
+```
+
+```sh
+Usage: pear-dev bundle [options] <entry>
+
+bundle a module tree to a single module
+
+Arguments:
+  entry                  the entry point to the module tree
+
+Options:
+  -p, --protocol <name>  the protocol to prepend to source URLs (default: "app")
+  --print                write the bundle to stdout (default: true)
+  -o, --out <path>       write the bundle to a file
+  -h, --help             display help for command
 ```
 
 ## License

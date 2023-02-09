@@ -1,7 +1,8 @@
-const fs = require('fs')
+const fs = require('fs/promises')
 const path = require('path')
 const mod = require('module')
 const childProcess = require('child_process')
+const ScriptLinker = require('script-linker')
 
 exports.include = path.join(__dirname, 'include')
 
@@ -17,7 +18,7 @@ const cmake = exports.cmake = {
   modulePath: path.join(__dirname, 'cmake')
 }
 
-exports.init = function init (opts = {}) {
+exports.init = async function init (opts = {}) {
   const {
     force = false,
     cwd = process.cwd()
@@ -32,9 +33,15 @@ exports.init = function init (opts = {}) {
 
   const definition = path.join(cwd, 'CMakeLists.txt')
 
-  if (fs.existsSync(definition) && !force) throw new Error(`refusing to overwrite ${definition}`)
+  let exists = false
+  try {
+    await fs.access(definition)
+    exists = true
+  } catch {}
 
-  fs.writeFileSync(definition, `
+  if (exists && !force) throw new Error(`refusing to overwrite ${definition}`)
+
+  await fs.writeFile(definition, `
 cmake_minimum_required(VERSION 3.25)
 
 project(${name} C)
@@ -154,6 +161,89 @@ exports.rebuild = function clean (opts = {}) {
 
   exports.configure(opts)
   exports.build(opts)
+}
+
+exports.link = async function link (entry, opts = {}) {
+  const {
+    out = null,
+    print = false,
+    indent = 2,
+    cwd = process.cwd()
+  } = opts
+
+  const linker = new ScriptLinker({
+    bare: true,
+
+    readFile (filename) {
+      return fs.readFile(path.join(cwd, filename))
+    }
+  })
+
+  const files = Object.create(null)
+
+  entry = path.resolve('/', path.relative(cwd, entry))
+
+  for await (const { module } of linker.dependencies(entry)) {
+    if (module.builtin) continue
+
+    if (module.package) {
+      files[module.packageFilename] = {
+        source: JSON.stringify(module.package)
+      }
+    }
+
+    files[module.filename] = {
+      source: module.source
+    }
+  }
+
+  const manifest = {
+    files
+  }
+
+  if (print || out) {
+    const json = JSON.stringify(manifest, null, indent) + '\n'
+
+    if (print) {
+      process.stdout.write(json)
+    }
+
+    if (out) {
+      await fs.writeFile(path.resolve(cwd, out), json)
+    }
+  }
+
+  return manifest
+}
+
+exports.bundle = async function bundle (entry, opts = {}) {
+  const {
+    protocol = 'app',
+    out = null,
+    print = false,
+    cwd = process.cwd()
+  } = opts
+
+  const linker = new ScriptLinker({
+    bare: true,
+    protocol,
+
+    readFile (filename) {
+      return fs.readFile(path.join(cwd, filename))
+    }
+  })
+
+  entry = path.resolve('/', path.relative(cwd, entry))
+
+  const code = await linker.bundle(entry)
+
+  if (print) {
+    process.stdout.write(code)
+  }
+
+  if (out) {
+    await fs.writeFile(path.resolve(cwd, out), code)
+  }
 }
 
 function toGenerator (generator) {

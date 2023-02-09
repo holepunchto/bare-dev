@@ -16,5 +16,5 @@ module.exports = createCommand('build')
   .action(action)
 
 function action (_, cmd) {
-  require('../..').build(cmd.optsWithGlobals())
+  return require('../..').build(cmd.optsWithGlobals())
 }

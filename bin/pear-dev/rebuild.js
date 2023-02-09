@@ -40,5 +40,5 @@ module.exports = createCommand('rebuild')
   .action(action)
 
 function action (_, cmd) {
-  require('../..').rebuild(cmd.optsWithGlobals())
+  return require('../..').rebuild(cmd.optsWithGlobals())
 }

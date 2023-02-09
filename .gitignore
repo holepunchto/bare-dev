@@ -1,4 +1,5 @@
-tmp/
-include/
-node_modules/
+tmp
+include
+sandbox
+node_modules
 package-lock.json

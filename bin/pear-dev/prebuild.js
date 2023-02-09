@@ -17,5 +17,5 @@ module.exports = createCommand('prebuild')
   .action(action)
 
 function action (_, cmd) {
-  require('../..').prebuild(cmd.optsWithGlobals())
+  return require('../..').prebuild(cmd.optsWithGlobals())
 }

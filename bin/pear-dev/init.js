@@ -9,5 +9,5 @@ module.exports = createCommand('init')
   .action(action)
 
 function action (_, cmd) {
-  require('../..').init(cmd.optsWithGlobals())
+  return require('../..').init(cmd.optsWithGlobals())
 }

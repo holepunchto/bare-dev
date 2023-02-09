@@ -33,5 +33,5 @@ module.exports = createCommand('configure')
   .action(action)
 
 function action (_, cmd) {
-  require('../..').configure(cmd.optsWithGlobals())
+  return require('../..').configure(cmd.optsWithGlobals())
 }

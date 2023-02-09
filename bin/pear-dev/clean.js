@@ -13,5 +13,5 @@ module.exports = createCommand('clean')
   .action(action)
 
 function action (_, cmd) {
-  require('../..').clean(cmd.optsWithGlobals())
+  return require('../..').clean(cmd.optsWithGlobals())
 }
