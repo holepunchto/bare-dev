@@ -224,8 +224,8 @@ exports.link = async function link (entry, opts = {}) {
 exports.bundle = async function bundle (entry, opts = {}) {
   const {
     protocol = 'app',
-    format = 'json',
-    name = 'manifest',
+    format = 'js',
+    name = 'bundle',
     out = null,
     print = false,
     cwd = process.cwd()

@@ -15,8 +15,8 @@ module.exports = createCommand('bundle')
       .choices(['js', 'c'])
   )
   .addOption(
-    createOption('-n, --name <name>', 'the name of the manifest')
-      .default('manifest')
+    createOption('-n, --name <name>', 'the name of the bundle')
+      .default('bundle')
   )
   .addOption(
     createOption('--print', 'write the bundle to stdout')

@@ -133,7 +133,7 @@ Arguments:
 Options:
   -p, --protocol <name>  the protocol to prepend to source URLs (default: "app")
   -f, --format <name>    the format of the output (choices: "js", "c", default: "js")
-  -n, --name <name>      the name of the manifest (default: "manifest")
+  -n, --name <name>      the name of the bundle (default: "bundle")
   --print                write the bundle to stdout (default: true)
   -o, --out <path>       write the bundle to a file
   -h, --help             display help for command
