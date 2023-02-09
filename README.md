@@ -111,13 +111,15 @@ Usage: pear-dev link [options] <entry>
 link together a module tree
 
 Arguments:
-  entry             the entry point to the module tree
+  entry                the entry point to the module tree
 
 Options:
-  --print           write the manifest to stdout (default: true)
-  -o, --out <path>  write the manifest to a file
-  --indent <n>      number of spaces to use for indents (default: 2)
-  -h, --help        display help for command
+  -f, --format <name>  the format of the output (choices: "json", "c", default: "json")
+  -n, --name <name>    the name of the manifest (default: "manifest")
+  --print              write the manifest to stdout (default: true)
+  -o, --out <path>     write the manifest to a file
+  --indent <n>         number of spaces to use for indents (default: 2)
+  -h, --help           display help for command
 ```
 
 ```sh
@@ -130,6 +132,8 @@ Arguments:
 
 Options:
   -p, --protocol <name>  the protocol to prepend to source URLs (default: "app")
+  -f, --format <name>    the format of the output (choices: "js", "c", default: "js")
+  -n, --name <name>      the name of the manifest (default: "manifest")
   --print                write the bundle to stdout (default: true)
   -o, --out <path>       write the bundle to a file
   -h, --help             display help for command

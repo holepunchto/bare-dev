@@ -3,6 +3,7 @@ const path = require('path')
 const mod = require('module')
 const childProcess = require('child_process')
 const ScriptLinker = require('script-linker')
+const includeStatic = require('include-static')
 
 exports.include = path.join(__dirname, 'include')
 
@@ -165,6 +166,8 @@ exports.rebuild = function clean (opts = {}) {
 
 exports.link = async function link (entry, opts = {}) {
   const {
+    format = 'json',
+    name = 'manifest',
     out = null,
     print = false,
     indent = 2,
@@ -202,14 +205,16 @@ exports.link = async function link (entry, opts = {}) {
   }
 
   if (print || out) {
-    const json = JSON.stringify(manifest, null, indent) + '\n'
+    let data = JSON.stringify(manifest, null, indent) + '\n'
+
+    if (format === 'c') data = includeStatic(name, Buffer.from(data))
 
     if (print) {
-      process.stdout.write(json)
+      process.stdout.write(data)
     }
 
     if (out) {
-      await fs.writeFile(path.resolve(cwd, out), json)
+      await fs.writeFile(path.resolve(cwd, out), data)
     }
   }
 
@@ -219,6 +224,8 @@ exports.link = async function link (entry, opts = {}) {
 exports.bundle = async function bundle (entry, opts = {}) {
   const {
     protocol = 'app',
+    format = 'json',
+    name = 'manifest',
     out = null,
     print = false,
     cwd = process.cwd()
@@ -235,14 +242,16 @@ exports.bundle = async function bundle (entry, opts = {}) {
 
   entry = path.resolve('/', path.relative(cwd, entry))
 
-  const code = await linker.bundle(entry)
+  let data = await linker.bundle(entry)
+
+  if (format === 'c') data = includeStatic(name, Buffer.from(data))
 
   if (print) {
-    process.stdout.write(code)
+    process.stdout.write(data)
   }
 
   if (out) {
-    await fs.writeFile(path.resolve(cwd, out), code)
+    await fs.writeFile(path.resolve(cwd, out), data)
   }
 }
 

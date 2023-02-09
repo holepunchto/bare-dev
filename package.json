@@ -28,6 +28,7 @@
   "homepage": "https://github.com/holepunchto/pearjs-dev#readme",
   "dependencies": {
     "commander": "^10.0.0",
+    "include-static": "^1.1.0",
     "script-linker": "github:holepunchto/script-linker"
   },
   "devDependencies": {

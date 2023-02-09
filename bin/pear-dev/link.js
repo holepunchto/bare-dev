@@ -6,6 +6,15 @@ module.exports = createCommand('link')
     createArgument('entry', 'the entry point to the module tree')
   )
   .addOption(
+    createOption('-f, --format <name>', 'the format of the output')
+      .default('json')
+      .choices(['json', 'c'])
+  )
+  .addOption(
+    createOption('-n, --name <name>', 'the name of the manifest')
+      .default('manifest')
+  )
+  .addOption(
     createOption('--print', 'write the manifest to stdout')
       .default(true)
   )
