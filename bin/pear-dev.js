@@ -29,7 +29,6 @@ program
   .addCommand(require('./pear-dev/prebuild'))
   .addCommand(require('./pear-dev/clean'))
   .addCommand(require('./pear-dev/rebuild'))
-  .addCommand(require('./pear-dev/link'))
   .addCommand(require('./pear-dev/bundle'))
   .action(action)
   .parseAsync()

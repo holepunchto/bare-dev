@@ -164,71 +164,15 @@ exports.rebuild = function clean (opts = {}) {
   exports.build(opts)
 }
 
-exports.link = async function link (entry, opts = {}) {
-  const {
-    format = 'json',
-    name = 'manifest',
-    out = null,
-    print = false,
-    indent = 2,
-    cwd = process.cwd()
-  } = opts
-
-  const linker = new ScriptLinker({
-    bare: true,
-
-    readFile (filename) {
-      return fs.readFile(path.join(cwd, filename))
-    }
-  })
-
-  const files = Object.create(null)
-
-  entry = path.resolve('/', path.relative(cwd, entry))
-
-  for await (const { module } of linker.dependencies(entry)) {
-    if (module.builtin) continue
-
-    if (module.package) {
-      files[module.packageFilename] = {
-        source: JSON.stringify(module.package)
-      }
-    }
-
-    files[module.filename] = {
-      source: module.source
-    }
-  }
-
-  const manifest = {
-    entry,
-    files
-  }
-
-  if (print || out) {
-    let data = JSON.stringify(manifest, null, indent) + '\n'
-
-    if (format === 'c') data = includeStatic(name, Buffer.from(data))
-
-    if (print) {
-      process.stdout.write(data)
-    }
-
-    if (out) {
-      await fs.writeFile(path.resolve(cwd, out), data)
-    }
-  }
-
-  return manifest
-}
-
-exports.bundle = async function bundle (entry, opts = {}) {
+exports.bundle = async function link (entry, opts = {}) {
   const {
     protocol = 'app',
-    format = 'js',
+    format = 'json',
+    target = 'js',
     name = 'bundle',
     out = null,
     print = false,
+    indent = 2,
     cwd = process.cwd()
   } = opts
 
@@ -241,19 +185,68 @@ exports.bundle = async function bundle (entry, opts = {}) {
     }
   })
 
+  const files = Object.create(null)
+
   entry = path.resolve('/', path.relative(cwd, entry))
 
-  let data = await linker.bundle(entry)
+  let bundle
 
-  if (format === 'c') data = includeStatic(name, Buffer.from(data))
+  switch (format) {
+    case 'json': {
+      for await (const { module } of linker.dependencies(entry)) {
+        if (module.builtin) continue
 
-  if (print) {
-    process.stdout.write(data)
+        if (module.package) {
+          files[module.packageFilename] = {
+            source: JSON.stringify(module.package)
+          }
+        }
+
+        files[module.filename] = {
+          source: module.source
+        }
+      }
+
+      const manifest = {
+        entry,
+        files
+      }
+
+      bundle = JSON.stringify(manifest, null, indent) + '\n'
+      break
+    }
+
+    case 'js':
+      bundle = await linker.bundle(entry)
+      break
+
+    default:
+      throw new Error(`unknown format "${format}"`)
   }
 
-  if (out) {
-    await fs.writeFile(path.resolve(cwd, out), data)
+  switch (target) {
+    case 'js':
+      break
+
+    case 'c':
+      bundle = includeStatic(name, Buffer.from(bundle))
+      break
+
+    default:
+      throw new Error(`unknown target "${format}"`)
   }
+
+  if (print || out) {
+    if (print) {
+      process.stdout.write(bundle)
+    }
+
+    if (out) {
+      await fs.writeFile(path.resolve(cwd, out), bundle)
+    }
+  }
+
+  return bundle
 }
 
 function toGenerator (generator) {

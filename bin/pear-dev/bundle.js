@@ -1,7 +1,7 @@
 const { createCommand, createArgument, createOption } = require('commander')
 
 module.exports = createCommand('bundle')
-  .description('bundle a module tree to a single module')
+  .description('bundle a module tree')
   .addArgument(
     createArgument('entry', 'the entry point to the module tree')
   )
@@ -10,7 +10,12 @@ module.exports = createCommand('bundle')
       .default('app')
   )
   .addOption(
-    createOption('-f, --format <name>', 'the format of the output')
+    createOption('-f, --format <name>', 'the format of the bundle')
+      .default('json')
+      .choices(['json', 'js'])
+  )
+  .addOption(
+    createOption('-t, --target <name>', 'the target that will consume the bundle')
       .default('js')
       .choices(['js', 'c'])
   )
@@ -25,6 +30,11 @@ module.exports = createCommand('bundle')
   .addOption(
     createOption('-o, --out <path>', 'write the bundle to a file')
       .implies({ print: false })
+  )
+  .addOption(
+    createOption('--indent <n>', 'number of spaces to use for indents')
+      .default(2)
+      .argParser((value) => /\d+/.test(value) ? parseInt(value) : value)
   )
   .action(action)
 

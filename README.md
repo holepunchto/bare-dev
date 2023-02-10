@@ -20,8 +20,7 @@ Commands:
   prebuild [options]        perform a prebuild for the current platform and architecture
   clean [options]           clean build artifacts
   rebuild [options]         clean, configure, and build
-  link [options] <entry>    link together a module tree
-  bundle [options] <entry>  bundle a module tree to a single module
+  bundle [options] <entry>  bundle a module tree
 ```
 
 ```sh
@@ -106,36 +105,21 @@ Options:
 ```
 
 ```sh
-Usage: pear-dev link [options] <entry>
-
-link together a module tree
-
-Arguments:
-  entry                the entry point to the module tree
-
-Options:
-  -f, --format <name>  the format of the output (choices: "json", "c", default: "json")
-  -n, --name <name>    the name of the manifest (default: "manifest")
-  --print              write the manifest to stdout (default: true)
-  -o, --out <path>     write the manifest to a file
-  --indent <n>         number of spaces to use for indents (default: 2)
-  -h, --help           display help for command
-```
-
-```sh
 Usage: pear-dev bundle [options] <entry>
 
-bundle a module tree to a single module
+bundle a module tree
 
 Arguments:
   entry                  the entry point to the module tree
 
 Options:
   -p, --protocol <name>  the protocol to prepend to source URLs (default: "app")
-  -f, --format <name>    the format of the output (choices: "js", "c", default: "js")
+  -f, --format <name>    the format of the bundle (choices: "json", "js", default: "json")
+  -t, --target <name>    the target that will consume the bundle (choices: "js", "c", default: "js")
   -n, --name <name>      the name of the bundle (default: "bundle")
   --print                write the bundle to stdout (default: true)
   -o, --out <path>       write the bundle to a file
+  --indent <n>           number of spaces to use for indents (default: 2)
   -h, --help             display help for command
 ```
 
