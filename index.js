@@ -201,6 +201,7 @@ exports.link = async function link (entry, opts = {}) {
   }
 
   const manifest = {
+    entry,
     files
   }
 
