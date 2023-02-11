@@ -198,7 +198,9 @@ exports.bundle = async function link (entry, opts = {}) {
         if (module.builtin) continue
 
         if (module.package) {
-          bundle.write(module.packageFilename, JSON.stringify(module.package) + '\n')
+          const source = JSON.stringify(module.package, null, indent)
+
+          bundle.write(module.packageFilename, source + '\n')
         }
 
         bundle.write(module.filename, module.source, {
