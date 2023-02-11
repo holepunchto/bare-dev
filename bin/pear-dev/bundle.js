@@ -11,8 +11,8 @@ module.exports = createCommand('bundle')
   )
   .addOption(
     createOption('-f, --format <name>', 'the format of the bundle')
-      .default('json')
-      .choices(['json', 'js'])
+      .default('bundle')
+      .choices(['bundle', 'js'])
   )
   .addOption(
     createOption('-t, --target <name>', 'the target that will consume the bundle')

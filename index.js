@@ -4,6 +4,7 @@ const mod = require('module')
 const childProcess = require('child_process')
 const ScriptLinker = require('script-linker')
 const includeStatic = require('include-static')
+const Bundle = require('@pearjs/bundle')
 
 exports.include = path.join(__dirname, 'include')
 
@@ -167,7 +168,7 @@ exports.rebuild = function clean (opts = {}) {
 exports.bundle = async function link (entry, opts = {}) {
   const {
     protocol = 'app',
-    format = 'json',
+    format = 'bundle',
     target = 'js',
     name = 'bundle',
     out = null,
@@ -185,39 +186,32 @@ exports.bundle = async function link (entry, opts = {}) {
     }
   })
 
-  const files = Object.create(null)
-
   entry = path.resolve('/', path.relative(cwd, entry))
 
-  let bundle
+  let data
 
   switch (format) {
-    case 'json': {
+    case 'bundle': {
+      const bundle = new Bundle()
+
       for await (const { module } of linker.dependencies(entry)) {
         if (module.builtin) continue
 
         if (module.package) {
-          files[module.packageFilename] = {
-            source: JSON.stringify(module.package)
-          }
+          bundle.write(module.packageFilename, JSON.stringify(module.package) + '\n')
         }
 
-        files[module.filename] = {
-          source: module.source
-        }
+        bundle.write(module.filename, module.source, {
+          main: module.filename === entry
+        })
       }
 
-      const manifest = {
-        entry,
-        files
-      }
-
-      bundle = JSON.stringify(manifest, null, indent) + '\n'
+      data = bundle.toBuffer({ indent })
       break
     }
 
     case 'js':
-      bundle = await linker.bundle(entry)
+      data = Buffer.from(await linker.bundle(entry))
       break
 
     default:
@@ -229,7 +223,7 @@ exports.bundle = async function link (entry, opts = {}) {
       break
 
     case 'c':
-      bundle = includeStatic(name, Buffer.from(bundle))
+      data = includeStatic(name, data)
       break
 
     default:
@@ -238,15 +232,15 @@ exports.bundle = async function link (entry, opts = {}) {
 
   if (print || out) {
     if (print) {
-      process.stdout.write(bundle)
+      process.stdout.write(data)
     }
 
     if (out) {
-      await fs.writeFile(path.resolve(cwd, out), bundle)
+      await fs.writeFile(path.resolve(cwd, out), data)
     }
   }
 
-  return bundle
+  return data
 }
 
 function toGenerator (generator) {
