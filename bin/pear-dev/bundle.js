@@ -24,6 +24,9 @@ module.exports = createCommand('bundle')
       .default('bundle')
   )
   .addOption(
+    createOption('-m, --import-map <path>', 'load an import map')
+  )
+  .addOption(
     createOption('--print', 'write the bundle to stdout')
       .default(true)
   )

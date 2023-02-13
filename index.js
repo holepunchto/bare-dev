@@ -171,18 +171,45 @@ exports.bundle = async function link (entry, opts = {}) {
     format = 'bundle',
     target = 'js',
     name = 'bundle',
+    imports = {},
+    importMap = null,
     out = null,
     print = false,
     indent = 2,
     cwd = process.cwd()
   } = opts
 
+  if (importMap) {
+    const map = require(path.resolve(cwd, importMap))
+
+    for (const [from, to] of Object.entries(map.imports)) {
+      imports[from] = to
+    }
+  }
+
   const linker = new ScriptLinker({
     bare: true,
     protocol,
 
+    mapResolve (req) {
+      if (req in imports) req = imports[req]
+      return req
+    },
+
     readFile (filename) {
       return fs.readFile(path.join(cwd, filename))
+    },
+
+    builtins: {
+      has () {
+        return false
+      },
+      async get () {
+        return null
+      },
+      keys () {
+        return []
+      }
     }
   })
 
@@ -193,6 +220,10 @@ exports.bundle = async function link (entry, opts = {}) {
   switch (format) {
     case 'bundle': {
       const bundle = new Bundle()
+
+      for (const req of Object.keys(imports)) {
+        bundle.imports[req] = await linker.resolve(req)
+      }
 
       for await (const { module } of linker.dependencies(entry)) {
         if (module.builtin) continue
