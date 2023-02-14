@@ -40,11 +40,28 @@ function(pear_arch result)
   return(PROPAGATE ${result})
 endfunction()
 
+function(pear_simulator result)
+  set(sysroot ${CMAKE_OSX_SYSROOT})
+
+  if(sysroot MATCHES "iPhoneSimulator")
+    set(${result} YES)
+  else()
+    set(${result} NO)
+  endif()
+
+  return(PROPAGATE ${result})
+endfunction()
+
 function(pear_target result)
   pear_platform(platform)
   pear_arch(arch)
+  pear_simulator(simulator)
 
   set(${result} ${platform}-${arch})
+
+  if(simulator)
+    set(${result} ${result}-simulator)
+  endif()
 
   return(PROPAGATE ${result})
 endfunction()
