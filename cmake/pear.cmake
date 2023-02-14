@@ -57,11 +57,13 @@ function(pear_target result)
   pear_arch(arch)
   pear_simulator(simulator)
 
-  set(${result} ${platform}-${arch})
+  set(target ${platform}-${arch})
 
   if(simulator)
-    set(${result} ${result}-simulator)
+    set(target ${target}-simulator)
   endif()
+
+  set(${result} ${target})
 
   return(PROPAGATE ${result})
 endfunction()
