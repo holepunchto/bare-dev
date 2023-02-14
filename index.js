@@ -221,8 +221,8 @@ exports.bundle = async function link (entry, opts = {}) {
     case 'bundle': {
       const bundle = new Bundle()
 
-      for (const req of Object.keys(imports)) {
-        bundle.imports[req] = await linker.resolve(req)
+      for (const [from, to] of Object.entries(imports)) {
+        bundle.imports[from] = to
       }
 
       for await (const { module } of linker.dependencies(entry)) {
