@@ -27,6 +27,12 @@ module.exports = createCommand('bundle')
     createOption('-m, --import-map <path>', 'load an import map')
   )
   .addOption(
+    createOption('--header <string>', 'add a header to the bundle')
+  )
+  .addOption(
+    createOption('--footer <string>', 'add a footer to the bundle')
+  )
+  .addOption(
     createOption('--print', 'write the bundle to stdout')
       .default(true)
   )

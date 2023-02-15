@@ -173,6 +173,8 @@ exports.bundle = async function link (entry, opts = {}) {
     name = 'bundle',
     imports = {},
     importMap = null,
+    header = '',
+    footer = '',
     out = null,
     print = false,
     indent = 2,
@@ -191,9 +193,13 @@ exports.bundle = async function link (entry, opts = {}) {
     bare: true,
     protocol,
 
-    mapResolve (req) {
-      if (req in imports) req = imports[req]
-      return req
+    map (id, { protocol }) {
+      return `${protocol}:${path.relative('/', id)}`
+    },
+
+    mapResolve (id) {
+      if (id in imports) id = imports[id]
+      return id
     },
 
     readFile (filename) {
@@ -244,7 +250,7 @@ exports.bundle = async function link (entry, opts = {}) {
     }
 
     case 'js':
-      data = Buffer.from(await linker.bundle(entry))
+      data = Buffer.from(await linker.bundle(entry, { header, footer }))
       break
 
     default:
