@@ -176,7 +176,7 @@ function(add_debug_options target)
 endfunction()
 
 function(pear_include_directories result)
-  find_program(pear_dev NAMES pear-dev)
+  find_program(pear_dev NAMES pear-dev REQUIRED)
 
   execute_process(
     COMMAND ${pear_dev} --include
