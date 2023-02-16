@@ -13,7 +13,7 @@ module.exports = createCommand('configure')
   .addOption(
     createOption('-p, --platform <name>', 'the operating system platform to build for')
       .choices(['darwin', 'ios', 'linux', 'android', 'win32'])
-      .default(process.platform)
+      .default(process.platform, 'process.platform')
   )
   .addOption(
     createOption('--simulator', 'build for a simulator')
