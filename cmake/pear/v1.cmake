@@ -179,15 +179,14 @@ function(pear_include_directories result)
   find_program(pear_dev NAMES pear-dev REQUIRED)
 
   execute_process(
-    COMMAND ${pear_dev} --include
+    COMMAND ${pear_dev} paths include
     OUTPUT_VARIABLE pear
-    OUTPUT_STRIP_TRAILING_WHITESPACE
   )
 
   list(APPEND ${result} ${pear})
 
   execute_process(
-    COMMAND ${pear_dev} --require napi-macros --cwd ${CMAKE_SOURCE_DIR}
+    COMMAND ${pear_dev} --cwd ${CMAKE_SOURCE_DIR} require napi-macros
     OUTPUT_VARIABLE napi_macros
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET

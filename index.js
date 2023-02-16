@@ -1,23 +1,27 @@
 const fs = require('fs/promises')
 const path = require('path')
-const mod = require('module')
+const Module = require('module')
 const childProcess = require('child_process')
 const ScriptLinker = require('script-linker')
 const includeStatic = require('include-static')
 const Bundle = require('@pearjs/bundle')
 
-exports.include = path.join(__dirname, 'include')
-
-exports.require = function (name, cwd = process.cwd()) {
-  const old = process.cwd()
-  process.chdir(cwd)
-  const m = mod.createRequire(path.join(cwd, 'index.js'))(name)
-  process.chdir(old)
-  return m
+const paths = exports.paths = {
+  include: path.join(__dirname, 'include'),
+  cmake: path.join(__dirname, 'cmake')
 }
 
-const cmake = exports.cmake = {
-  modulePath: path.join(__dirname, 'cmake')
+exports.require = function require (name, opts = {}) {
+  const {
+    cwd = process.cwd()
+  } = opts
+
+  const old = process.cwd()
+  process.chdir(cwd)
+  const module = Module.createRequire(path.join(cwd, 'index.js'))(name)
+  process.chdir(old)
+
+  return module
 }
 
 exports.init = async function init (opts = {}) {
@@ -76,7 +80,7 @@ exports.configure = function configure (opts = {}) {
   const args = [
     '-S', source,
     '-B', path.resolve(cwd, build),
-    `-DCMAKE_MODULE_PATH=${cmake.modulePath}`
+    `-DCMAKE_MODULE_PATH=${paths.cmake}`
   ]
 
   if (generator !== 'xcode') {
@@ -154,6 +158,11 @@ exports.prebuild = function prebuild (opts = {}) {
 
 exports.clean = function clean (opts = {}) {
   exports.build({ ...opts, target: 'clean' })
+}
+
+exports.test = function clean (opts = {}) {
+  exports.build({ ...opts, target: null })
+  exports.build({ ...opts, target: 'test' })
 }
 
 exports.rebuild = function clean (opts = {}) {
