@@ -6,6 +6,9 @@ module.exports = createCommand('bundle')
     createArgument('entry', 'the entry point to the module tree')
   )
   .addOption(
+    createOption('--config <path>', 'read configuration from a file')
+  )
+  .addOption(
     createOption('-p, --protocol <name>', 'the protocol to prepend to source URLs')
       .default('app')
   )

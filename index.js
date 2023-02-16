@@ -195,6 +195,18 @@ exports.rebuild = function clean (opts = {}) {
 
 exports.bundle = async function link (entry, opts = {}) {
   const {
+    config = null,
+    cwd = process.cwd()
+  } = opts
+
+  if (config) {
+    opts = {
+      ...opts,
+      ...require(path.resolve(cwd, config))
+    }
+  }
+
+  const {
     protocol = 'app',
     format = 'bundle',
     target = 'js',
@@ -205,8 +217,7 @@ exports.bundle = async function link (entry, opts = {}) {
     footer = '',
     out = null,
     print = false,
-    indent = 2,
-    cwd = process.cwd()
+    indent = 2
   } = opts
 
   if (importMap) {
