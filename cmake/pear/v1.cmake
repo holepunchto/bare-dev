@@ -79,11 +79,38 @@ function(add_pear_module target)
   )
 
   pear_include_directories(includes)
+  pear_target(destination)
 
   target_include_directories(
     ${target}
     PRIVATE
       ${includes}
+  )
+
+  add_library(${target}_static STATIC $<TARGET_OBJECTS:${target}>)
+
+  set_target_properties(
+    ${target}_static
+    PROPERTIES
+    OUTPUT_NAME ${target}
+    PREFIX ""
+
+    # Ensure that modules are placed in the root of the build tree where
+    # process.addon() can find them.
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+  )
+
+  add_debug_options(${target}_static)
+
+  target_link_libraries(
+    ${target}_static
+    PUBLIC
+      $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
+  )
+
+  install(
+    TARGETS ${target}_static
+    ARCHIVE DESTINATION ${destination}
   )
 
   if(NOT IOS)
@@ -124,8 +151,6 @@ function(add_pear_module target)
         )
       endif()
     endif()
-
-    pear_target(destination)
 
     install(
       TARGETS ${target}_module
