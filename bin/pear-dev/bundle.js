@@ -7,6 +7,7 @@ module.exports = createCommand('bundle')
   )
   .addOption(
     createOption('--config <path>', 'read configuration from a file')
+      .implies({ print: false })
   )
   .addOption(
     createOption('-p, --protocol <name>', 'the protocol to prepend to source URLs')
