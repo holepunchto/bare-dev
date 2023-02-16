@@ -95,6 +95,10 @@ function(add_pear_module target)
       OUTPUT_NAME ${target}
       PREFIX ""
       SUFFIX ".pear"
+
+      # Ensure that modules are placed in the root of the build tree where
+      # process.addon() can find them.
+      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     )
 
     add_debug_options(${target}_module)
