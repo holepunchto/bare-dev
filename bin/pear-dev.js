@@ -13,6 +13,7 @@ program
   )
   .addCommand(require('./pear-dev/paths'))
   .addCommand(require('./pear-dev/require'))
+  .addCommand(require('./pear-dev/sync'))
   .addCommand(require('./pear-dev/init'))
   .addCommand(require('./pear-dev/configure'))
   .addCommand(require('./pear-dev/build'))

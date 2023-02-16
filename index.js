@@ -24,6 +24,25 @@ exports.require = function require (name, opts = {}) {
   return module
 }
 
+exports.sync = function sync (opts = {}) {
+  const {
+    submodules = true,
+    quiet = false,
+    cwd = process.cwd()
+  } = opts
+
+  if (submodules) {
+    const args = ['submodule', 'update', '--init', '--recursive']
+
+    const proc = childProcess.spawnSync('git', args, {
+      stdio: quiet ? null : 'inherit',
+      cwd
+    })
+
+    if (proc.status) throw new Error('sync() failed')
+  }
+}
+
 exports.init = async function init (opts = {}) {
   const {
     force = false,
