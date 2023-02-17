@@ -27,19 +27,15 @@ exports.require = function require (name, opts = {}) {
 exports.sync = function sync (opts = {}) {
   const {
     submodules = true,
+    cwd = process.cwd(),
     quiet = false,
-    cwd = process.cwd()
+    verbose = false
   } = opts
 
   if (submodules) {
     const args = ['submodule', 'update', '--init', '--recursive']
 
-    const proc = childProcess.spawnSync('git', args, {
-      stdio: quiet ? null : 'inherit',
-      cwd
-    })
-
-    if (proc.status) throw new Error('sync() failed')
+    spawn('git', args, { quiet, verbose, cwd })
   }
 }
 
@@ -93,8 +89,11 @@ exports.configure = function configure (opts = {}) {
     debug = false,
     sanitize = null,
     cwd = process.cwd(),
-    quiet = false
+    quiet = false,
+    verbose = false
   } = opts
+
+  const env = { ...process.env }
 
   const args = [
     '-S', source,
@@ -118,24 +117,20 @@ exports.configure = function configure (opts = {}) {
   }
 
   if (sanitize === 'address') {
-    args.push('-DPEAR_ENABLE_ASAN=ON')
+    env.CFLAGS = '-fsanitize=address -fno-omit-frame-pointer'
+    env.LDFLAGS = '-fsanitize=address'
   }
 
-  const proc = childProcess.spawnSync('cmake', args, {
-    stdio: quiet ? null : 'inherit',
-    cwd
-  })
-
-  if (proc.status) throw new Error('configure() failed')
+  spawn('cmake', args, { quiet, verbose, env, cwd })
 }
 
 exports.build = function build (opts = {}) {
   const {
     build = 'build',
     target = null,
-    verbose = false,
     cwd = process.cwd(),
-    quiet = false
+    quiet = false,
+    verbose = false
   } = opts
 
   const args = ['--build', path.resolve(cwd, build)]
@@ -144,12 +139,7 @@ exports.build = function build (opts = {}) {
 
   if (verbose) args.push('--verbose')
 
-  const proc = childProcess.spawnSync('cmake', args, {
-    stdio: quiet ? null : 'inherit',
-    cwd
-  })
-
-  if (proc.status) throw new Error('build() failed')
+  spawn('cmake', args, { quiet, verbose, cwd })
 }
 
 exports.prebuild = function prebuild (opts = {}) {
@@ -157,7 +147,8 @@ exports.prebuild = function prebuild (opts = {}) {
     build = 'build',
     prebuilds = 'prebuilds',
     cwd = process.cwd(),
-    quiet = false
+    quiet = false,
+    verbose = false
   } = opts
 
   exports.build(opts)
@@ -167,12 +158,7 @@ exports.prebuild = function prebuild (opts = {}) {
     '--prefix', path.resolve(cwd, prebuilds)
   ]
 
-  const proc = childProcess.spawnSync('cmake', args, {
-    stdio: quiet ? null : 'inherit',
-    cwd
-  })
-
-  if (proc.status) throw new Error('prebuild() failed')
+  spawn('cmake', args, { quiet, verbose, cwd })
 }
 
 exports.clean = function clean (opts = {}) {
@@ -349,4 +335,25 @@ function toSystem (platform) {
     default:
       throw new Error(`unknown platform "${platform}"`)
   }
+}
+
+function spawn (cmd, args = [], opts = {}) {
+  const {
+    env = process.env,
+    quiet = false,
+    verbose = true,
+    cwd = process.cwd()
+  } = opts
+
+  if (verbose) {
+    process.stdout.write(`# cd ${cwd}\n# ${cmd} ${args.join(' ')}\n`)
+  }
+
+  const proc = childProcess.spawnSync(cmd, args, {
+    stdio: quiet ? null : 'inherit',
+    env,
+    cwd
+  })
+
+  if (proc.status) throw new Error('spawn() failed')
 }

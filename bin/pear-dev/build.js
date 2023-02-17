@@ -9,10 +9,6 @@ module.exports = createCommand('build')
   .addOption(
     createOption('-t, --target <name>', 'the target to build')
   )
-  .addOption(
-    createOption('-v, --verbose', 'spill the beans')
-      .default(false)
-  )
   .action(action)
 
 function action (_, cmd) {

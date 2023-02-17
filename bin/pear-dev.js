@@ -11,6 +11,10 @@ program
     createOption('-q, --quiet', 'stay silent')
       .default(false)
   )
+  .addOption(
+    createOption('-v, --verbose', 'spill the beans')
+      .default(false)
+  )
   .addCommand(require('./pear-dev/paths'))
   .addCommand(require('./pear-dev/require'))
   .addCommand(require('./pear-dev/vendor'))

@@ -100,8 +100,6 @@ function(add_pear_module target)
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
   )
 
-  add_debug_options(${target}_static)
-
   target_link_libraries(
     ${target}_static
     PUBLIC
@@ -127,8 +125,6 @@ function(add_pear_module target)
       # process.addon() can find them.
       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     )
-
-    add_debug_options(${target}_module)
 
     target_link_libraries(
       ${target}_module
@@ -185,23 +181,6 @@ function(link_pear_module receiver target path)
       $<TARGET_OBJECTS:${target}>
       $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
   )
-endfunction()
-
-function(add_debug_options target)
-  if(PEAR_ENABLE_ASAN)
-    target_compile_options(
-      ${target}
-      PUBLIC
-        -fsanitize=address
-        -fno-omit-frame-pointer
-    )
-
-    target_link_options(
-      ${target}
-      PUBLIC
-        -fsanitize=address
-    )
-  endif()
 endfunction()
 
 function(pear_include_directories result)

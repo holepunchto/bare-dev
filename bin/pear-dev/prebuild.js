@@ -10,10 +10,6 @@ module.exports = createCommand('prebuild')
     createOption('-p, --prebuilds', 'the path to the prebuilds directory')
       .default('prebuilds')
   )
-  .addOption(
-    createOption('-v, --verbose', 'spill the beans')
-      .default(false)
-  )
   .action(action)
 
 function action (_, cmd) {

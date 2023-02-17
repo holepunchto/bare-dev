@@ -33,10 +33,6 @@ module.exports = createCommand('rebuild')
     createOption('-s, --sanitize <type>', 'enable sanitizer')
       .choices(['address'])
   )
-  .addOption(
-    createOption('-v, --verbose', 'spill the beans')
-      .default(false)
-  )
   .action(action)
 
 function action (_, cmd) {
