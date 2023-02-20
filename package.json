@@ -33,6 +33,7 @@
     "script-linker": "github:holepunchto/script-linker"
   },
   "devDependencies": {
+    "glob": "^8.1.0",
     "standard": "^17.0.0"
   }
 }

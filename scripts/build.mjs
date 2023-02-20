@@ -1,40 +1,39 @@
 import fs from 'fs'
 import path from 'path'
 import url from 'url'
-import { spawnSync } from 'child_process'
+import glob from 'glob'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const tmp = path.join(__dirname, '../tmp/pearjs')
-const incl = path.join(__dirname, '../include')
+const root = path.join(__dirname, '..')
 
-try {
-  fs.rmSync(tmp, { recursive: true })
-} catch {}
+const include = path.join(root, 'include')
 
-const { status } = spawnSync('git', ['clone', '--recurse-submodules', 'git@github.com:holepunchto/pearjs-next.git', tmp], {
-  stdio: 'inherit'
-})
+const pear = path.join(root, 'vendor/pearjs')
 
-if (status) process.exit(status)
+fs.rmSync(include, { recursive: true, force: true })
+fs.mkdirSync(include)
 
-try {
-  fs.rmSync(incl, { recursive: true })
-} catch {}
+const sources = [
+  path.join(root),
+  path.join(pear, 'include'),
+  path.join(pear, 'vendor/libuv/include'),
+  path.join(pear, 'vendor/libjs/include'),
+  path.join(pear, 'vendor/libnapi/include')
+]
 
-fs.mkdirSync(incl)
+for (const cwd of sources) {
+  const files = glob.sync('**/*.h', {
+    cwd,
+    ignore: ['include/**', 'vendor/**']
+  })
 
-moveToInclude(path.join(tmp, 'vendor/libuv/include'))
-moveToInclude(path.join(tmp, 'vendor/libjs/include'))
-moveToInclude(path.join(tmp, 'vendor/libnapi/include'))
-moveToInclude(path.join(tmp, 'include'))
+  for (const file of files) {
+    const directory = path.dirname(file)
 
-// For compatibility with existing Node-API modules
-fs.cpSync(path.join(__dirname, '../node_api.h'), path.join(incl, 'node_api.h'))
+    if (directory) fs.mkdirSync(path.join(include, directory), { recursive: true })
 
-function moveToInclude (from) {
-  for (const name of fs.readdirSync(from)) {
-    fs.renameSync(path.join(from, name), path.join(incl, name))
+    fs.cpSync(path.join(cwd, file), path.join(include, file))
   }
 }
