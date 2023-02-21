@@ -208,8 +208,6 @@ function(pear_include_directories result)
 endfunction()
 
 function(add_pear_bundle)
-  find_pear_dev(pear_dev)
-
   cmake_parse_arguments(
     PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;CONFIG" "DEPENDS"
   )
@@ -241,6 +239,8 @@ function(add_pear_bundle)
   if(ARGV_OUT)
     cmake_path(ABSOLUTE_PATH ARGV_OUT BASE_DIRECTORY ${ARGV_CWD})
   endif()
+
+  find_pear_dev(pear_dev)
 
   add_custom_command(
     COMMAND ${pear_dev} bundle ${args}
