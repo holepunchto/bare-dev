@@ -8,5 +8,5 @@ module.exports = createCommand('sync')
   .action(action)
 
 function action (_, cmd) {
-  return require('../../..').sync(cmd.optsWithGlobals())
+  return require('../../..').vendor.sync(cmd.optsWithGlobals())
 }
