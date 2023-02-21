@@ -184,7 +184,7 @@ function(link_pear_module receiver target path)
 endfunction()
 
 function(pear_include_directories result)
-  find_program(pear_dev NAMES pear-dev REQUIRED)
+  find_pear_dev(pear_dev)
 
   execute_process(
     COMMAND ${pear_dev} paths include
@@ -203,6 +203,60 @@ function(pear_include_directories result)
   if(napi_macros)
     list(APPEND ${result} ${CMAKE_SOURCE_DIR}/${napi_macros})
   endif()
+
+  return(PROPAGATE ${result})
+endfunction()
+
+function(add_pear_bundle)
+  find_pear_dev(pear_dev)
+
+  cmake_parse_arguments(
+    PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;CONFIG" "DEPENDS"
+  )
+
+  if(ARGV_CWD)
+    list(APPEND args --cwd ${ARGV_CWD})
+  endif()
+
+  if(ARGV_OUT)
+    list(APPEND args --out ${ARGV_OUT})
+  endif()
+
+  if(ARGV_CONFIG)
+    list(APPEND args --config ${ARGV_CONFIG})
+  endif()
+
+  if(ARGV_TARGET)
+    list(APPEND args --target ${ARGV_TARGET})
+  endif()
+
+  list(APPEND args ${ARGV_ENTRY})
+
+  if(ARGV_CWD)
+    cmake_path(ABSOLUTE_PATH ARGV_CWD BASE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  else()
+    set(ARGV_CWD ${CMAKE_CURRENT_LIST_DIR})
+  endif()
+
+  if(ARGV_OUT)
+    cmake_path(ABSOLUTE_PATH ARGV_OUT BASE_DIRECTORY ${ARGV_CWD})
+  endif()
+
+  add_custom_command(
+    COMMAND ${pear_dev} bundle ${args}
+    WORKING_DIRECTORY ${ARGV_CWD}
+    OUTPUT ${ARGV_OUT}
+    DEPENDS ${ARGV_ENTRY} ${ARGV_DEPENDS}
+    VERBATIM
+  )
+endfunction()
+
+function(find_pear_dev result)
+  find_program(
+    ${result}
+    NAMES pear-dev
+    HINTS ${PROJECT_SOURCE_DIR}/node_modules/.bin
+  )
 
   return(PROPAGATE ${result})
 endfunction()
