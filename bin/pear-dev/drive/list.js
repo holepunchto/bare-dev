@@ -7,6 +7,9 @@ module.exports = createCommand('list')
     createArgument('drive')
   )
   .addOption(
+    createOption('--prefix <path>')
+  )
+  .addOption(
     createOption('-m, --mount <path>', 'mount the entries at a path')
   )
   .action(action)
