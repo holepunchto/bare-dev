@@ -29,7 +29,12 @@
   "dependencies": {
     "@pearjs/bundle": "^0.0.5",
     "commander": "^10.0.0",
+    "corestore": "^6.4.3",
+    "hypercore-id-encoding": "^1.0.2",
+    "hyperdrive": "^11.0.0-alpha.10",
+    "hyperswarm": "^4.3.7",
     "include-static": "^1.1.0",
+    "localdrive": "^1.5.0",
     "script-linker": "github:holepunchto/script-linker"
   },
   "devDependencies": {
