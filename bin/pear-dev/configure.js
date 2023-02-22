@@ -30,6 +30,10 @@ module.exports = createCommand('configure')
     createOption('--sanitize <type>', 'enable sanitizer')
       .choices(['address'])
   )
+  .addOption(
+    createOption('-D, --define <var>[:<type>]=<value>', 'create or update a cache entry')
+      .argParser((value, previous = []) => [...previous, value])
+  )
   .action(action)
 
 function action (_, cmd) {
