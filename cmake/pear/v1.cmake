@@ -251,6 +251,50 @@ function(add_pear_bundle)
   )
 endfunction()
 
+function(mirror_drive target)
+  cmake_parse_arguments(
+    PARSE_ARGV 1 ARGV "" "CWD;SOURCE;DESTINATION;PREFIX" ""
+  )
+
+  if(ARGV_CWD)
+    list(APPEND args --cwd ${ARGV_CWD})
+  endif()
+
+  if(ARGV_PREFIX)
+    list(APPEND args --prefix ${ARGV_PREFIX})
+  endif()
+
+  if(ARGV_CWD)
+    cmake_path(ABSOLUTE_PATH ARGV_CWD BASE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  else()
+    set(ARGV_CWD ${CMAKE_CURRENT_LIST_DIR})
+  endif()
+
+  find_pear_dev(pear_dev)
+
+  execute_process(
+    COMMAND ${pear_dev} drive list ${args} --mount ${ARGV_DESTINATION} ${ARGV_SOURCE}
+    WORKING_DIRECTORY ${ARGV_CWD}
+    OUTPUT_VARIABLE files
+  )
+
+  string(REPLACE "\n" ";" files ${files})
+
+  list(APPEND args ${ARGV_SOURCE} ${ARGV_DESTINATION})
+
+  add_custom_command(
+    COMMAND ${pear_dev} drive mirror ${args}
+    WORKING_DIRECTORY ${ARGV_CWD}
+    OUTPUT ${files}
+    VERBATIM
+  )
+
+  add_custom_target(
+    ${target}
+    DEPENDS ${files}
+  )
+endfunction()
+
 function(find_pear_dev result)
   find_program(
     ${result}
