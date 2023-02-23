@@ -26,7 +26,7 @@ const sources = [
 for (const cwd of sources) {
   const files = glob.sync('**/*.h', {
     cwd,
-    ignore: ['include/**', 'vendor/**']
+    ignore: ['include/**', 'vendor/**', 'node_modules/**']
   })
 
   for (const file of files) {
