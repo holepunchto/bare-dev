@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/holepunchto/pearjs-dev#readme",
   "dependencies": {
-    "@pearjs/bundle": "^0.0.5",
+    "@pearjs/bundle": "^0.0.15",
     "commander": "^10.0.0",
     "corestore": "^6.4.3",
     "hypercore-id-encoding": "^1.0.2",
