@@ -278,16 +278,18 @@ function(mirror_drive target)
     OUTPUT_VARIABLE files
   )
 
-  string(REPLACE "\n" ";" files ${files})
+  if(files)
+    string(REPLACE "\n" ";" files ${files})
 
-  list(APPEND args ${ARGV_SOURCE} ${ARGV_DESTINATION})
+    list(APPEND args ${ARGV_SOURCE} ${ARGV_DESTINATION})
 
-  add_custom_command(
-    COMMAND ${pear_dev} drive mirror ${args}
-    WORKING_DIRECTORY ${ARGV_CWD}
-    OUTPUT ${files}
-    VERBATIM
-  )
+    add_custom_command(
+      COMMAND ${pear_dev} drive mirror ${args}
+      WORKING_DIRECTORY ${ARGV_CWD}
+      OUTPUT ${files}
+      VERBATIM
+    )
+  endif()
 
   add_custom_target(
     ${target}
