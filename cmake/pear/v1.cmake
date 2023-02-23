@@ -209,7 +209,7 @@ endfunction()
 
 function(add_pear_bundle)
   cmake_parse_arguments(
-    PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;CONFIG" "DEPENDS"
+    PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;IMPORT_MAP;CONFIG" "DEPENDS"
   )
 
   if(ARGV_CWD)
@@ -226,6 +226,10 @@ function(add_pear_bundle)
 
   if(ARGV_TARGET)
     list(APPEND args --target ${ARGV_TARGET})
+  endif()
+
+  if(ARGV_IMPORT_MAP)
+    list(APPEND args --import-map ${ARGV_IMPORT_MAP})
   endif()
 
   list(APPEND args ${ARGV_ENTRY})
