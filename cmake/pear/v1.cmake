@@ -95,6 +95,9 @@ function(add_pear_module target)
     OUTPUT_NAME ${target}
     PREFIX ""
 
+    # Don't build the static target unless explicitly dependend on or requested.
+    EXCLUDE_FROM_ALL ON
+
     # Ensure that modules are placed in the root of the build tree where
     # process.addon() can find them.
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
@@ -108,7 +111,10 @@ function(add_pear_module target)
 
   install(
     TARGETS ${target}_static
-    ARCHIVE DESTINATION ${destination}
+    ARCHIVE
+      DESTINATION ${destination}
+      COMPONENT addon
+      OPTIONAL
   )
 
   if(NOT IOS)
@@ -150,7 +156,10 @@ function(add_pear_module target)
 
     install(
       TARGETS ${target}_module
-      LIBRARY DESTINATION ${destination}
+      LIBRARY
+        DESTINATION ${destination}
+        COMPONENT addon
+        OPTIONAL
     )
   endif()
 endfunction()
