@@ -286,14 +286,12 @@ function(mirror_drive target)
   find_pear_dev(pear_dev)
 
   execute_process(
-    COMMAND ${pear_dev} drive list ${args} --mount ${ARGV_DESTINATION} ${ARGV_SOURCE}
+    COMMAND ${pear_dev} drive list ${args} --separator ";" --mount ${ARGV_DESTINATION} ${ARGV_SOURCE}
     WORKING_DIRECTORY ${ARGV_CWD}
     OUTPUT_VARIABLE files
   )
 
   if(files)
-    string(REPLACE "\n" ";" files ${files})
-
     list(APPEND args ${ARGV_SOURCE} ${ARGV_DESTINATION})
 
     add_custom_command(

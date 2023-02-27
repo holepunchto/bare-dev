@@ -12,6 +12,10 @@ module.exports = createCommand('list')
   .addOption(
     createOption('-m, --mount <path>', 'mount the entries at a path')
   )
+  .addOption(
+    createOption('--separator <string>', 'the separator to print between entries')
+      .default('\n')
+  )
   .action(action)
 
 function action (drive, _, cmd) {

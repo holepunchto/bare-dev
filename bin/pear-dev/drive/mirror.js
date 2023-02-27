@@ -11,6 +11,10 @@ module.exports = createCommand('mirror')
   .addOption(
     createOption('--prefix <path>')
   )
+  .addOption(
+    createOption('--separator <string>', 'the separator to print between entries')
+      .default('\n')
+  )
   .action(action)
 
 function action (source, destination, _, cmd) {
