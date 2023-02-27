@@ -2,7 +2,10 @@
 
 const { program, createOption } = require('commander')
 
+const pkg = require('../package.json')
+
 program
+  .version(pkg.version)
   .addOption(
     createOption('-c, --cwd <path>', 'the path to the working directory')
       .default(process.cwd(), 'process.cwd()')
@@ -12,7 +15,7 @@ program
       .default(false)
   )
   .addOption(
-    createOption('-v, --verbose', 'spill the beans')
+    createOption('--verbose', 'spill the beans')
       .default(false)
   )
   .addCommand(require('./pear-dev/paths'))
