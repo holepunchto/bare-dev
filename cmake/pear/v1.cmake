@@ -264,9 +264,9 @@ function(add_pear_bundle)
   )
 endfunction()
 
-function(mirror_drive target)
+function(mirror_drive)
   cmake_parse_arguments(
-    PARSE_ARGV 1 ARGV "" "CWD;SOURCE;DESTINATION;PREFIX" ""
+    PARSE_ARGV 0 ARGV "" "CWD;SOURCE;DESTINATION;PREFIX" ""
   )
 
   if(ARGV_CWD)
@@ -277,6 +277,8 @@ function(mirror_drive target)
     list(APPEND args --prefix ${ARGV_PREFIX})
   endif()
 
+  list(APPEND args ${ARGV_SOURCE} ${ARGV_DESTINATION})
+
   if(ARGV_CWD)
     cmake_path(ABSOLUTE_PATH ARGV_CWD BASE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
   else()
@@ -285,26 +287,11 @@ function(mirror_drive target)
 
   find_pear_dev(pear_dev)
 
+  message("-- Mirroring drive ${ARGV_SOURCE} into ${ARGV_DESTINATION}")
+
   execute_process(
-    COMMAND ${pear_dev} drive list ${args} --separator ";" --mount ${ARGV_DESTINATION} ${ARGV_SOURCE}
+    COMMAND ${pear_dev} drive mirror ${args}
     WORKING_DIRECTORY ${ARGV_CWD}
-    OUTPUT_VARIABLE files
-  )
-
-  if(files)
-    list(APPEND args ${ARGV_SOURCE} ${ARGV_DESTINATION})
-
-    add_custom_command(
-      COMMAND ${pear_dev} drive mirror ${args}
-      WORKING_DIRECTORY ${ARGV_CWD}
-      OUTPUT ${files}
-      VERBATIM
-    )
-  endif()
-
-  add_custom_target(
-    ${target}
-    DEPENDS ${files}
   )
 endfunction()
 
