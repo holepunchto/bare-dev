@@ -12,10 +12,12 @@ program
   )
   .addOption(
     createOption('-q, --quiet', 'stay silent')
+      .conflicts(['verbose'])
       .default(false)
   )
   .addOption(
     createOption('--verbose', 'spill the beans')
+      .conflicts(['quiet'])
       .default(false)
   )
   .addCommand(require('./pear-dev/paths'))
