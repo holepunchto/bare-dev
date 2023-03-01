@@ -33,6 +33,7 @@ program
   .addCommand(require('./pear-dev/rebuild'))
   .addCommand(require('./pear-dev/bundle'))
   .addCommand(require('./pear-dev/ios'))
+  .addCommand(require('./pear-dev/android'))
   .parseAsync()
   .catch(err => {
     console.error(`error: ${err.message}`)

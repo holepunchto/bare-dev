@@ -1,3 +1,4 @@
+exports.android = require('./lib/android')
 exports.build = require('./lib/build')
 exports.bundle = require('./lib/bundle')
 exports.clean = require('./lib/clean')

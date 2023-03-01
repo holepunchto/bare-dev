@@ -31,6 +31,7 @@
     "@pearjs/bundle": "^0.0.15",
     "commander": "^10.0.0",
     "corestore": "^6.4.3",
+    "decompress": "^4.2.1",
     "hypercore-id-encoding": "^1.0.2",
     "hyperdrive": "^11.0.0-alpha.10",
     "hyperswarm": "^4.3.7",
