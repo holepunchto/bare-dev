@@ -306,7 +306,7 @@ function(mirror_drive)
 
   find_pear_dev(pear_dev)
 
-  message(STATUS "-- Mirroring drive ${ARGV_SOURCE} into ${ARGV_DESTINATION}")
+  message(STATUS "Mirroring drive ${ARGV_SOURCE} into ${ARGV_DESTINATION}")
 
   execute_process(
     COMMAND ${pear_dev} drive mirror ${args}
