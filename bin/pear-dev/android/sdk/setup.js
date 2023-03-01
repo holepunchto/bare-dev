@@ -11,6 +11,9 @@ module.exports = createCommand('setup')
   .addOption(
     createOption('--no-integrity', 'don\'t verify the integrity of the tools package')
   )
+  .addOption(
+    createOption('-f, --force', 'overwrite any existing SDK installation')
+  )
   .action(action)
 
 function action (_, cmd) {
