@@ -170,8 +170,10 @@ endfunction()
 
 function(include_pear_module target path)
   if(NOT TARGET ${target})
+    pear_module_directory(root)
+
     add_subdirectory(
-      ${CMAKE_SOURCE_DIR}/${path}
+      ${root}/${path}
       ${path}
       EXCLUDE_FROM_ALL
     )
@@ -216,6 +218,19 @@ function(pear_include_directories result)
   if(napi_macros)
     list(APPEND ${result} ${CMAKE_SOURCE_DIR}/${napi_macros})
   endif()
+
+  return(PROPAGATE ${result})
+endfunction()
+
+function(pear_module_directory result)
+  set(
+    PEAR_MODULE_DIR
+    ${CMAKE_SOURCE_DIR}
+    CACHE PATH
+    "The path that contains the root node_modules directory"
+  )
+
+  cmake_path(NATIVE_PATH PEAR_MODULE_DIR NORMALIZE ${result})
 
   return(PROPAGATE ${result})
 endfunction()
@@ -291,7 +306,7 @@ function(mirror_drive)
 
   find_pear_dev(pear_dev)
 
-  message("-- Mirroring drive ${ARGV_SOURCE} into ${ARGV_DESTINATION}")
+  message(STATUS "-- Mirroring drive ${ARGV_SOURCE} into ${ARGV_DESTINATION}")
 
   execute_process(
     COMMAND ${pear_dev} drive mirror ${args}
@@ -300,10 +315,12 @@ function(mirror_drive)
 endfunction()
 
 function(find_pear_dev result)
+  pear_module_directory(root)
+
   find_program(
     ${result}
     NAMES pear-dev
-    HINTS ${PROJECT_SOURCE_DIR}/node_modules/.bin
+    HINTS ${root}/node_modules/.bin
   )
 
   return(PROPAGATE ${result})
