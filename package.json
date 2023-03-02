@@ -32,6 +32,7 @@
     "commander": "^10.0.0",
     "corestore": "^6.4.3",
     "decompress": "^4.2.1",
+    "glob": "^9.1.2",
     "hypercore-id-encoding": "^1.0.2",
     "hyperdrive": "^11.0.0-alpha.10",
     "hyperswarm": "^4.3.7",
@@ -41,7 +42,6 @@
     "which": "^3.0.0"
   },
   "devDependencies": {
-    "glob": "^8.1.0",
     "standard": "^17.0.0"
   }
 }

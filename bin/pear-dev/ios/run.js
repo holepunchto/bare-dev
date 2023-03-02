@@ -4,6 +4,7 @@ module.exports = createCommand('run')
   .description('run an app on a device')
   .addArgument(
     createArgument('app', 'the path to the app to run')
+      .argOptional()
   )
   .addOption(
     createOption('-d, --device <name>', 'the device to run the app on')
@@ -13,6 +14,6 @@ module.exports = createCommand('run')
   )
   .action(action)
 
-function action (app, _, cmd) {
+function action (app = null, _, cmd) {
   return require('../../..').ios.run(app, cmd.optsWithGlobals())
 }
