@@ -10,6 +10,10 @@ module.exports = createCommand('run')
     createOption('-d, --device <name>', 'the device to run the app on')
   )
   .addOption(
+    createOption('-w, --wait-for-debugger', 'wait for a debugger to attach')
+      .default(false)
+  )
+  .addOption(
     createOption('--no-open', 'don\'t open Simulator.app after launching the device')
   )
   .action(action)

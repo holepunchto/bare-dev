@@ -9,6 +9,10 @@ module.exports = createCommand('run')
   .addOption(
     createOption('-d, --device <name>', 'the device to run the app on')
   )
+  .addOption(
+    createOption('-w, --wait-for-debugger', 'wait for a debugger to attach')
+      .default(false)
+  )
   .action(action)
 
 function action (apk = null, _, cmd) {
