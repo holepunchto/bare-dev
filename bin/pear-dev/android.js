@@ -1,13 +1,12 @@
-const path = require('path')
-const os = require('os')
-
 const { createCommand, createOption } = require('commander')
 
 module.exports = createCommand('android')
   .description('manage Android')
   .addOption(
     createOption('--sdk <path>', 'the path to the sdk root')
-      .default(path.join(os.homedir(), '.android/sdk'))
+      .default(require('../../lib/android/shared/sdk').path)
       .env('ANDROID_HOME')
   )
   .addCommand(require('./android/sdk'))
+  .addCommand(require('./android/device'))
+  .addCommand(require('./android/run'))

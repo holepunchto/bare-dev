@@ -1,6 +1,6 @@
 const { createCommand } = require('commander')
 
 module.exports = createCommand('device')
-  .description('manage iOS devices')
+  .description('manage Android devices and emulators')
   .addCommand(require('./device/list'))
   .addCommand(require('./device/launch'))
