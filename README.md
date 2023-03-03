@@ -4,4 +4,4 @@ Development tooling for :pear:.js.
 
 ## License
 
-MIT
+Apache-2.0
