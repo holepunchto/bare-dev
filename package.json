@@ -1,6 +1,6 @@
 {
   "name": "@pearjs/dev",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "description": "Development tooling for 🍐.js",
   "main": "index.js",
   "bin": {
