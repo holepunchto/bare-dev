@@ -12,6 +12,10 @@ module.exports = createCommand('mirror')
     createOption('--prefix <path>')
   )
   .addOption(
+    createOption('--prune', 'remove local files that aren\'t present in the drive')
+      .default(false)
+  )
+  .addOption(
     createOption('--separator <string>', 'the separator to print between entries')
       .default('\n')
   )
