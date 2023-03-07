@@ -240,10 +240,6 @@ function(add_pear_bundle)
     PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;IMPORT_MAP;CONFIG" "DEPENDS"
   )
 
-  if(ARGV_CWD)
-    list(APPEND args --cwd ${ARGV_CWD})
-  endif()
-
   if(ARGV_OUT)
     list(APPEND args --out ${ARGV_OUT})
   endif()
@@ -267,6 +263,8 @@ function(add_pear_bundle)
   else()
     set(ARGV_CWD ${CMAKE_CURRENT_LIST_DIR})
   endif()
+
+  cmake_path(ABSOLUTE_PATH ARGV_ENTRY BASE_DIRECTORY ${ARGV_CWD})
 
   if(ARGV_OUT)
     cmake_path(ABSOLUTE_PATH ARGV_OUT BASE_DIRECTORY ${ARGV_CWD})
