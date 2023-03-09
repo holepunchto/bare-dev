@@ -208,8 +208,10 @@ function(pear_include_directories result)
 
   list(APPEND ${result} ${pear})
 
+  pear_module_directory(root)
+
   execute_process(
-    COMMAND ${pear_dev} --cwd ${CMAKE_SOURCE_DIR} require napi-macros
+    COMMAND ${pear_dev} --cwd ${root} require napi-macros
     OUTPUT_VARIABLE napi_macros
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
