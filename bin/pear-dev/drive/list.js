@@ -13,6 +13,9 @@ module.exports = createCommand('list')
     createOption('-m, --mount <path>', 'mount the entries at a path')
   )
   .addOption(
+    createOption('--checkout <length>', 'checkout a particular version of the drive')
+  )
+  .addOption(
     createOption('--separator <string>', 'the separator to print between entries')
       .default('\n')
   )

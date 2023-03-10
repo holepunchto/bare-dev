@@ -12,6 +12,9 @@ module.exports = createCommand('mirror')
     createOption('--prefix <path>')
   )
   .addOption(
+    createOption('--checkout <length>', 'checkout a particular version of the drive')
+  )
+  .addOption(
     createOption('--prune', 'remove local files that aren\'t present in the drive')
       .default(false)
   )
