@@ -28,7 +28,8 @@ module.exports = createCommand('configure')
   )
   .addOption(
     createOption('--sanitize <type>', 'enable sanitizer')
-      .choices(['address'])
+      .choices(['address', 'thread'])
+      .implies({ debug: true })
   )
   .addOption(
     createOption('-D, --define <var>[:<type>]=<value>', 'create or update a cache entry')
