@@ -79,6 +79,7 @@ function(add_pear_module target)
     ${target}
     PROPERTIES
     C_STANDARD 99
+    CXX_STANDARD 17
     POSITION_INDEPENDENT_CODE ON
   )
 
