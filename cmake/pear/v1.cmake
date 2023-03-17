@@ -286,7 +286,7 @@ endfunction()
 
 function(mirror_drive)
   cmake_parse_arguments(
-    PARSE_ARGV 0 ARGV "" "CWD;SOURCE;DESTINATION;PREFIX" ""
+    PARSE_ARGV 0 ARGV "" "CWD;SOURCE;DESTINATION;PREFIX;CHECKOUT" ""
   )
 
   if(ARGV_CWD)
@@ -295,6 +295,10 @@ function(mirror_drive)
 
   if(ARGV_PREFIX)
     list(APPEND args --prefix ${ARGV_PREFIX})
+  endif()
+
+  if(ARGV_CHECKOUT)
+    list(APPEND args --checkout ${ARGV_CHECKOUT})
   endif()
 
   list(APPEND args ${ARGV_SOURCE} ${ARGV_DESTINATION})
