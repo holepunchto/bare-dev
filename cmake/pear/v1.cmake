@@ -21,6 +21,8 @@ endfunction()
 function(pear_arch result)
   if(APPLE AND CMAKE_OSX_ARCHITECTURES)
     set(arch ${CMAKE_OSX_ARCHITECTURES})
+  elseif(MSVC AND CMAKE_GENERATOR_PLATFORM)
+    set(arch ${CMAKE_GENERATOR_PLATFORM})
   else()
     set(arch ${CMAKE_SYSTEM_PROCESSOR})
   endif()
@@ -245,11 +247,17 @@ function(add_pear_bundle)
     PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;IMPORT_MAP;CONFIG" "DEPENDS"
   )
 
-  if(ARGV_OUT)
-    list(APPEND args --out ${ARGV_OUT})
+  if(ARGV_CWD)
+    cmake_path(ABSOLUTE_PATH ARGV_CWD BASE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  else()
+    set(ARGV_CWD ${CMAKE_CURRENT_LIST_DIR})
   endif()
 
+  list(APPEND args --cwd ${ARGV_CWD})
+
   if(ARGV_CONFIG)
+    cmake_path(ABSOLUTE_PATH ARGV_CONFIG BASE_DIRECTORY ${ARGV_CWD})
+
     list(APPEND args --config ${ARGV_CONFIG})
   endif()
 
@@ -258,22 +266,20 @@ function(add_pear_bundle)
   endif()
 
   if(ARGV_IMPORT_MAP)
+    cmake_path(ABSOLUTE_PATH ARGV_IMPORT_MAP BASE_DIRECTORY ${ARGV_CWD})
+
     list(APPEND args --import-map ${ARGV_IMPORT_MAP})
   endif()
 
-  list(APPEND args ${ARGV_ENTRY})
+  if(ARGV_OUT)
+    cmake_path(ABSOLUTE_PATH ARGV_OUT BASE_DIRECTORY ${ARGV_CWD})
 
-  if(ARGV_CWD)
-    cmake_path(ABSOLUTE_PATH ARGV_CWD BASE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-  else()
-    set(ARGV_CWD ${CMAKE_CURRENT_LIST_DIR})
+    list(APPEND args --out ${ARGV_OUT})
   endif()
 
   cmake_path(ABSOLUTE_PATH ARGV_ENTRY BASE_DIRECTORY ${ARGV_CWD})
 
-  if(ARGV_OUT)
-    cmake_path(ABSOLUTE_PATH ARGV_OUT BASE_DIRECTORY ${ARGV_CWD})
-  endif()
+  list(APPEND args ${ARGV_ENTRY})
 
   find_pear_dev(pear_dev)
 
@@ -324,11 +330,21 @@ endfunction()
 function(find_pear_dev result)
   pear_module_directory(root)
 
-  find_program(
-    ${result}
-    NAMES pear-dev
-    HINTS ${root}/node_modules/.bin
-  )
+  if(WIN32)
+    find_program(
+      pear_dev
+      NAMES pear-dev.cmd
+      HINTS ${root}/node_modules/.bin
+    )
+  else()
+    find_program(
+      pear_dev
+      NAMES pear-dev
+      HINTS ${root}/node_modules/.bin
+    )
+  endif()
+
+  set(${result} ${pear_dev})
 
   return(PROPAGATE ${result})
 endfunction()
