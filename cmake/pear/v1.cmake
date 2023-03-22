@@ -9,7 +9,7 @@ function(pear_platform result)
 
   if(platform MATCHES "darwin|ios|linux|android")
     set(${result} ${platform})
-  elseif(platform MATCHES "Windows")
+  elseif(platform MATCHES "windows")
     set(${result} "win32")
   else()
     set(${result} "unknown")
