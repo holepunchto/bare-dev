@@ -16,6 +16,11 @@ module.exports = createCommand('configure')
       .default(process.platform, 'process.platform')
   )
   .addOption(
+    createOption('-a, --arch <name>', 'the operating system architecture to build for')
+      .choices(['arm', 'arm64', 'ia32', 'x64'])
+      .default(process.arch, 'process.arch')
+  )
+  .addOption(
     createOption('--simulator', 'build for a simulator')
   )
   .addOption(
