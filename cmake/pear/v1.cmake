@@ -163,6 +163,14 @@ function(add_pear_module target)
       endif()
     endif()
 
+    if(MSVC)
+      target_link_options(
+        ${target}_module
+        PUBLIC
+          /FORCE
+      )
+    endif()
+
     install(
       TARGETS ${target}_module
       LIBRARY
