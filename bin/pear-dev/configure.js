@@ -7,7 +7,7 @@ module.exports = createCommand('configure')
       .default(process.cwd(), 'process.cwd()')
   )
   .addOption(
-    createOption('-b, --build', 'the path to the build tree')
+    createOption('-b, --build <path>', 'the path to the build tree')
       .default('build')
   )
   .addOption(
