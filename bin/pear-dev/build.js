@@ -9,6 +9,10 @@ module.exports = createCommand('build')
   .addOption(
     createOption('-t, --target <name>', 'the target to build')
   )
+  .addOption(
+    createOption('-d, --debug', 'configure a debug build')
+      .default(false)
+  )
   .action(action)
 
 function action (_, cmd) {

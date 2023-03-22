@@ -25,7 +25,7 @@ module.exports = createCommand('configure')
   )
   .addOption(
     createOption('-g, --generator <name>', 'the build generator to use')
-      .choices(['make', 'ninja', 'xcode'])
+      .choices(['make', 'ninja', 'xcode', 'visual-studio-2022'])
   )
   .addOption(
     createOption('-d, --debug', 'configure a debug build')
