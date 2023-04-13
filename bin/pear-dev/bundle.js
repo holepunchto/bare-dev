@@ -49,6 +49,10 @@ module.exports = createCommand('bundle')
       .default(2)
       .argParser((value) => /\d+/.test(value) ? parseInt(value) : value)
   )
+  .addOption(
+    createOption('--obfuscate', 'obfuscate source code')
+      .default(false)
+  )
   .action(action)
 
 function action (entry, _, cmd) {
