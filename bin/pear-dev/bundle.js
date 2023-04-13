@@ -50,7 +50,7 @@ module.exports = createCommand('bundle')
       .argParser((value) => /\d+/.test(value) ? parseInt(value) : value)
   )
   .addOption(
-    createOption('--obfs', 'obfuscate source code')
+    createOption('--obfuscate', 'obfuscate source code')
       .default(false)
   )
   .action(action)
