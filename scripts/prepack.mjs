@@ -10,17 +10,17 @@ const root = path.join(__dirname, '..')
 
 const include = path.join(root, 'include')
 
-const pear = path.join(root, 'vendor/pearjs')
+const bare = path.join(root, 'vendor/bare')
 
 fs.rmSync(include, { recursive: true, force: true })
 fs.mkdirSync(include)
 
 const sources = [
   path.join(root),
-  path.join(pear, 'include'),
-  path.join(pear, 'vendor/libuv/include'),
-  path.join(pear, 'vendor/libjs/include'),
-  path.join(pear, 'vendor/libnapi/include')
+  path.join(bare, 'include'),
+  path.join(bare, 'vendor/libuv/include'),
+  path.join(bare, 'vendor/libjs/include'),
+  path.join(bare, 'vendor/libnapi/include')
 ]
 
 for (const cwd of sources) {

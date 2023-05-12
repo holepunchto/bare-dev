@@ -1,6 +1,6 @@
-# @pearjs/dev
+# bare-dev
 
-Development tooling for :pear:.js.
+Development tooling for Bare.
 
 ## License
 
