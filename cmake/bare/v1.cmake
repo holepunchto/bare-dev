@@ -1,4 +1,4 @@
-function(pear_platform result)
+function(bare_platform result)
   set(platform ${CMAKE_SYSTEM_NAME})
 
   if(NOT platform)
@@ -18,7 +18,7 @@ function(pear_platform result)
   return(PROPAGATE ${result})
 endfunction()
 
-function(pear_arch result)
+function(bare_arch result)
   if(APPLE AND CMAKE_OSX_ARCHITECTURES)
     set(arch ${CMAKE_OSX_ARCHITECTURES})
   elseif(MSVC AND CMAKE_GENERATOR_PLATFORM)
@@ -48,7 +48,7 @@ function(pear_arch result)
   return(PROPAGATE ${result})
 endfunction()
 
-function(pear_simulator result)
+function(bare_simulator result)
   set(sysroot ${CMAKE_OSX_SYSROOT})
 
   if(sysroot MATCHES "iPhoneSimulator")
@@ -60,10 +60,10 @@ function(pear_simulator result)
   return(PROPAGATE ${result})
 endfunction()
 
-function(pear_target result)
-  pear_platform(platform)
-  pear_arch(arch)
-  pear_simulator(simulator)
+function(bare_target result)
+  bare_platform(platform)
+  bare_arch(arch)
+  bare_simulator(simulator)
 
   set(target ${platform}-${arch})
 
@@ -76,7 +76,7 @@ function(pear_target result)
   return(PROPAGATE ${result})
 endfunction()
 
-function(add_pear_module target)
+function(add_bare_module target)
   add_library(${target} OBJECT)
 
   set_target_properties(
@@ -87,8 +87,8 @@ function(add_pear_module target)
     POSITION_INDEPENDENT_CODE ON
   )
 
-  pear_include_directories(includes)
-  pear_target(destination)
+  bare_include_directories(includes)
+  bare_target(destination)
 
   target_include_directories(
     ${target}
@@ -134,7 +134,7 @@ function(add_pear_module target)
       PROPERTIES
       OUTPUT_NAME ${target}
       PREFIX ""
-      SUFFIX ".pear"
+      SUFFIX ".bare"
 
       # Ensure that modules are placed in the root of the build tree where
       # process.addon() can find them.
@@ -181,9 +181,9 @@ function(add_pear_module target)
   endif()
 endfunction()
 
-function(include_pear_module target path)
+function(include_bare_module target path)
   if(NOT TARGET ${target})
-    pear_module_directory(root)
+    bare_module_directory(root)
 
     add_subdirectory(
       ${root}/${path}
@@ -194,14 +194,14 @@ function(include_pear_module target path)
     target_compile_definitions(
       ${target}
       PUBLIC
-        PEAR_MODULE_FILENAME="/${path}"
+        BARE_MODULE_FILENAME="/${path}"
         NAPI_MODULE_FILENAME="/${path}"
     )
   endif()
 endfunction()
 
-function(link_pear_module receiver target path)
-  include_pear_module(${target} ${path})
+function(link_bare_module receiver target path)
+  include_bare_module(${target} ${path})
 
   target_link_libraries(
     ${receiver}
@@ -211,20 +211,20 @@ function(link_pear_module receiver target path)
   )
 endfunction()
 
-function(pear_include_directories result)
-  find_pear_dev(pear_dev)
+function(bare_include_directories result)
+  find_bare_dev(bare_dev)
 
   execute_process(
-    COMMAND ${pear_dev} paths include
-    OUTPUT_VARIABLE pear
+    COMMAND ${bare_dev} paths include
+    OUTPUT_VARIABLE bare
   )
 
-  list(APPEND ${result} ${pear})
+  list(APPEND ${result} ${bare})
 
-  pear_module_directory(root)
+  bare_module_directory(root)
 
   execute_process(
-    COMMAND ${pear_dev} --cwd ${root} require napi-macros
+    COMMAND ${bare_dev} --cwd ${root} require napi-macros
     OUTPUT_VARIABLE napi_macros
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
@@ -237,20 +237,20 @@ function(pear_include_directories result)
   return(PROPAGATE ${result})
 endfunction()
 
-function(pear_module_directory result)
+function(bare_module_directory result)
   set(
-    PEAR_MODULE_DIR
+    BARE_MODULE_DIR
     ${CMAKE_SOURCE_DIR}
     CACHE PATH
     "The path that contains the root node_modules directory"
   )
 
-  cmake_path(NATIVE_PATH PEAR_MODULE_DIR NORMALIZE ${result})
+  cmake_path(NATIVE_PATH BARE_MODULE_DIR NORMALIZE ${result})
 
   return(PROPAGATE ${result})
 endfunction()
 
-function(add_pear_bundle)
+function(add_bare_bundle)
   cmake_parse_arguments(
     PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;IMPORT_MAP;CONFIG" "DEPENDS"
   )
@@ -289,10 +289,10 @@ function(add_pear_bundle)
 
   list(APPEND args ${ARGV_ENTRY})
 
-  find_pear_dev(pear_dev)
+  find_bare_dev(bare_dev)
 
   add_custom_command(
-    COMMAND ${pear_dev} bundle ${args}
+    COMMAND ${bare_dev} bundle ${args}
     WORKING_DIRECTORY ${ARGV_CWD}
     OUTPUT ${ARGV_OUT}
     DEPENDS ${ARGV_ENTRY} ${ARGV_DEPENDS}
@@ -325,34 +325,34 @@ function(mirror_drive)
     set(ARGV_CWD ${CMAKE_CURRENT_LIST_DIR})
   endif()
 
-  find_pear_dev(pear_dev)
+  find_bare_dev(bare_dev)
 
   message(STATUS "Mirroring drive ${ARGV_SOURCE} into ${ARGV_DESTINATION}")
 
   execute_process(
-    COMMAND ${pear_dev} drive mirror ${args}
+    COMMAND ${bare_dev} drive mirror ${args}
     WORKING_DIRECTORY ${ARGV_CWD}
   )
 endfunction()
 
-function(find_pear_dev result)
-  pear_module_directory(root)
+function(find_bare_dev result)
+  bare_module_directory(root)
 
   if(WIN32)
     find_program(
-      pear_dev
-      NAMES pear-dev.cmd
+      bare_dev
+      NAMES bare-dev.cmd
       HINTS ${root}/node_modules/.bin
     )
   else()
     find_program(
-      pear_dev
-      NAMES pear-dev
+      bare_dev
+      NAMES bare-dev
       HINTS ${root}/node_modules/.bin
     )
   endif()
 
-  set(${result} ${pear_dev})
+  set(${result} ${bare_dev})
 
   return(PROPAGATE ${result})
 endfunction()
