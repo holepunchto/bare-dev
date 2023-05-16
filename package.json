@@ -29,7 +29,7 @@
   "homepage": "https://github.com/holepunchto/bare-dev#readme",
   "dependencies": {
     "@holepunch/obfs": "github:holepunchto/obfs",
-    "bare-bundle": "^0.1.1",
+    "bare-bundle": "^0.1.2",
     "commander": "^10.0.0",
     "corestore": "^6.4.3",
     "decompress": "^4.2.1",
