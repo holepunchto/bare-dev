@@ -29,7 +29,7 @@
   "homepage": "https://github.com/holepunchto/pearjs-dev#readme",
   "dependencies": {
     "@pearjs/bundle": "^0.1.1",
-    "@holepunch/obfs": "github:holepunchto/obfs",
+    "@holepunchto/obfs": "github:holepunchto/obfs",
     "commander": "^10.0.0",
     "corestore": "^6.4.3",
     "decompress": "^4.2.1",
