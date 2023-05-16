@@ -3,7 +3,7 @@ const { createCommand, createOption } = require('commander')
 module.exports = createCommand('configure')
   .description('configure a build')
   .addOption(
-    createOption('-s, --source', 'the path to the source tree')
+    createOption('-s, --source <path>', 'the path to the source tree')
       .default(process.cwd(), 'process.cwd()')
   )
   .addOption(
