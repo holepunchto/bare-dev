@@ -15,7 +15,8 @@
   ],
   "scripts": {
     "test": "standard",
-    "prepack": "node scripts/prepack.mjs"
+    "prepack": "node scripts/prepack.mjs",
+    "postpack": "node scripts/postpack.mjs"
   },
   "repository": {
     "type": "git",
