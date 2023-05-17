@@ -50,16 +50,9 @@ module.exports = createCommand('bundle')
       .argParser((value) => /\d+/.test(value) ? parseInt(value) : value)
   )
   .addOption(
-    createOption('--obfuscate [path|glob]', 'obfuscate source code')
-      .argParser((value, previous) => {
-        if (value === true || previous === true) {
-          return true
-        }
-        if (previous === undefined) {
-          return [value]
-        }
-        return [value, ...previous]
-      })
+    createOption('--obfuscate [pattern]', 'obfuscate source code')
+      .preset('*')
+      .argParser((value, previous = []) => [value, ...previous])
   )
   .action(action)
 
