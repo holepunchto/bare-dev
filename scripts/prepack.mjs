@@ -20,6 +20,7 @@ const sources = [
   path.join(bare, 'include'),
   path.join(bare, 'vendor/libuv/include'),
   path.join(bare, 'vendor/libjs/include'),
+  path.join(bare, 'vendor/libutf/include'),
   path.join(bare, 'vendor/libnapi/include')
 ]
 
