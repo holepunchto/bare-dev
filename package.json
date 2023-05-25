@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/holepunchto/bare-dev#readme",
   "dependencies": {
-    "@holepunchto/obfs": "github:holepunchto/obfs",
+    "@holepunchto/obfs": "^1.0.1",
+    "@holepunchto/script-linker": "^1.0.0",
     "bare-bundle": "^0.1.2",
     "commander": "^10.0.0",
     "corestore": "^6.4.3",
@@ -41,7 +42,6 @@
     "include-static": "^1.1.0",
     "localdrive": "^1.5.0",
     "minimatch": "^9.0.0",
-    "script-linker": "github:holepunchto/script-linker",
     "which": "^3.0.0"
   },
   "devDependencies": {
