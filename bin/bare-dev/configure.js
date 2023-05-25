@@ -51,6 +51,5 @@ module.exports = createCommand('configure')
   .action(action)
 
 function action (_, cmd) {
-  console.log(cmd.optsWithGlobals())
   return require('../..').configure(cmd.optsWithGlobals())
 }
