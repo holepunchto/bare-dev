@@ -19,19 +19,37 @@ module.exports = createCommand('rebuild')
       .default(process.platform, 'process.platform')
   )
   .addOption(
+    createOption('-a, --arch <name>', 'the operating system architecture to build for')
+      .choices(['arm', 'arm64', 'ia32', 'x64'])
+      .default(process.arch, 'process.arch')
+  )
+  .addOption(
     createOption('--simulator', 'build for a simulator')
   )
   .addOption(
     createOption('-g, --generator <name>', 'the build generator to use')
-      .choices(['make', 'ninja', 'xcode'])
+      .choices(['make', 'ninja', 'xcode', 'visual-studio-2022'])
   )
   .addOption(
     createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )
   .addOption(
-    createOption('-s, --sanitize <type>', 'enable sanitizer')
-      .choices(['address'])
+    createOption('--sanitize <type>', 'enable sanitizer')
+      .choices(['address', 'thread'])
+      .implies({ debug: true })
+  )
+  .addOption(
+    createOption('--asan', 'enable address sanitizer')
+      .implies({ debug: true, sanitize: 'address' })
+  )
+  .addOption(
+    createOption('--tsan', 'enable thread sanitizer')
+      .implies({ debug: true, sanitize: 'thread' })
+  )
+  .addOption(
+    createOption('-D, --define <var>[:<type>]=<value>', 'create or update a cache entry')
+      .argParser((value, previous = []) => [...previous, value])
   )
   .action(action)
 

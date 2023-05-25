@@ -37,11 +37,20 @@ module.exports = createCommand('configure')
       .implies({ debug: true })
   )
   .addOption(
+    createOption('--asan', 'enable address sanitizer')
+      .implies({ debug: true, sanitize: 'address' })
+  )
+  .addOption(
+    createOption('--tsan', 'enable thread sanitizer')
+      .implies({ debug: true, sanitize: 'thread' })
+  )
+  .addOption(
     createOption('-D, --define <var>[:<type>]=<value>', 'create or update a cache entry')
       .argParser((value, previous = []) => [...previous, value])
   )
   .action(action)
 
 function action (_, cmd) {
+  console.log(cmd.optsWithGlobals())
   return require('../..').configure(cmd.optsWithGlobals())
 }
