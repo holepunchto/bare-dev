@@ -356,3 +356,52 @@ function(find_bare_dev result)
 
   return(PROPAGATE ${result})
 endfunction()
+
+function(add_bare_dependencies)
+  find_bare_dev(bare_dev)
+
+  execute_process(
+    COMMAND ${bare_dev} paths include
+    OUTPUT_VARIABLE bare
+  )
+
+  if(NOT TARGET bare)
+    add_library(bare INTERFACE IMPORTED)
+
+    target_include_directories(
+      bare
+      INTERFACE
+        ${bare}
+    )
+  endif()
+
+  if(NOT TARGET uv)
+    add_library(uv INTERFACE IMPORTED)
+
+    target_include_directories(
+      uv
+      INTERFACE
+        ${bare}
+    )
+  endif()
+
+  if(NOT TARGET js)
+    add_library(js INTERFACE IMPORTED)
+
+    target_include_directories(
+      js
+      INTERFACE
+        ${bare}
+    )
+  endif()
+
+  if(NOT TARGET utf)
+    add_library(utf INTERFACE IMPORTED)
+
+    target_include_directories(
+      utf
+      INTERFACE
+        ${bare}
+    )
+  endif()
+endfunction()
