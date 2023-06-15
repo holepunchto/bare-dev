@@ -53,10 +53,16 @@ module.exports = createCommand('install')
       .argParser((value, previous = []) => [...previous, value])
   )
   .addOption(
+    createOption('--force', 'perform a clean build even if prebuilds are available')
+  )
+  .addOption(
     createOption('--sync', 'synchronize vendored dependencies')
   )
   .addOption(
     createOption('--no-submodules', 'don\'t synchronize git submodules')
+  )
+  .addOption(
+    createOption('--recursive', 'recurse into node_modules')
   )
   .action(action)
 
