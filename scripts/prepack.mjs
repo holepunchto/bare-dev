@@ -16,7 +16,6 @@ fs.rmSync(include, { recursive: true, force: true })
 fs.mkdirSync(include)
 
 const sources = [
-  path.join(root),
   path.join(bare, 'include'),
   path.join(bare, 'vendor/libuv/include'),
   path.join(bare, 'vendor/libjs/include'),
