@@ -78,6 +78,114 @@ struct js_property_descriptor_s {
   js_value_t *value;
 };
 
+static inline js_value_type_t
+js_convert_from_valuetype (napi_valuetype type) {
+  switch (type) {
+  case napi_undefined:
+    return js_undefined;
+  case napi_null:
+    return js_null;
+  case napi_boolean:
+    return js_boolean;
+  case napi_number:
+    return js_number;
+  case napi_string:
+    return js_string;
+  case napi_symbol:
+    return js_symbol;
+  case napi_object:
+    return js_object;
+  case napi_function:
+    return js_function;
+  case napi_external:
+    return js_external;
+  case napi_bigint:
+    return js_bigint;
+  }
+}
+
+static inline napi_valuetype
+js_convert_to_valuetype (js_value_type_t type) {
+  switch (type) {
+  case js_undefined:
+    return napi_undefined;
+  case js_null:
+    return napi_null;
+  case js_boolean:
+    return napi_boolean;
+  case js_number:
+    return napi_number;
+  case js_string:
+    return napi_string;
+  case js_symbol:
+    return napi_symbol;
+  case js_object:
+    return napi_object;
+  case js_function:
+    return napi_function;
+  case js_external:
+    return napi_external;
+  case js_bigint:
+    return napi_bigint;
+  }
+}
+
+static inline js_typedarray_type_t
+js_convert_from_typedarray_type (napi_typedarray_type type) {
+  switch (type) {
+  case napi_int8_array:
+    return js_int8_array;
+  case napi_uint8_array:
+    return js_uint8_array;
+  case napi_uint8_clamped_array:
+    return js_uint8_clamped_array;
+  case napi_int16_array:
+    return js_int16_array;
+  case napi_uint16_array:
+    return js_uint16_array;
+  case napi_int32_array:
+    return js_int32_array;
+  case napi_uint32_array:
+    return js_uint32_array;
+  case napi_float32_array:
+    return js_float32_array;
+  case napi_float64_array:
+    return js_float64_array;
+  case napi_bigint64_array:
+    return js_bigint64_array;
+  case napi_biguint64_array:
+    return js_biguint64_array;
+  }
+}
+
+static inline napi_typedarray_type
+js_convert_to_typedarray_type (js_typedarray_type_t type) {
+  switch (type) {
+  case js_int8_array:
+    return napi_int8_array;
+  case js_uint8_array:
+    return napi_uint8_array;
+  case js_uint8_clamped_array:
+    return napi_uint8_clamped_array;
+  case js_int16_array:
+    return napi_int16_array;
+  case js_uint16_array:
+    return napi_uint16_array;
+  case js_int32_array:
+    return napi_int32_array;
+  case js_uint32_array:
+    return napi_uint32_array;
+  case js_float32_array:
+    return napi_float32_array;
+  case js_float64_array:
+    return napi_float64_array;
+  case js_bigint64_array:
+    return napi_bigint64_array;
+  case js_biguint64_array:
+    return napi_biguint64_array;
+  }
+}
+
 static inline int
 js_get_env_loop (js_env_t *env, uv_loop_t **result) {
   napi_status status = napi_get_uv_event_loop(env, result);
@@ -168,35 +276,75 @@ js_define_class (js_env_t *env, const char *name, size_t len, js_function_cb con
 int
 js_define_properties (js_env_t *env, js_value_t *object, js_property_descriptor_t const properties[], size_t properties_len);
 
-int
-js_wrap (js_env_t *env, js_value_t *object, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_ref_t **result);
+static inline int
+js_wrap (js_env_t *env, js_value_t *object, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_ref_t **result) {
+  napi_status status = napi_wrap(env, object, data, finalize_cb, finalize_hint, result);
 
-int
-js_unwrap (js_env_t *env, js_value_t *object, void **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_remove_wrap (js_env_t *env, js_value_t *object, void **result);
+static inline int
+js_unwrap (js_env_t *env, js_value_t *object, void **result) {
+  napi_status status = napi_unwrap(env, object, result);
 
-int
-js_add_finalizer (js_env_t *env, js_value_t *object, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_ref_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_int32 (js_env_t *env, int32_t value, js_value_t **result);
+static inline int
+js_remove_wrap (js_env_t *env, js_value_t *object, void **result) {
+  napi_status status = napi_remove_wrap(env, object, result);
 
-int
-js_create_uint32 (js_env_t *env, uint32_t value, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_int64 (js_env_t *env, int64_t value, js_value_t **result);
+static inline int
+js_add_finalizer (js_env_t *env, js_value_t *object, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_ref_t **result) {
+  napi_status status = napi_add_finalizer(env, object, data, finalize_cb, finalize_hint, result);
 
-int
-js_create_double (js_env_t *env, double value, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_bigint_int64 (js_env_t *env, int64_t value, js_value_t **result);
+static inline int
+js_create_int32 (js_env_t *env, int32_t value, js_value_t **result) {
+  napi_status status = napi_create_int32(env, value, result);
 
-int
-js_create_bigint_uint64 (js_env_t *env, uint64_t value, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_uint32 (js_env_t *env, uint32_t value, js_value_t **result) {
+  napi_status status = napi_create_uint32(env, value, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_int64 (js_env_t *env, int64_t value, js_value_t **result) {
+  napi_status status = napi_create_int64(env, value, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_double (js_env_t *env, double value, js_value_t **result) {
+  napi_status status = napi_create_double(env, value, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_bigint_int64 (js_env_t *env, int64_t value, js_value_t **result) {
+  napi_status status = napi_create_bigint_int64(env, value, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_bigint_uint64 (js_env_t *env, uint64_t value, js_value_t **result) {
+  napi_status status = napi_create_bigint_uint64(env, value, result);
+
+  return status == napi_ok ? 0 : -1;
+}
 
 static inline int
 js_create_string_utf8 (js_env_t *env, const utf8_t *str, size_t len, js_value_t **result) {
@@ -212,170 +360,431 @@ js_create_string_utf16le (js_env_t *env, const utf16_t *str, size_t len, js_valu
   return status == napi_ok ? 0 : -1;
 }
 
-int
-js_create_symbol (js_env_t *env, js_value_t *description, js_value_t **result);
+static inline int
+js_create_symbol (js_env_t *env, js_value_t *description, js_value_t **result) {
+  napi_status status = napi_create_symbol(env, description, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_object (js_env_t *env, js_value_t **result) {
+  napi_status status = napi_create_object(env, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_function (js_env_t *env, const char *name, size_t len, js_function_cb cb, void *data, js_value_t **result) {
+  napi_status status = napi_create_function(env, name, len, cb, data, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_array (js_env_t *env, js_value_t **result) {
+  napi_status status = napi_create_array(env, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_array_with_length (js_env_t *env, size_t len, js_value_t **result) {
+  napi_status status = napi_create_array_with_length(env, len, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_external (js_env_t *env, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_value_t **result) {
+  napi_status status = napi_create_external(env, data, finalize_cb, finalize_hint, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_date (js_env_t *env, double time, js_value_t **result) {
+  napi_status status = napi_create_date(env, time, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_error (js_env_t *env, js_value_t *code, js_value_t *message, js_value_t **result) {
+  napi_status status = napi_create_error(env, code, message, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_type_error (js_env_t *env, js_value_t *code, js_value_t *message, js_value_t **result) {
+  napi_status status = napi_create_type_error(env, code, message, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_range_error (js_env_t *env, js_value_t *code, js_value_t *message, js_value_t **result) {
+  napi_status status = napi_create_range_error(env, code, message, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_promise (js_env_t *env, js_deferred_t **deferred, js_value_t **promise) {
+  napi_status status = napi_create_promise(env, deferred, promise);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_resolve_deferred (js_env_t *env, js_deferred_t *deferred, js_value_t *resolution) {
+  napi_status status = napi_resolve_deferred(env, deferred, resolution);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_reject_deferred (js_env_t *env, js_deferred_t *deferred, js_value_t *resolution) {
+  napi_status status = napi_reject_deferred(env, deferred, resolution);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_arraybuffer (js_env_t *env, size_t len, void **data, js_value_t **result) {
+  napi_status status = napi_create_arraybuffer(env, len, data, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_external_arraybuffer (js_env_t *env, void *data, size_t len, js_finalize_cb finalize_cb, void *finalize_hint, js_value_t **result) {
+  napi_status status = napi_create_external_arraybuffer(env, data, len, finalize_cb, finalize_hint, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_detach_arraybuffer (js_env_t *env, js_value_t *arraybuffer) {
+  napi_status status = napi_detach_arraybuffer(env, arraybuffer);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_typedarray (js_env_t *env, js_typedarray_type_t type, size_t len, js_value_t *arraybuffer, size_t offset, js_value_t **result) {
+  napi_status status = napi_create_typedarray(env, js_convert_to_typedarray_type(type), len, arraybuffer, offset, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_create_dataview (js_env_t *env, size_t len, js_value_t *arraybuffer, size_t offset, js_value_t **result) {
+  napi_status status = napi_create_dataview(env, len, arraybuffer, offset, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_typeof (js_env_t *env, js_value_t *value, js_value_type_t *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = js_convert_from_valuetype(napi_type);
+
+  return 0;
+}
+
+static inline int
+js_instanceof (js_env_t *env, js_value_t *object, js_value_t *constructor, bool *result) {
+  napi_status status = napi_instanceof(env, object, constructor, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_is_undefined (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_undefined;
+
+  return 0;
+}
+
+static inline int
+js_is_null (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_null;
+
+  return 0;
+}
+
+static inline int
+js_is_boolean (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_boolean;
+
+  return 0;
+}
+
+static inline int
+js_is_number (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_number;
+
+  return 0;
+}
+
+static inline int
+js_is_string (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_string;
+
+  return 0;
+}
+
+static inline int
+js_is_symbol (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_symbol;
+
+  return 0;
+}
+
+static inline int
+js_is_object (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_object;
+
+  return 0;
+}
+
+static inline int
+js_is_function (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_function;
+
+  return 0;
+}
+
+static inline int
+js_is_array (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_array(env, value, result);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_is_external (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
+
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
+
+  *result = napi_type == napi_external;
+
+  return 0;
+}
 
 int
-js_create_object (js_env_t *env, js_value_t **result);
+js_is_bigint (js_env_t *env, js_value_t *value, bool *result) {
+  napi_valuetype napi_type;
 
-int
-js_create_function (js_env_t *env, const char *name, size_t len, js_function_cb cb, void *data, js_value_t **result);
+  napi_status status = napi_typeof(env, value, &napi_type);
+  if (status != napi_ok) return -1;
 
-int
-js_create_function_with_source (js_env_t *env, const char *name, size_t name_len, const char *file, size_t file_len, js_value_t *const args[], size_t args_len, int offset, js_value_t *source, js_value_t **result);
+  *result = napi_type == napi_bigint;
 
-int
-js_create_array (js_env_t *env, js_value_t **result);
+  return 0;
+}
 
-int
-js_create_array_with_length (js_env_t *env, size_t len, js_value_t **result);
+static inline int
+js_is_date (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_date(env, value, result);
 
-int
-js_create_external (js_env_t *env, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_date (js_env_t *env, double time, js_value_t **result);
+static inline int
+js_is_error (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_error(env, value, result);
 
-int
-js_create_error (js_env_t *env, js_value_t *code, js_value_t *message, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_type_error (js_env_t *env, js_value_t *code, js_value_t *message, js_value_t **result);
+static inline int
+js_is_promise (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_promise(env, value, result);
 
-int
-js_create_range_error (js_env_t *env, js_value_t *code, js_value_t *message, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_syntax_error (js_env_t *env, js_value_t *code, js_value_t *message, js_value_t **result);
+static inline int
+js_is_arraybuffer (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_arraybuffer(env, value, result);
 
-int
-js_create_promise (js_env_t *env, js_deferred_t **deferred, js_value_t **promise);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_resolve_deferred (js_env_t *env, js_deferred_t *deferred, js_value_t *resolution);
+static inline int
+js_is_detached_arraybuffer (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_detached_arraybuffer(env, value, result);
 
-int
-js_reject_deferred (js_env_t *env, js_deferred_t *deferred, js_value_t *resolution);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_arraybuffer (js_env_t *env, size_t len, void **data, js_value_t **result);
+static inline int
+js_is_typedarray (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_typedarray(env, value, result);
 
-int
-js_create_external_arraybuffer (js_env_t *env, void *data, size_t len, js_finalize_cb finalize_cb, void *finalize_hint, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_detach_arraybuffer (js_env_t *env, js_value_t *arraybuffer);
+static inline int
+js_is_dataview (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_is_dataview(env, value, result);
 
-int
-js_create_typedarray (js_env_t *env, js_typedarray_type_t type, size_t len, js_value_t *arraybuffer, size_t offset, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_create_dataview (js_env_t *env, size_t len, js_value_t *arraybuffer, size_t offset, js_value_t **result);
+static inline int
+js_strict_equals (js_env_t *env, js_value_t *a, js_value_t *b, bool *result) {
+  napi_status status = napi_strict_equals(env, a, b, result);
 
-int
-js_typeof (js_env_t *env, js_value_t *value, js_value_type_t *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_instanceof (js_env_t *env, js_value_t *object, js_value_t *constructor, bool *result);
+static inline int
+js_get_global (js_env_t *env, js_value_t **result) {
+  napi_status status = napi_get_global(env, result);
 
-int
-js_is_undefined (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_null (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_undefined (js_env_t *env, js_value_t **result) {
+  napi_status status = napi_get_undefined(env, result);
 
-int
-js_is_boolean (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_number (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_null (js_env_t *env, js_value_t **result) {
+  napi_status status = napi_get_null(env, result);
 
-int
-js_is_string (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_symbol (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_boolean (js_env_t *env, bool value, js_value_t **result) {
+  napi_status status = napi_get_boolean(env, value, result);
 
-int
-js_is_object (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_function (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_value_bool (js_env_t *env, js_value_t *value, bool *result) {
+  napi_status status = napi_get_value_bool(env, value, result);
 
-int
-js_is_array (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_external (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_value_int32 (js_env_t *env, js_value_t *value, int32_t *result) {
+  napi_status status = napi_get_value_int32(env, value, result);
 
-int
-js_is_bigint (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_date (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_value_uint32 (js_env_t *env, js_value_t *value, uint32_t *result) {
+  napi_status status = napi_get_value_uint32(env, value, result);
 
-int
-js_is_error (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_promise (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_value_int64 (js_env_t *env, js_value_t *value, int64_t *result) {
+  napi_status status = napi_get_value_int64(env, value, result);
 
-int
-js_is_arraybuffer (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_detached_arraybuffer (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_value_double (js_env_t *env, js_value_t *value, double *result) {
+  napi_status status = napi_get_value_double(env, value, result);
 
-int
-js_is_typedarray (js_env_t *env, js_value_t *value, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_is_dataview (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_value_bigint_int64 (js_env_t *env, js_value_t *value, int64_t *result) {
+  napi_status status = napi_get_value_bigint_int64(env, value, result, NULL);
 
-int
-js_strict_equals (js_env_t *env, js_value_t *a, js_value_t *b, bool *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_get_global (js_env_t *env, js_value_t **result);
+static inline int
+js_get_value_bigint_uint64 (js_env_t *env, js_value_t *value, uint64_t *result) {
+  napi_status status = napi_get_value_bigint_uint64(env, value, result, NULL);
 
-int
-js_get_undefined (js_env_t *env, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_get_null (js_env_t *env, js_value_t **result);
+static inline int
+js_get_value_string_utf8 (js_env_t *env, js_value_t *value, utf8_t *str, size_t len, size_t *result) {
+  napi_status status = napi_get_value_string_utf8(env, value, str, len, result);
 
-int
-js_get_boolean (js_env_t *env, bool value, js_value_t **result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_get_value_bool (js_env_t *env, js_value_t *value, bool *result);
+static inline int
+js_get_value_string_utf16le (js_env_t *env, js_value_t *value, utf16_t *str, size_t len, size_t *result) {
+  napi_status status = napi_get_value_string_utf16(env, value, str, len, result);
 
-int
-js_get_value_int32 (js_env_t *env, js_value_t *value, int32_t *result);
+  return status == napi_ok ? 0 : -1;
+}
 
-int
-js_get_value_uint32 (js_env_t *env, js_value_t *value, uint32_t *result);
+static inline int
+js_get_value_external (js_env_t *env, js_value_t *value, void **result) {
+  napi_status status = napi_get_value_external(env, value, result);
 
-int
-js_get_value_int64 (js_env_t *env, js_value_t *value, int64_t *result);
-
-int
-js_get_value_double (js_env_t *env, js_value_t *value, double *result);
-
-int
-js_get_value_bigint_int64 (js_env_t *env, js_value_t *value, int64_t *result);
-
-int
-js_get_value_bigint_uint64 (js_env_t *env, js_value_t *value, uint64_t *result);
-
-int
-js_get_value_string_utf8 (js_env_t *env, js_value_t *value, utf8_t *str, size_t len, size_t *result);
-
-int
-js_get_value_string_utf16le (js_env_t *env, js_value_t *value, utf16_t *str, size_t len, size_t *result);
-
-int
-js_get_value_external (js_env_t *env, js_value_t *value, void **result);
+  return status == napi_ok ? 0 : -1;
+}
 
 int
 js_get_value_date (js_env_t *env, js_value_t *value, double *result);
