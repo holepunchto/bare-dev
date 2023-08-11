@@ -5,7 +5,13 @@ module.exports = createCommand('paths')
   .description('print paths')
   .addArgument(
     createArgument('path', 'the path to print')
-      .choices(['include', 'cmake'])
+      .choices([
+        'include',
+        'cmake',
+
+        // Compatibility paths
+        'compat/napi'
+      ])
   )
   .action(action)
 
