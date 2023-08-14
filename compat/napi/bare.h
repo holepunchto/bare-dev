@@ -5,12 +5,7 @@
 extern "C" {
 #endif
 
-#include <node_api.h>
-
-#define BARE_MODULE(id, fn) \
-  napi_value napi_register_module_v1(napi_env env, napi_value exports) { \
-    return fn(env, exports); \
-  }
+#include "bare/module.h"
 
 #ifdef __cplusplus
 }
