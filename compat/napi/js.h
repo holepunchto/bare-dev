@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#include <assert.h>
 #include <node_api.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -905,9 +906,31 @@ js_get_dataview_info (js_env_t *env, js_value_t *dataview, void **data, size_t *
   return status == napi_ok ? 0 : -1;
 }
 
-// TODO
-int
-js_call_function (js_env_t *env, js_value_t *receiver, js_value_t *function, size_t argc, js_value_t *const argv[], js_value_t **result);
+static inline int
+js_call_function (js_env_t *env, js_value_t *receiver, js_value_t *function, size_t argc, js_value_t *const argv[], js_value_t **result) {
+  napi_status status = napi_call_function(env, receiver, function, argc, argv, result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_call_function_with_checkpoint (js_env_t *env, js_value_t *receiver, js_value_t *function, size_t argc, js_value_t *const argv[], js_value_t **result) {
+  napi_status status = napi_make_callback(env, NULL, receiver, function, argc, argv, result);
+
+  if (status == napi_pending_exception) {
+    napi_status status;
+
+    napi_value error;
+    status = napi_get_and_clear_last_exception(env, &error);
+    assert(status == napi_ok);
+
+    status = napi_fatal_exception(env, error);
+    assert(status == napi_ok);
+
+    (void) (status);
+  }
+
+  return status == napi_ok ? 0 : -1;
+}
 
 static inline int
 js_new_instance (js_env_t *env, js_value_t *constructor, size_t argc, js_value_t *const argv[], js_value_t **result) {
