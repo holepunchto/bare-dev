@@ -259,13 +259,61 @@ js_get_reference_value (js_env_t *env, js_ref_t *reference, js_value_t **result)
   return status == napi_ok ? 0 : -1;
 }
 
-// TODO
-int
-js_define_class (js_env_t *env, const char *name, size_t len, js_function_cb constructor, void *data, js_property_descriptor_t const properties[], size_t properties_len, js_value_t **result);
+static inline int
+js_define_class (js_env_t *env, const char *name, size_t len, js_function_cb constructor, void *data, js_property_descriptor_t const properties[], size_t properties_len, js_value_t **result) {
+  napi_property_descriptor *napi_properties = malloc(sizeof(napi_property_descriptor) * properties_len);
 
-// TODO
-int
-js_define_properties (js_env_t *env, js_value_t *object, js_property_descriptor_t const properties[], size_t properties_len);
+  for (size_t i = 0; i < properties_len; i++) {
+    const js_property_descriptor_t *property = &properties[i];
+
+    napi_property_descriptor *napi_property = &napi_properties[i];
+
+    napi_property->utf8name = property->name;
+    napi_property->name = NULL;
+
+    napi_property->method = property->method;
+    napi_property->getter = property->getter;
+    napi_property->setter = property->setter;
+    napi_property->value = property->value;
+
+    napi_property->attributes = property->attributes;
+    napi_property->data = property->data;
+  }
+
+  napi_status status = napi_define_class(env, name, len, constructor, data, properties_len, napi_properties, result);
+
+  free(napi_properties);
+
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_define_properties (js_env_t *env, js_value_t *object, js_property_descriptor_t const properties[], size_t properties_len) {
+  napi_property_descriptor *napi_properties = malloc(sizeof(napi_property_descriptor) * properties_len);
+
+  for (size_t i = 0; i < properties_len; i++) {
+    const js_property_descriptor_t *property = &properties[i];
+
+    napi_property_descriptor *napi_property = &napi_properties[i];
+
+    napi_property->utf8name = property->name;
+    napi_property->name = NULL;
+
+    napi_property->method = property->method;
+    napi_property->getter = property->getter;
+    napi_property->setter = property->setter;
+    napi_property->value = property->value;
+
+    napi_property->attributes = property->attributes;
+    napi_property->data = property->data;
+  }
+
+  napi_status status = napi_define_properties(env, object, properties_len, napi_properties);
+
+  free(napi_properties);
+
+  return status == napi_ok ? 0 : -1;
+}
 
 static inline int
 js_wrap (js_env_t *env, js_value_t *object, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_ref_t **result) {
