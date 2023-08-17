@@ -28,6 +28,10 @@ module.exports = createCommand('bundle')
       .default('bundle')
   )
   .addOption(
+    createOption('--builtin <module>', 'builtin module that should not be bundled')
+      .argParser((value, previous = []) => [value, ...previous])
+  )
+  .addOption(
     createOption('-m, --import-map <path>', 'load an import map')
   )
   .addOption(
