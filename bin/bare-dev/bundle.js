@@ -35,6 +35,10 @@ module.exports = createCommand('bundle')
     createOption('-m, --import-map <path>', 'load an import map')
   )
   .addOption(
+    createOption('--node-modules <path>', 'the path to the node_modules directory')
+      .default('node_modules')
+  )
+  .addOption(
     createOption('--header <string>', 'add a header to the bundle')
   )
   .addOption(
