@@ -295,8 +295,6 @@ function(add_bare_bundle)
     list(APPEND args --node-modules ${root}/node_modules)
   endif()
 
-  message("${args}")
-
   cmake_path(ABSOLUTE_PATH ARGV_ENTRY BASE_DIRECTORY ${ARGV_CWD})
 
   list(APPEND args ${ARGV_ENTRY})
