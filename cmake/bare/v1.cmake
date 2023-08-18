@@ -252,7 +252,7 @@ endfunction()
 
 function(add_bare_bundle)
   cmake_parse_arguments(
-    PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;IMPORT_MAP;CONFIG" "DEPENDS"
+    PARSE_ARGV 0 ARGV "" "CWD;ENTRY;OUT;TARGET;IMPORT_MAP;NODE_MODULES;CONFIG" "DEPENDS"
   )
 
   if(ARGV_CWD)
@@ -284,6 +284,18 @@ function(add_bare_bundle)
 
     list(APPEND args --out ${ARGV_OUT})
   endif()
+
+  if(ARGV_NODE_MODULES)
+    cmake_path(ABSOLUTE_PATH ARGV_NODE_MODULES BASE_DIRECTORY ${ARGV_CWD})
+
+    list(APPEND args --node-modules ${ARGV_NODE_MODULES})
+  else()
+    bare_module_directory(root)
+
+    list(APPEND args --node-modules ${root}/node_modules)
+  endif()
+
+  message("${args}")
 
   cmake_path(ABSOLUTE_PATH ARGV_ENTRY BASE_DIRECTORY ${ARGV_CWD})
 
