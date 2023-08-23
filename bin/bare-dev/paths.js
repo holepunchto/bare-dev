@@ -1,4 +1,3 @@
-
 const { createCommand, createArgument } = require('commander')
 
 module.exports = createCommand('paths')

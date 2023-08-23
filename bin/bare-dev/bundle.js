@@ -58,6 +58,12 @@ module.exports = createCommand('bundle')
       .argParser((value) => /\d+/.test(value) ? parseInt(value) : value)
   )
   .addOption(
+    createOption('--compress [pattern]', 'compress/minify source code')
+      .preset('*')
+      .implies({ indent: 0 })
+      .argParser((value, previous = []) => [value, ...previous])
+  )
+  .addOption(
     createOption('--obfuscate [pattern]', 'obfuscate source code')
       .preset('*')
       .argParser((value, previous = []) => [value, ...previous])
