@@ -15,6 +15,9 @@ module.exports = createCommand('install')
       .default('prebuilds')
   )
   .addOption(
+    createOption('--no-prebuilds', 'skip checking the prebuilds directory')
+  )
+  .addOption(
     createOption('-p, --platform <name>', 'the operating system platform to build for')
       .choices(['darwin', 'ios', 'linux', 'android', 'win32'])
       .default(process.platform, 'process.platform')
