@@ -23,6 +23,7 @@ typedef struct napi_ref__ js_ref_t;
 typedef struct napi_deferred__ js_deferred_t;
 typedef struct napi_callback_info__ js_callback_info_t;
 
+typedef struct js_type_tag_s js_type_tag_t;
 typedef struct js_property_descriptor_s js_property_descriptor_t;
 
 typedef js_value_t *(*js_function_cb)(js_env_t *, js_callback_info_t *);
@@ -78,6 +79,11 @@ struct js_property_descriptor_s {
 
   // Value
   js_value_t *value;
+};
+
+struct js_type_tag_s {
+  uint64_t lower;
+  uint64_t upper;
 };
 
 static inline js_value_type_t
@@ -335,6 +341,18 @@ js_remove_wrap (js_env_t *env, js_value_t *object, void **result) {
 }
 
 static inline int
+js_add_type_tag (js_env_t *env, js_value_t *object, const js_type_tag_t *tag) {
+  napi_status status = napi_type_tag_object(env, object, &(napi_type_tag){tag->lower, tag->upper});
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_check_type_tag (js_env_t *env, js_value_t *object, const js_type_tag_t *tag, bool *result) {
+  napi_status status = napi_check_object_type_tag(env, object, &(napi_type_tag){tag->lower, tag->upper}, result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
 js_add_finalizer (js_env_t *env, js_value_t *object, void *data, js_finalize_cb finalize_cb, void *finalize_hint, js_ref_t **result) {
   napi_status status = napi_add_finalizer(env, object, data, finalize_cb, finalize_hint, result);
   return status == napi_ok ? 0 : -1;
@@ -493,6 +511,30 @@ js_create_typedarray (js_env_t *env, js_typedarray_type_t type, size_t len, js_v
 static inline int
 js_create_dataview (js_env_t *env, size_t len, js_value_t *arraybuffer, size_t offset, js_value_t **result) {
   napi_status status = napi_create_dataview(env, len, arraybuffer, offset, result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_coerce_to_boolean (js_env_t *env, js_value_t *value, js_value_t **result) {
+  napi_status status = napi_coerce_to_bool(env, value, result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_coerce_to_number (js_env_t *env, js_value_t *value, js_value_t **result) {
+  napi_status status = napi_coerce_to_number(env, value, result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_coerce_to_string (js_env_t *env, js_value_t *value, js_value_t **result) {
+  napi_status status = napi_coerce_to_string(env, value, result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_coerce_to_object (js_env_t *env, js_value_t *value, js_value_t **result) {
+  napi_status status = napi_coerce_to_object(env, value, result);
   return status == napi_ok ? 0 : -1;
 }
 
@@ -787,6 +829,12 @@ js_get_array_length (js_env_t *env, js_value_t *value, uint32_t *result) {
 static inline int
 js_get_prototype (js_env_t *env, js_value_t *object, js_value_t **result) {
   napi_status status = napi_get_prototype(env, object, result);
+  return status == napi_ok ? 0 : -1;
+}
+
+static inline int
+js_get_property_names (js_env_t *env, js_value_t *object, js_value_t **result) {
+  napi_status status = napi_get_property_names(env, object, result);
   return status == napi_ok ? 0 : -1;
 }
 
