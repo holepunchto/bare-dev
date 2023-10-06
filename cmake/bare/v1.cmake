@@ -305,7 +305,12 @@ function(add_bare_bundle)
     COMMAND ${bare_dev} bundle ${args}
     WORKING_DIRECTORY ${ARGV_CWD}
     OUTPUT ${ARGV_OUT}
-    DEPENDS ${ARGV_ENTRY} ${ARGV_DEPENDS}
+    DEPENDS
+      ${ARGV_ENTRY}
+      ${ARGV_CONFIG}
+      ${ARGV_IMPORT_MAP}
+      ${ARGV_NODE_MODULES}
+      ${ARGV_DEPENDS}
     VERBATIM
   )
 endfunction()
