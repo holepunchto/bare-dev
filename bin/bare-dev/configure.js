@@ -48,6 +48,14 @@ module.exports = createCommand('configure')
     createOption('-D, --define <var>[:<type>]=<value>', 'create or update a cache entry')
       .argParser((value, previous = []) => [...previous, value])
   )
+
+  .addOption(
+    createOption('--android-ndk <version>', 'the Android NDK version to use')
+  )
+  .addOption(
+    createOption('--android-api <version>', 'the Android API version to target')
+  )
+
   .action(action)
 
 function action (_, cmd) {
