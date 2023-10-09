@@ -50,6 +50,10 @@ module.exports = createCommand('configure')
   )
 
   .addOption(
+    createOption('--apple-deployment-target <version>', 'the minimum macOS or iOS version to target')
+  )
+
+  .addOption(
     createOption('--android-ndk <version>', 'the Android NDK version to use')
   )
   .addOption(
