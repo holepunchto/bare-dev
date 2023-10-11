@@ -1,1 +1,1 @@
-include(bare/v1)
+include(bare/v0)
