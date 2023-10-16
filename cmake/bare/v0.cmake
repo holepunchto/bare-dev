@@ -143,27 +143,28 @@ function(add_bare_module target)
       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     )
 
+    if(NOT TARGET bare_bin)
+      add_executable(bare_bin IMPORTED)
+
+      find_program(
+        bare
+        NAMES bare
+      )
+
+      set_target_properties(
+        bare_bin
+        PROPERTIES
+        ENABLE_EXPORTS ON
+        IMPORTED_LOCATION ${bare}
+      )
+    endif()
+
     target_link_libraries(
       ${target}_module
       PUBLIC
+        bare_bin
         $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
     )
-
-    if(APPLE)
-      target_link_options(
-        ${target}_module
-        PUBLIC
-          -undefined dynamic_lookup
-      )
-    endif()
-
-    if(MSVC)
-      target_link_options(
-        ${target}_module
-        PUBLIC
-          /FORCE
-      )
-    endif()
 
     install(
       TARGETS ${target}_module
