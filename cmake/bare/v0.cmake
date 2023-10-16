@@ -88,6 +88,7 @@ function(add_bare_module target)
   )
 
   bare_include_directories(includes)
+
   bare_target(destination)
 
   target_include_directories(
@@ -153,14 +154,6 @@ function(add_bare_module target)
         PUBLIC
           -undefined dynamic_lookup
       )
-
-      if(CMAKE_HOST_SYSTEM_VERSION VERSION_GREATER_EQUAL 21)
-        target_link_options(
-          ${target}_module
-          PUBLIC
-            -Xlinker -no_fixup_chains
-        )
-      endif()
     endif()
 
     if(MSVC)
