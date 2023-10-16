@@ -136,6 +136,7 @@ function(add_bare_module target)
       OUTPUT_NAME ${target}
       PREFIX ""
       SUFFIX ".bare"
+      WINDOWS_EXPORT_ALL_SYMBOLS ON
 
       # Ensure that modules are placed in the root of the build tree where
       # process.addon() can find them.
