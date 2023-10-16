@@ -191,11 +191,15 @@ function(include_bare_module target path)
       EXCLUDE_FROM_ALL
     )
 
+    set(filename "/${path}")
+
+    cmake_path(NATIVE_PATH filename NORMALIZE filename)
+
     target_compile_definitions(
       ${target}
       PUBLIC
-        BARE_MODULE_FILENAME="/${path}"
-        NAPI_MODULE_FILENAME="/${path}"
+        BARE_MODULE_FILENAME="${filename}"
+        NAPI_MODULE_FILENAME="${filename}"
     )
   endif()
 endfunction()
