@@ -195,6 +195,8 @@ function(include_bare_module target path)
 
     cmake_path(NATIVE_PATH filename NORMALIZE filename)
 
+    string(REPLACE "\\" "\\\\" filename ${filename})
+
     target_compile_definitions(
       ${target}
       PUBLIC
