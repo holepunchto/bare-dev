@@ -77,6 +77,36 @@ function(bare_target result)
 endfunction()
 
 function(add_bare_module target)
+  cmake_parse_arguments(
+    PARSE_ARGV 1 ARGV "" "INSTALL" ""
+  )
+
+  if(NOT TARGET bare_bin)
+    add_executable(bare_bin IMPORTED)
+
+    find_program(
+      bare
+      NAMES bare
+    )
+
+    cmake_path(GET bare PARENT_PATH root)
+    cmake_path(GET root PARENT_PATH root)
+
+    find_library(
+      bare_lib
+      NAMES bare
+      HINTS ${root}
+    )
+
+    set_target_properties(
+      bare_bin
+      PROPERTIES
+      ENABLE_EXPORTS ON
+      IMPORTED_LOCATION ${bare}
+      IMPORTED_IMPLIB ${bare_lib}
+    )
+  endif()
+
   add_library(${target} OBJECT)
 
   set_target_properties(
@@ -119,13 +149,14 @@ function(add_bare_module target)
       $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
   )
 
-  install(
-    TARGETS ${target}_static
-    ARCHIVE
-      DESTINATION ${destination}
-      COMPONENT addon
-      OPTIONAL
-  )
+  if(NOT ARGV_INSTALL MATCHES "OFF")
+    install(
+      TARGETS ${target}_static
+      ARCHIVE
+        DESTINATION ${destination}
+        OPTIONAL
+    )
+  endif()
 
   if(NOT IOS)
     add_library(${target}_module MODULE $<TARGET_OBJECTS:${target}>)
@@ -143,22 +174,6 @@ function(add_bare_module target)
       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     )
 
-    if(NOT TARGET bare_bin)
-      add_executable(bare_bin IMPORTED)
-
-      find_program(
-        bare
-        NAMES bare
-      )
-
-      set_target_properties(
-        bare_bin
-        PROPERTIES
-        ENABLE_EXPORTS ON
-        IMPORTED_LOCATION ${bare}
-      )
-    endif()
-
     target_link_libraries(
       ${target}_module
       PUBLIC
@@ -166,13 +181,14 @@ function(add_bare_module target)
         $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
     )
 
-    install(
-      TARGETS ${target}_module
-      LIBRARY
-        DESTINATION ${destination}
-        COMPONENT addon
-        OPTIONAL
-    )
+    if(NOT ARGV_INSTALL MATCHES "OFF")
+      install(
+        TARGETS ${target}_module
+        LIBRARY
+          DESTINATION ${destination}
+          OPTIONAL
+      )
+    endif()
   endif()
 endfunction()
 
