@@ -86,6 +86,7 @@ function(add_bare_module target)
 
     find_program(
       bare
+      REQUIRED
       NAMES bare
     )
 
