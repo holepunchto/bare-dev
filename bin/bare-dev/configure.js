@@ -51,6 +51,7 @@ module.exports = createCommand('configure')
 
   .addOption(
     createOption('--apple-deployment-target <version>', 'the minimum macOS or iOS version to target')
+      .default('10.11')
   )
 
   .addOption(
