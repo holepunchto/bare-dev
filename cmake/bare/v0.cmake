@@ -107,6 +107,10 @@ function(add_bare_module target)
     )
   endif()
 
+  bare_include_directories(includes)
+
+  bare_target(destination)
+
   add_library(${target} OBJECT)
 
   set_target_properties(
@@ -117,14 +121,16 @@ function(add_bare_module target)
     POSITION_INDEPENDENT_CODE ON
   )
 
-  bare_include_directories(includes)
-
-  bare_target(destination)
-
   target_include_directories(
     ${target}
     PRIVATE
       ${includes}
+  )
+
+  target_link_libraries(
+    ${target}
+    PUBLIC
+      bare_bin
   )
 
   add_library(${target}_static STATIC $<TARGET_OBJECTS:${target}>)
@@ -167,6 +173,9 @@ function(add_bare_module target)
       OUTPUT_NAME ${target}
       PREFIX ""
       SUFFIX ".bare"
+
+      # Automatically export all available symbols on Windows. Without this,
+      # module authors would have to explicitly export public symbols.
       WINDOWS_EXPORT_ALL_SYMBOLS ON
 
       # Ensure that modules are placed in the root of the build tree where
@@ -177,7 +186,6 @@ function(add_bare_module target)
     target_link_libraries(
       ${target}_module
       PUBLIC
-        bare_bin
         $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
     )
 
