@@ -10,6 +10,10 @@ module.exports = createCommand('run')
     createOption('-d, --device <name>', 'the device to run the app on')
   )
   .addOption(
+    createOption('-a, --attach', 'attach to stdout and stderr of the app')
+      .default(false)
+  )
+  .addOption(
     createOption('-w, --wait-for-debugger', 'wait for a debugger to attach')
       .default(false)
   )
