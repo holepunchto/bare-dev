@@ -84,11 +84,15 @@ function(add_bare_module target)
   if(NOT TARGET bare_bin)
     add_executable(bare_bin IMPORTED)
 
-    find_program(
-      bare
-      REQUIRED
-      NAMES bare
-    )
+    if(TARGET bare)
+      set(bare $<TARGET_FILE:bare>)
+    else()
+      find_program(
+        bare
+        REQUIRED
+        NAMES bare
+      )
+    endif()
 
     cmake_path(GET bare PARENT_PATH root)
     cmake_path(GET root PARENT_PATH root)
