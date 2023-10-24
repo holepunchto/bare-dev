@@ -297,22 +297,16 @@ function(add_bare_bundle)
     cmake_path(ABSOLUTE_PATH ARGV_CONFIG BASE_DIRECTORY ${ARGV_CWD})
 
     list(APPEND args --config ${ARGV_CONFIG})
-  endif()
 
-  if(ARGV_TARGET)
-    list(APPEND args --target ${ARGV_TARGET})
+    list(APPEND ARGV_DEPENDS ${ARGV_CONFIG})
   endif()
 
   if(ARGV_IMPORT_MAP)
     cmake_path(ABSOLUTE_PATH ARGV_IMPORT_MAP BASE_DIRECTORY ${ARGV_CWD})
 
     list(APPEND args --import-map ${ARGV_IMPORT_MAP})
-  endif()
 
-  if(ARGV_OUT)
-    cmake_path(ABSOLUTE_PATH ARGV_OUT BASE_DIRECTORY ${ARGV_CWD})
-
-    list(APPEND args --out ${ARGV_OUT})
+    list(APPEND ARGV_DEPENDS ${ARGV_IMPORT_MAP})
   endif()
 
   if(ARGV_NODE_MODULES)
@@ -325,22 +319,43 @@ function(add_bare_bundle)
     list(APPEND args --node-modules ${root}/node_modules)
   endif()
 
+  list(APPEND args_bundle ${args})
+
+  list(APPEND args_dependencies ${args})
+
+  if(ARGV_TARGET)
+    list(APPEND args_bundle --target ${ARGV_TARGET})
+  endif()
+
+  cmake_path(ABSOLUTE_PATH ARGV_OUT BASE_DIRECTORY ${ARGV_CWD})
+
+  list(APPEND args_bundle --out ${ARGV_OUT})
+
+  list(APPEND args_dependencies --separator "\;")
+
   cmake_path(ABSOLUTE_PATH ARGV_ENTRY BASE_DIRECTORY ${ARGV_CWD})
 
-  list(APPEND args ${ARGV_ENTRY})
+  list(APPEND args_bundle ${ARGV_ENTRY})
+
+  list(APPEND args_dependencies ${ARGV_ENTRY})
 
   find_bare_dev(bare_dev)
 
+  execute_process(
+    COMMAND ${bare_dev} dependencies ${args_dependencies}
+    WORKING_DIRECTORY ${ARGV_CWD}
+    OUTPUT_VARIABLE dependencies
+  )
+
+  list(APPEND ARGV_DEPENDS ${dependencies})
+
+  list(REMOVE_DUPLICATES ARGV_DEPENDS)
+
   add_custom_command(
-    COMMAND ${bare_dev} bundle ${args}
+    COMMAND ${bare_dev} bundle ${args_bundle}
     WORKING_DIRECTORY ${ARGV_CWD}
     OUTPUT ${ARGV_OUT}
-    DEPENDS
-      ${ARGV_ENTRY}
-      ${ARGV_CONFIG}
-      ${ARGV_IMPORT_MAP}
-      ${ARGV_NODE_MODULES}
-      ${ARGV_DEPENDS}
+    DEPENDS ${ARGV_DEPENDS}
     VERBATIM
   )
 endfunction()

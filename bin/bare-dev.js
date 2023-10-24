@@ -33,6 +33,7 @@ program
   .addCommand(require('./bare-dev/test'))
   .addCommand(require('./bare-dev/rebuild'))
   .addCommand(require('./bare-dev/bundle'))
+  .addCommand(require('./bare-dev/dependencies'))
   .addCommand(require('./bare-dev/ios'))
   .addCommand(require('./bare-dev/android'))
   .parseAsync()
