@@ -1,4 +1,4 @@
-const { createCommand, createArgument, createOption } = require('commander')
+const { createCommand, createArgument } = require('commander')
 
 module.exports = createCommand('remove')
   .description('remove an emulator')
