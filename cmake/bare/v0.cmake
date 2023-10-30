@@ -331,9 +331,11 @@ function(add_bare_bundle)
 
   list(APPEND args_bundle --out ${ARGV_OUT})
 
-  list(APPEND args_dependencies --separator "\;")
+  list(APPEND args_dependencies --out ${ARGV_OUT}.d)
 
   cmake_path(ABSOLUTE_PATH ARGV_ENTRY BASE_DIRECTORY ${ARGV_CWD})
+
+  list(APPEND ARGV_DEPENDS ${ARGV_ENTRY})
 
   list(APPEND args_bundle ${ARGV_ENTRY})
 
@@ -341,21 +343,22 @@ function(add_bare_bundle)
 
   find_bare_dev(bare_dev)
 
-  execute_process(
+  list(REMOVE_DUPLICATES ARGV_DEPENDS)
+
+  add_custom_command(
     COMMAND ${bare_dev} dependencies ${args_dependencies}
     WORKING_DIRECTORY ${ARGV_CWD}
-    OUTPUT_VARIABLE dependencies
+    OUTPUT ${ARGV_OUT}.d
+    DEPENDS ${ARGV_DEPENDS}
+    VERBATIM
   )
-
-  list(APPEND ARGV_DEPENDS ${dependencies})
-
-  list(REMOVE_DUPLICATES ARGV_DEPENDS)
 
   add_custom_command(
     COMMAND ${bare_dev} bundle ${args_bundle}
     WORKING_DIRECTORY ${ARGV_CWD}
     OUTPUT ${ARGV_OUT}
-    DEPENDS ${ARGV_DEPENDS}
+    DEPENDS ${ARGV_OUT}.d
+    DEPFILE ${ARGV_OUT}.d
     VERBATIM
   )
 endfunction()

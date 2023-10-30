@@ -21,8 +21,16 @@ module.exports = createCommand('dependencies')
       .default('node_modules')
   )
   .addOption(
+    createOption('--print', 'write the bundle to stdout')
+      .default(true)
+  )
+  .addOption(
     createOption('--separator <string>', 'the separator to print between entries')
       .default('\n')
+  )
+  .addOption(
+    createOption('-o, --out <path>', 'write the dependencies to a file')
+      .implies({ print: false })
   )
   .action(action)
 
