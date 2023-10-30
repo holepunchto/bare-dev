@@ -11,6 +11,9 @@ module.exports = createCommand('configure')
       .default('build')
   )
   .addOption(
+    createOption('--toolchain <path>', 'the path to a toolchain file')
+  )
+  .addOption(
     createOption('-p, --platform <name>', 'the operating system platform to build for')
       .choices(['darwin', 'ios', 'linux', 'android', 'win32'])
       .default(process.platform, 'process.platform')
@@ -50,8 +53,13 @@ module.exports = createCommand('configure')
   )
 
   .addOption(
-    createOption('--apple-deployment-target <version>', 'the minimum macOS or iOS version to target')
+    createOption('--darwin-deployment-target <version>', 'the minimum macOS version to target')
       .default('10.11')
+  )
+
+  .addOption(
+    createOption('--ios-deployment-target <version>', 'the minimum iOS version to target')
+      .default('14.0')
   )
 
   .addOption(
