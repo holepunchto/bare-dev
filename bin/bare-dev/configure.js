@@ -31,6 +31,9 @@ module.exports = createCommand('configure')
       .choices(['make', 'ninja', 'xcode', 'visual-studio-2022'])
   )
   .addOption(
+    createOption('--toolset <name>', 'the name of a compiler toolset supported by the generator')
+  )
+  .addOption(
     createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )
