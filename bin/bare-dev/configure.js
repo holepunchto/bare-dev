@@ -38,6 +38,9 @@ module.exports = createCommand('configure')
       .default(false)
   )
   .addOption(
+    createOption('--no-debug', 'don\'t configure a debug build')
+  )
+  .addOption(
     createOption('--sanitize <type>', 'enable sanitizer')
       .choices(['address', 'thread'])
       .implies({ debug: true })
