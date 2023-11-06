@@ -87,10 +87,11 @@ function(add_bare_module target)
     if(TARGET bare)
       set(bare $<TARGET_FILE:bare>)
     else()
-      find_program(
-        bare
-        REQUIRED
-        NAMES bare
+      find_program(bare REQUIRED NAMES bare)
+
+      execute_process(
+        COMMAND ${bare} -p "require('os').execPath()"
+        OUTPUT_VARIABLE bare
       )
     endif()
 
