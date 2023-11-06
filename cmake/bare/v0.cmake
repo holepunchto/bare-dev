@@ -87,12 +87,7 @@ function(add_bare_module target)
     if(TARGET bare)
       set(bare $<TARGET_FILE:bare>)
     else()
-      find_program(bare REQUIRED NAMES bare)
-
-      execute_process(
-        COMMAND ${bare} -p "require('os').execPath()"
-        OUTPUT_VARIABLE bare
-      )
+      find_bare(bare)
     endif()
 
     cmake_path(GET bare PARENT_PATH root)
@@ -101,7 +96,7 @@ function(add_bare_module target)
     find_library(
       bare_lib
       NAMES bare
-      HINTS ${root}
+      HINTS ${root}/lib
     )
 
     set_target_properties(
@@ -399,20 +394,48 @@ function(mirror_drive)
   )
 endfunction()
 
+function(find_bare result)
+  if(WIN32)
+    find_program(
+      bare_bin
+      REQUIRED
+      NAMES bare.cmd bare
+    )
+  else()
+    find_program(
+      bare_bin
+      REQUIRED
+      NAMES bare
+    )
+  endif()
+
+  execute_process(
+    COMMAND ${bare_bin} -p "require('os').execPath()"
+    OUTPUT_VARIABLE bare
+    COMMAND_ERROR_IS_FATAL ANY
+  )
+
+  set(${result} ${bare})
+
+  return(PROPAGATE ${result})
+endfunction()
+
 function(find_bare_dev result)
   bare_module_directory(root)
 
   if(WIN32)
     find_program(
       bare_dev
-      NAMES bare-dev.cmd
+      NAMES bare-dev.cmd bare-dev
       HINTS ${root}/node_modules/.bin
+      REQUIRED
     )
   else()
     find_program(
       bare_dev
       NAMES bare-dev
       HINTS ${root}/node_modules/.bin
+      REQUIRED
     )
   endif()
 
