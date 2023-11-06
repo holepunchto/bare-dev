@@ -82,15 +82,11 @@ function(add_bare_module target)
   )
 
   if(NOT TARGET bare_bin)
+    find_bare(bare_bin)
+
     add_executable(bare_bin IMPORTED)
 
-    if(TARGET bare)
-      set(bare $<TARGET_FILE:bare>)
-    else()
-      find_bare(bare)
-    endif()
-
-    cmake_path(GET bare PARENT_PATH root)
+    cmake_path(GET bare_bin PARENT_PATH root)
     cmake_path(GET root PARENT_PATH root)
 
     find_library(
@@ -103,7 +99,7 @@ function(add_bare_module target)
       bare_bin
       PROPERTIES
       ENABLE_EXPORTS ON
-      IMPORTED_LOCATION ${bare}
+      IMPORTED_LOCATION ${bare_bin}
       IMPORTED_IMPLIB ${bare_lib}
     )
   endif()
@@ -128,12 +124,6 @@ function(add_bare_module target)
       ${includes}
   )
 
-  target_link_libraries(
-    ${target}
-    PUBLIC
-      bare_bin
-  )
-
   add_library(${target}_static STATIC $<TARGET_OBJECTS:${target}>)
 
   set_target_properties(
@@ -154,6 +144,8 @@ function(add_bare_module target)
     ${target}_static
     PUBLIC
       $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
+    PRIVATE
+      bare_bin
   )
 
   if(NOT ARGV_INSTALL MATCHES "OFF")
@@ -188,6 +180,8 @@ function(add_bare_module target)
       ${target}_module
       PUBLIC
         $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
+      PRIVATE
+        bare_bin
     )
 
     if(NOT ARGV_INSTALL MATCHES "OFF")
@@ -398,14 +392,14 @@ function(find_bare result)
   if(WIN32)
     find_program(
       bare_bin
-      REQUIRED
       NAMES bare.cmd bare
+      REQUIRED
     )
   else()
     find_program(
       bare_bin
-      REQUIRED
       NAMES bare
+      REQUIRED
     )
   endif()
 
