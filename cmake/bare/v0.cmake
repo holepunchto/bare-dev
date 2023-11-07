@@ -81,29 +81,6 @@ function(add_bare_module target)
     PARSE_ARGV 1 ARGV "" "INSTALL" ""
   )
 
-  if(NOT TARGET bare_bin)
-    find_bare(bare_bin)
-
-    add_executable(bare_bin IMPORTED)
-
-    cmake_path(GET bare_bin PARENT_PATH root)
-    cmake_path(GET root PARENT_PATH root)
-
-    find_library(
-      bare_lib
-      NAMES bare
-      HINTS ${root}/lib
-    )
-
-    set_target_properties(
-      bare_bin
-      PROPERTIES
-      ENABLE_EXPORTS ON
-      IMPORTED_LOCATION ${bare_bin}
-      IMPORTED_IMPLIB ${bare_lib}
-    )
-  endif()
-
   bare_include_directories(includes)
 
   bare_target(destination)
@@ -125,6 +102,34 @@ function(add_bare_module target)
   )
 
   if(NOT IOS)
+    find_bare(bare)
+
+    add_executable(${target}_import_lib IMPORTED)
+
+    set_target_properties(
+      ${target}_import_lib
+      PROPERTIES
+      ENABLE_EXPORTS ON
+      IMPORTED_LOCATION ${bare}
+    )
+
+    if(MSVC)
+      cmake_path(GET bare PARENT_PATH root)
+      cmake_path(GET root PARENT_PATH root)
+
+      find_library(
+        bare_lib
+        NAMES bare
+        HINTS ${root}/lib
+      )
+
+      set_target_properties(
+        ${target}_import_lib
+        PROPERTIES
+        IMPORTED_IMPLIB ${bare_lib}
+      )
+    endif()
+
     add_library(${target}_module MODULE $<TARGET_OBJECTS:${target}>)
 
     set_target_properties(
@@ -139,7 +144,7 @@ function(add_bare_module target)
       WINDOWS_EXPORT_ALL_SYMBOLS ON
 
       # Ensure that modules are placed in the root of the build tree where
-      # process.addon() can find them.
+      # Addon.resolve() can find them.
       LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 
@@ -148,7 +153,7 @@ function(add_bare_module target)
       PUBLIC
         $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
       PRIVATE
-        bare_bin
+        ${target}_import_lib
     )
 
     if(NOT ARGV_INSTALL MATCHES "OFF")
@@ -207,6 +212,8 @@ function(bare_include_directories result)
   )
 
   list(APPEND ${result} ${bare})
+
+  # TODO Remove this when all compatibility modules have been reworked
 
   bare_module_directory(root)
 
