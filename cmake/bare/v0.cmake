@@ -90,8 +90,8 @@ function(add_bare_module target)
   set_target_properties(
     ${target}
     PROPERTIES
-    C_STANDARD 99
-    CXX_STANDARD 17
+    C_STANDARD 11
+    CXX_STANDARD 20
     POSITION_INDEPENDENT_CODE ON
   )
 
