@@ -60,7 +60,7 @@ module.exports = createCommand('configure')
 
   .addOption(
     createOption('--darwin-deployment-target <version>', 'the minimum macOS version to target')
-      .default('10.11')
+      .default('10.13')
   )
 
   .addOption(
