@@ -77,13 +77,7 @@ function(bare_target result)
 endfunction()
 
 function(add_bare_module target)
-  cmake_parse_arguments(
-    PARSE_ARGV 1 ARGV "" "INSTALL" ""
-  )
-
   bare_include_directories(includes)
-
-  bare_target(destination)
 
   add_library(${target} OBJECT)
 
@@ -155,15 +149,6 @@ function(add_bare_module target)
       PRIVATE
         ${target}_import_lib
     )
-
-    if(NOT ARGV_INSTALL MATCHES "OFF")
-      install(
-        TARGETS ${target}_module
-        LIBRARY
-          DESTINATION ${destination}
-          OPTIONAL
-      )
-    endif()
   endif()
 endfunction()
 
