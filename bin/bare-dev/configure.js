@@ -42,12 +42,16 @@ module.exports = createCommand('configure')
   )
   .addOption(
     createOption('--sanitize <type>', 'enable sanitizer')
-      .choices(['address', 'thread'])
+      .choices(['address', 'hwaddress', 'thread'])
       .implies({ debug: true })
   )
   .addOption(
     createOption('--asan', 'enable address sanitizer')
       .implies({ debug: true, sanitize: 'address' })
+  )
+  .addOption(
+    createOption('--hwasan', 'enable hardware-assisted address sanitizer')
+      .implies({ debug: true, sanitize: 'hwaddress' })
   )
   .addOption(
     createOption('--tsan', 'enable thread sanitizer')
