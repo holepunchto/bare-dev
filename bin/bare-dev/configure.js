@@ -42,7 +42,7 @@ module.exports = createCommand('configure')
   )
   .addOption(
     createOption('--sanitize <type>', 'enable sanitizer')
-      .choices(['address', 'hwaddress', 'thread'])
+      .choices(['address', 'hwaddress', 'thread', 'undefined'])
       .implies({ debug: true })
   )
   .addOption(
@@ -56,6 +56,10 @@ module.exports = createCommand('configure')
   .addOption(
     createOption('--tsan', 'enable thread sanitizer')
       .implies({ debug: true, sanitize: 'thread' })
+  )
+  .addOption(
+    createOption('--ubsan', 'enable undefined behavior sanitizer')
+      .implies({ debug: true, sanitize: 'undefined' })
   )
   .addOption(
     createOption('-D, --define <var>[:<type>]=<value>', 'create or update a cache entry')
