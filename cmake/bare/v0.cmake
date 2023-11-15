@@ -144,10 +144,10 @@ function(add_bare_module target)
 
     target_link_libraries(
       ${target}_module
-      PUBLIC
-        $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
       PRIVATE
         ${target}_import_lib
+      PUBLIC
+        $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
     )
   endif()
 endfunction()
@@ -365,6 +365,7 @@ function(find_bare result)
   execute_process(
     COMMAND ${bare_bin} -p "Bare.argv[0]"
     OUTPUT_VARIABLE bare
+    OUTPUT_STRIP_TRAILING_WHITESPACE
     COMMAND_ERROR_IS_FATAL ANY
   )
 
