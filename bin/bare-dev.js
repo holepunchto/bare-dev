@@ -27,7 +27,6 @@ program
   .addCommand(require('./bare-dev/init'))
   .addCommand(require('./bare-dev/configure'))
   .addCommand(require('./bare-dev/build'))
-  .addCommand(require('./bare-dev/prebuild'))
   .addCommand(require('./bare-dev/install'))
   .addCommand(require('./bare-dev/clean'))
   .addCommand(require('./bare-dev/test'))
