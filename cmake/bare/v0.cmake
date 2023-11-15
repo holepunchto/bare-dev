@@ -363,7 +363,7 @@ function(find_bare result)
   endif()
 
   execute_process(
-    COMMAND ${bare_bin} -p "process.execPath"
+    COMMAND ${bare_bin} -p "Bare.argv[0]"
     OUTPUT_VARIABLE bare
     COMMAND_ERROR_IS_FATAL ANY
   )
