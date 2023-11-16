@@ -172,7 +172,9 @@ function(include_bare_module target path)
       ${target}
       PUBLIC
         BARE_MODULE_FILENAME="${filename}"
+        BARE_MODULE_REGISTER_CONSTRUCTOR
         NAPI_MODULE_FILENAME="${filename}"
+        NAPI_MODULE_REGISTER_CONSTRUCTOR
     )
   endif()
 endfunction()
@@ -180,10 +182,15 @@ endfunction()
 function(link_bare_module receiver target path)
   include_bare_module(${target} ${path})
 
-  target_link_libraries(
+  target_sources(
     ${receiver}
     PUBLIC
       $<TARGET_OBJECTS:${target}>
+  )
+
+  target_link_libraries(
+    ${receiver}
+    PUBLIC
       $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
   )
 endfunction()
