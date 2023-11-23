@@ -129,17 +129,13 @@ function(add_bare_module target)
     set_target_properties(
       ${target}_module
       PROPERTIES
-      OUTPUT_NAME ${target}
+      OUTPUT_NAME addon
       PREFIX ""
       SUFFIX ".bare"
 
       # Automatically export all available symbols on Windows. Without this,
       # module authors would have to explicitly export public symbols.
       WINDOWS_EXPORT_ALL_SYMBOLS ON
-
-      # Ensure that modules are placed in the root of the build tree where
-      # Addon.resolve() can find them.
-      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 
     target_link_libraries(
@@ -204,21 +200,6 @@ function(bare_include_directories result)
   )
 
   list(APPEND ${result} ${bare})
-
-  # TODO Remove this when all compatibility modules have been reworked
-
-  bare_module_directory(root)
-
-  execute_process(
-    COMMAND ${bare_dev} --cwd ${root} require napi-macros
-    OUTPUT_VARIABLE napi_macros
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_QUIET
-  )
-
-  if(napi_macros)
-    list(APPEND ${result} ${CMAKE_SOURCE_DIR}/${napi_macros})
-  endif()
 
   return(PROPAGATE ${result})
 endfunction()
