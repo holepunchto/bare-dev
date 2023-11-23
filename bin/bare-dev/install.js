@@ -28,6 +28,9 @@ module.exports = createCommand('install')
     createOption('--simulator', 'build for a simulator')
   )
   .addOption(
+    createOption('--no-cache', 'disregard the build variable cache')
+  )
+  .addOption(
     createOption('-g, --generator <name>', 'the build generator to use')
       .choices(['make', 'ninja', 'xcode', 'visual-studio-2022'])
   )
