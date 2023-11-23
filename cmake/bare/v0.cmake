@@ -95,57 +95,55 @@ function(add_bare_module target)
       ${includes}
   )
 
-  if(NOT IOS)
-    find_bare(bare)
+  find_bare(bare)
 
-    add_executable(${target}_import_lib IMPORTED)
+  add_executable(${target}_import_lib IMPORTED)
+
+  set_target_properties(
+    ${target}_import_lib
+    PROPERTIES
+    ENABLE_EXPORTS ON
+    IMPORTED_LOCATION ${bare}
+  )
+
+  if(MSVC)
+    cmake_path(GET bare PARENT_PATH root)
+    cmake_path(GET root PARENT_PATH root)
+
+    find_library(
+      bare_lib
+      NAMES bare
+      HINTS ${root}/lib
+    )
 
     set_target_properties(
       ${target}_import_lib
       PROPERTIES
-      ENABLE_EXPORTS ON
-      IMPORTED_LOCATION ${bare}
-    )
-
-    if(MSVC)
-      cmake_path(GET bare PARENT_PATH root)
-      cmake_path(GET root PARENT_PATH root)
-
-      find_library(
-        bare_lib
-        NAMES bare
-        HINTS ${root}/lib
-      )
-
-      set_target_properties(
-        ${target}_import_lib
-        PROPERTIES
-        IMPORTED_IMPLIB ${bare_lib}
-      )
-    endif()
-
-    add_library(${target}_module MODULE $<TARGET_OBJECTS:${target}>)
-
-    set_target_properties(
-      ${target}_module
-      PROPERTIES
-      OUTPUT_NAME addon
-      PREFIX ""
-      SUFFIX ".bare"
-
-      # Automatically export all available symbols on Windows. Without this,
-      # module authors would have to explicitly export public symbols.
-      WINDOWS_EXPORT_ALL_SYMBOLS ON
-    )
-
-    target_link_libraries(
-      ${target}_module
-      PRIVATE
-        ${target}_import_lib
-      PUBLIC
-        $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
+      IMPORTED_IMPLIB ${bare_lib}
     )
   endif()
+
+  add_library(${target}_module MODULE $<TARGET_OBJECTS:${target}>)
+
+  set_target_properties(
+    ${target}_module
+    PROPERTIES
+    OUTPUT_NAME addon
+    PREFIX ""
+    SUFFIX ".bare"
+
+    # Automatically export all available symbols on Windows. Without this,
+    # module authors would have to explicitly export public symbols.
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
+  )
+
+  target_link_libraries(
+    ${target}_module
+    PRIVATE
+      ${target}_import_lib
+    PUBLIC
+      $<TARGET_PROPERTY:${target},INTERFACE_LINK_LIBRARIES>
+  )
 endfunction()
 
 function(include_bare_module target path)
