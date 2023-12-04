@@ -55,7 +55,7 @@ module.exports = createCommand('bundle')
   .addOption(
     createOption('--indent <n>', 'number of spaces to use for indents')
       .default(2)
-      .argParser((value) => /\d+/.test(value) ? parseInt(value) : value)
+      .argParser((value) => /\d+/.test(value) ? parseInt(value, 10) : value)
   )
   .addOption(
     createOption('--compress [pattern]', 'compress/minify source code')
