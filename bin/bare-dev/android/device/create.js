@@ -14,7 +14,7 @@ module.exports = createCommand('create')
       .default(process.arch, 'process.arch')
   )
   .addOption(
-    createOption('-t, --tag', 'the tag to target, such as \'android-tv\'')
+    createOption('-t, --tag <tag>', 'the tag to target, such as \'android-tv\'')
       .default('default')
   )
   .addOption(
