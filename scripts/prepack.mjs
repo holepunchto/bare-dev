@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import url from 'url'
-import glob from 'glob'
+import { globSync } from 'glob'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -24,7 +24,7 @@ const sources = [
 ]
 
 for (const cwd of sources) {
-  const files = glob.globSync('**/*.h', {
+  const files = globSync('**/*.h', {
     cwd,
     ignore: ['include/**', 'vendor/**', 'node_modules/**']
   })
