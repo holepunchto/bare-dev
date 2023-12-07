@@ -4,6 +4,9 @@
 [submodule "cmake/npm"]
 	path = cmake/npm
 	url = ../../holepunchto/cmake-npm.git
+[submodule "compat/napi"]
+	path = compat/napi
+	url = ../../holepunchto/bare-compat-napi.git
 [submodule "vendor/bare"]
 	path = vendor/bare
 	url = ../../holepunchto/bare.git
