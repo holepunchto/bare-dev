@@ -1,3 +1,9 @@
+[submodule "cmake/bare"]
+	path = cmake/bare
+	url = ../../holepunchto/cmake-bare.git
+[submodule "cmake/npm"]
+	path = cmake/npm
+	url = ../../holepunchto/cmake-npm.git
 [submodule "vendor/bare"]
 	path = vendor/bare
 	url = ../../holepunchto/bare.git
