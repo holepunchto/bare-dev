@@ -44,6 +44,7 @@
     "localdrive": "^1.11.0",
     "minimatch": "^9.0.0",
     "terser": "^5.19.2",
+    "unix-path-resolve": "^1.0.2",
     "which": "^4.0.0"
   },
   "devDependencies": {
