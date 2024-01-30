@@ -32,7 +32,7 @@ module.exports = createCommand('bundle')
       .argParser((value, previous = []) => [value, ...previous])
   )
   .addOption(
-    createOption('-m, --import-map <path>', 'load an import map')
+    createOption('--import-map <path>', 'load an import map')
   )
   .addOption(
     createOption('--node-modules <path>', 'the path to the node_modules directory')
