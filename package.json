@@ -1,6 +1,6 @@
 {
   "name": "bare-dev",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Development tooling for Bare",
   "main": "index.js",
   "bin": {
