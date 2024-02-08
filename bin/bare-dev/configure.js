@@ -1,10 +1,12 @@
+const os = require('os')
+const path = require('path')
 const { createCommand, createOption } = require('commander')
 
 module.exports = createCommand('configure')
   .description('configure a build')
   .addOption(
     createOption('-s, --source <path>', 'the path to the source tree')
-      .default(process.cwd(), 'process.cwd()')
+      .default(path.resolve('.'))
   )
   .addOption(
     createOption('-b, --build <path>', 'the path to the build tree')
@@ -16,12 +18,12 @@ module.exports = createCommand('configure')
   .addOption(
     createOption('-p, --platform <name>', 'the operating system platform to build for')
       .choices(['darwin', 'ios', 'linux', 'android', 'win32'])
-      .default(process.platform, 'process.platform')
+      .default(os.platform())
   )
   .addOption(
     createOption('-a, --arch <name>', 'the operating system architecture to build for')
       .choices(['arm', 'arm64', 'ia32', 'x64'])
-      .default(process.arch, 'process.arch')
+      .default(os.arch())
   )
   .addOption(
     createOption('--simulator', 'build for a simulator')

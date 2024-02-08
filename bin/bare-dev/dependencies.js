@@ -10,17 +10,6 @@ module.exports = createCommand('dependencies')
       .implies({ print: false })
   )
   .addOption(
-    createOption('--builtin <module>', 'builtin module that should not be bundled')
-      .argParser((value, previous = []) => [value, ...previous])
-  )
-  .addOption(
-    createOption('-m, --import-map <path>', 'load an import map')
-  )
-  .addOption(
-    createOption('--node-modules <path>', 'the path to the node_modules directory')
-      .default('node_modules')
-  )
-  .addOption(
     createOption('--print', 'write the bundle to stdout')
       .default(true)
   )

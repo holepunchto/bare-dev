@@ -10,10 +10,6 @@ module.exports = createCommand('bundle')
       .implies({ print: false })
   )
   .addOption(
-    createOption('-p, --protocol <name>', 'the protocol to prepend to source URLs')
-      .default('app')
-  )
-  .addOption(
     createOption('-f, --format <name>', 'the format of the bundle')
       .default('bundle')
       .choices(['bundle', 'js'])
@@ -26,13 +22,6 @@ module.exports = createCommand('bundle')
   .addOption(
     createOption('-n, --name <name>', 'the name of the bundle')
       .default('bundle')
-  )
-  .addOption(
-    createOption('--builtin <module>', 'builtin module that should not be bundled')
-      .argParser((value, previous = []) => [value, ...previous])
-  )
-  .addOption(
-    createOption('--import-map <path>', 'load an import map')
   )
   .addOption(
     createOption('--header <string>', 'add a header to the bundle')
@@ -52,17 +41,6 @@ module.exports = createCommand('bundle')
     createOption('--indent <n>', 'number of spaces to use for indents')
       .default(2)
       .argParser((value) => /\d+/.test(value) ? parseInt(value, 10) : value)
-  )
-  .addOption(
-    createOption('--compress [pattern]', 'compress/minify source code')
-      .preset('*')
-      .implies({ indent: 0 })
-      .argParser((value, previous = []) => [value, ...previous])
-  )
-  .addOption(
-    createOption('--obfuscate [pattern]', 'obfuscate source code')
-      .preset('*')
-      .argParser((value, previous = []) => [value, ...previous])
   )
   .action(action)
 

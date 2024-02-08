@@ -1,3 +1,4 @@
+const os = require('os')
 const { createCommand, createArgument, createOption } = require('commander')
 
 module.exports = createCommand('create')
@@ -11,7 +12,7 @@ module.exports = createCommand('create')
   .addOption(
     createOption('-a, --arch <name>', 'the operating system architecture of the emulator')
       .choices(['arm', 'arm64', 'ia32', 'x64'])
-      .default(process.arch, 'process.arch')
+      .default(os.arch())
   )
   .addOption(
     createOption('-t, --tag <tag>', 'the tag to target, such as \'android-tv\'')

@@ -1,3 +1,4 @@
+const process = require('process')
 const { createCommand, createArgument } = require('commander')
 
 module.exports = createCommand('paths')

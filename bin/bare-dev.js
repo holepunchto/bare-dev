@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const process = require('process')
+const path = require('path')
 const { program, createOption } = require('commander')
 
 const pkg = require('../package.json')
@@ -8,7 +10,7 @@ program
   .version(pkg.version)
   .addOption(
     createOption('-c, --cwd <path>', 'the path to the working directory')
-      .default(process.cwd(), 'process.cwd()')
+      .default(path.resolve('.'))
   )
   .addOption(
     createOption('-q, --quiet', 'stay silent')
