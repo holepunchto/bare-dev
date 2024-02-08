@@ -14,6 +14,22 @@
     "compat",
     "include"
   ],
+  "exports": {
+    ".": "./index.js",
+    "./android": "./lib/android.js",
+    "./build": "./lib/build.js",
+    "./bundle": "./lib/bundle.js",
+    "./clean": "./lib/clean.js",
+    "./configure": "./lib/configure.js",
+    "./dependencies": "./lib/dependencies.js",
+    "./drive": "./lib/drive.js",
+    "./init": "./lib/init.js",
+    "./install": "./lib/install.js",
+    "./ios": "./lib/ios.js",
+    "./paths": "./lib/paths.js",
+    "./test": "./lib/test.js",
+    "./vendor": "./lib/vendor.js"
+  },
   "imports": {
     "child_process": {
       "bare": "bare-subprocess",
