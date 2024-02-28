@@ -1,9 +1,21 @@
+[submodule "cmake/app-image"]
+	path = cmake/app-image
+	url = ../../holepunchto/cmake-app-image.git
 [submodule "cmake/bare"]
 	path = cmake/bare
 	url = ../../holepunchto/cmake-bare.git
+[submodule "cmake/macos"]
+	path = cmake/macos
+	url = ../../holepunchto/cmake-macos.git
+[submodule "cmake/msix"]
+	path = cmake/msix
+	url = ../../holepunchto/cmake-msix.git
 [submodule "cmake/npm"]
 	path = cmake/npm
 	url = ../../holepunchto/cmake-npm.git
+[submodule "cmake/toolchains"]
+	path = cmake/toolchains
+	url = ../../holepunchto/cmake-toolchains.git
 [submodule "compat/napi"]
 	path = compat/napi
 	url = ../../holepunchto/bare-compat-napi.git
