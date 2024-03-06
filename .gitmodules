@@ -13,6 +13,9 @@
 [submodule "cmake/npm"]
 	path = cmake/npm
 	url = ../../holepunchto/cmake-npm.git
+[submodule "cmake/pear"]
+	path = cmake/pear
+	url = ../../holepunchto/cmake-pear.git
 [submodule "cmake/toolchains"]
 	path = cmake/toolchains
 	url = ../../holepunchto/cmake-toolchains.git
