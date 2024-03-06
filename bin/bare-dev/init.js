@@ -1,13 +1,6 @@
-const { createCommand, createOption } = require('commander')
+const { createCommand } = require('commander')
 
 module.exports = createCommand('init')
-  .description('initialize a build definition')
-  .addOption(
-    createOption('-f, --force', 'overwrite any existing build definition')
-      .default(false)
-  )
-  .action(action)
-
-function action (_, cmd) {
-  return require('../..').init(cmd.optsWithGlobals())
-}
+  .description('initialize templates')
+  .addCommand(require('./init/addon'))
+  .addCommand(require('./init/appling'))
