@@ -25,3 +25,6 @@
 [submodule "vendor/bare"]
 	path = vendor/bare
 	url = ../../holepunchto/bare.git
+[submodule "cmake/windows"]
+	path = cmake/windows
+	url = git@github.com:holepunchto/cmake-windows.git
