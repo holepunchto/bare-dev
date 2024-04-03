@@ -78,6 +78,7 @@
     "bare-path": "^2.1.0",
     "bare-process": "^1.2.1",
     "bare-subprocess": "^2.0.3",
+    "bare-which": "^1.0.0",
     "commander": "^11.1.0",
     "compact-encoding": "^2.13.0",
     "corestore": "^6.4.3",
@@ -89,8 +90,7 @@
     "hyperswarm": "^4.3.7",
     "include-static": "^1.1.0",
     "localdrive": "^1.11.0",
-    "unix-path-resolve": "^1.0.2",
-    "which": "^4.0.0"
+    "unix-path-resolve": "^1.0.2"
   },
   "devDependencies": {
     "standard": "^17.0.0"
