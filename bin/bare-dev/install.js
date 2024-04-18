@@ -13,7 +13,10 @@ module.exports = createCommand('install')
       .default('build')
   )
   .addOption(
-    createOption('-p, --prebuilds <path>', 'the path to the prebuilds directory')
+    createOption('--toolchain <path>', 'the path to a toolchain file')
+  )
+  .addOption(
+    createOption('--prebuilds <path>', 'the path to the prebuilds directory')
       .default('prebuilds')
   )
   .addOption(
