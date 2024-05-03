@@ -77,7 +77,7 @@
     "bare-os": "^2.1.1",
     "bare-path": "^2.1.0",
     "bare-process": "^1.2.1",
-    "bare-subprocess": "^2.0.3",
+    "bare-subprocess": "^3.0.0",
     "bare-which": "^1.0.0",
     "cmake-runtime": "^3.29.1",
     "commander": "^11.1.0",
