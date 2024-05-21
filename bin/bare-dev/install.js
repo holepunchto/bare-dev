@@ -95,13 +95,18 @@ module.exports = createCommand('install')
   .addOption(
     createOption('--bare', 'install prebuilds for Bare')
       .default(true)
+      .implies({ node: false })
   )
   .addOption(
     createOption('--no-bare', 'don\'t install prebuilds for Bare')
   )
   .addOption(
-    createOption('--node', 'install prebuilds for Node')
+    createOption('--node', 'install prebuilds for Node.js')
       .default(false)
+      .implies({ bare: false })
+  )
+  .addOption(
+    createOption('--no-node', 'don\'t install prebuilds for Node.js')
   )
 
   .addOption(
