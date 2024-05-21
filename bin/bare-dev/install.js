@@ -93,6 +93,18 @@ module.exports = createCommand('install')
   )
 
   .addOption(
+    createOption('--bare', 'install prebuilds for Bare')
+      .default(true)
+  )
+  .addOption(
+    createOption('--no-bare', 'don\'t install prebuilds for Bare')
+  )
+  .addOption(
+    createOption('--node', 'install prebuilds for Node')
+      .default(false)
+  )
+
+  .addOption(
     createOption('--link', 'link rather than copy the prebuilds')
   )
   .addOption(
