@@ -1,4 +1,4 @@
-const { createCommand, createOption } = require('commander')
+const { createCommand } = require('commander')
 
 module.exports = createCommand('accept')
   .description('accept the Android SDK licenses')
