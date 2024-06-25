@@ -22,6 +22,11 @@ program
       .conflicts(['quiet'])
       .default(false)
   )
+  .addOption(
+    createOption('-j, --parallel <number>', 'parallelism')
+      .default(1)
+      .argParser(n => Number(n))
+  )
   .addCommand(require('./bare-dev/paths'))
   .addCommand(require('./bare-dev/vendor'))
   .addCommand(require('./bare-dev/drive'))
