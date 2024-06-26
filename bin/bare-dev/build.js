@@ -13,6 +13,14 @@ module.exports = createCommand('build')
     createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )
+  .addOption(
+    createOption('--cmake', 'build using CMake')
+      .implies({ gradle: false })
+  )
+  .addOption(
+    createOption('--gradle', 'build using Gradle')
+      .implies({ cmake: false })
+  )
   .action(action)
 
 function action (_, cmd) {
