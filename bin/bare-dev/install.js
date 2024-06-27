@@ -43,6 +43,11 @@ module.exports = createCommand('install')
     createOption('--toolset <name>', 'the name of a compiler toolset supported by the generator')
   )
   .addOption(
+    createOption('-j, --parallel <number>', 'parallelism')
+      .default(1)
+      .argParser(n => Number(n))
+  )
+  .addOption(
     createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )

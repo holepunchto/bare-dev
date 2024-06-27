@@ -10,6 +10,11 @@ module.exports = createCommand('build')
     createOption('-t, --target <name>', 'the target to build')
   )
   .addOption(
+    createOption('-j, --parallel <number>', 'parallelism')
+      .default(1)
+      .argParser(n => Number(n))
+  )
+  .addOption(
     createOption('-d, --debug', 'configure a debug build')
       .default(false)
   )
