@@ -11,7 +11,6 @@ module.exports = createCommand('build')
   )
   .addOption(
     createOption('-j, --parallel <number>', 'parallelism')
-      .default(1)
       .argParser(n => Number(n))
   )
   .addOption(
