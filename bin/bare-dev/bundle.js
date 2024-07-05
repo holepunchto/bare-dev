@@ -30,6 +30,20 @@ module.exports = createCommand('bundle')
     createOption('--footer <string>', 'add a footer to the bundle')
   )
   .addOption(
+    createOption('--packages', 'include package manifests')
+      .default(true)
+  )
+  .addOption(
+    createOption('--no-packages', 'don\'t include package manifests')
+  )
+  .addOption(
+    createOption('--prebuilds', 'include addon prebuilds')
+      .default(false)
+  )
+  .addOption(
+    createOption('--no-prebuilds', 'don\'t include addon prebuilds')
+  )
+  .addOption(
     createOption('--print', 'write the bundle to stdout')
       .default(true)
   )
