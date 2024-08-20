@@ -11,8 +11,7 @@
     "bin",
     "lib",
     "cmake",
-    "compat",
-    "include"
+    "compat"
   ],
   "exports": {
     ".": "./index.js",
