@@ -1,3 +1,4 @@
+const os = require('os')
 const { createCommand, createArgument, createOption } = require('commander')
 
 module.exports = createCommand('bundle')
@@ -8,6 +9,19 @@ module.exports = createCommand('bundle')
   .addOption(
     createOption('--config <path>', 'read configuration from a file')
       .implies({ print: false })
+  )
+  .addOption(
+    createOption('-p, --platform <name>', 'the operating system platform to bundle for')
+      .choices(['darwin', 'ios', 'linux', 'android', 'win32'])
+      .default(os.platform())
+  )
+  .addOption(
+    createOption('-a, --arch <name>', 'the operating system architecture to bundle for')
+      .choices(['arm', 'arm64', 'ia32', 'x64'])
+      .default(os.arch())
+  )
+  .addOption(
+    createOption('--simulator', 'bundle for a simulator')
   )
   .addOption(
     createOption('-f, --format <name>', 'the format of the bundle')
