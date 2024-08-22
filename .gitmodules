@@ -4,6 +4,9 @@
 [submodule "cmake/bare"]
 	path = cmake/bare
 	url = ../../holepunchto/cmake-bare.git
+[submodule "cmake/ios"]
+	path = cmake/ios
+	url = ../../holepunchto/cmake-ios.git
 [submodule "cmake/macos"]
 	path = cmake/macos
 	url = ../../holepunchto/cmake-macos.git
