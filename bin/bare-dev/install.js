@@ -95,6 +95,18 @@ module.exports = createCommand('install')
   .addOption(
     createOption('--android-api <version>', 'the Android API version to target')
   )
+  .addOption(
+    createOption('--android-stl <type>', 'the Android STL type to use')
+      .choices(['c++_shared', 'c++_static', 'none', 'system'])
+      .default('c++_static')
+  )
+  .addOption(
+    createOption('--android-allow-undefined-symbols', 'allow undefined symbols on Android')
+      .default(true)
+  )
+  .addOption(
+    createOption('--no-android-allow-undefined-symbols', 'disallow undefined symbols on Android')
+  )
 
   .addOption(
     createOption('--bare', 'install prebuilds for Bare')
