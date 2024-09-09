@@ -138,12 +138,6 @@ module.exports = createCommand('install')
   .addOption(
     createOption('--no-submodules', 'don\'t synchronize git submodules')
   )
-  .addOption(
-    createOption('--recursive', 'recurse into node_modules')
-  )
-  .addOption(
-    createOption('--no-recursive', 'don\'t recurse into node_modules')
-  )
   .action(action)
 
 function action (_, cmd) {
