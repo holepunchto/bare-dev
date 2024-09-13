@@ -25,17 +25,7 @@ module.exports = createCommand('bundle')
   )
   .addOption(
     createOption('-f, --format <name>', 'the format of the bundle')
-      .default('bundle')
-      .choices(['bundle', 'js'])
-  )
-  .addOption(
-    createOption('-t, --target <name>', 'the target that will consume the bundle')
-      .default('js')
-      .choices(['js', 'c'])
-  )
-  .addOption(
-    createOption('-n, --name <name>', 'the name of the bundle')
-      .default('bundle')
+      .choices(['bundle', 'bundle.js', 'bundle.cjs', 'bundle.mjs', 'bundle.json', 'bundle.h', 'js', 'js.h'])
   )
   .addOption(
     createOption('--header <string>', 'add a header to the bundle')
