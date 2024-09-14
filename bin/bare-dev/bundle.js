@@ -28,12 +28,6 @@ module.exports = createCommand('bundle')
       .choices(['bundle', 'bundle.js', 'bundle.cjs', 'bundle.mjs', 'bundle.json', 'bundle.h', 'js', 'js.h'])
   )
   .addOption(
-    createOption('--header <string>', 'add a header to the bundle')
-  )
-  .addOption(
-    createOption('--footer <string>', 'add a footer to the bundle')
-  )
-  .addOption(
     createOption('--packages', 'include package manifests')
       .default(true)
   )
