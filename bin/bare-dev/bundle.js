@@ -28,6 +28,11 @@ module.exports = createCommand('bundle')
       .choices(['bundle', 'bundle.js', 'bundle.cjs', 'bundle.mjs', 'bundle.json', 'bundle.h', 'js', 'js.h'])
   )
   .addOption(
+    createOption('-e, --encoding <name>', 'the encoding to use for text formats')
+      .choices(['utf8', 'base64', 'ascii', 'hex', 'utf16le'])
+      .default('utf8')
+  )
+  .addOption(
     createOption('--packages', 'include package manifests')
       .default(true)
   )
