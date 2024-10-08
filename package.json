@@ -80,7 +80,7 @@
     "commander": "^11.1.0",
     "corestore": "^6.4.3",
     "decompress": "^4.2.1",
-    "drive-bundler": "^2.2.1",
+    "drive-bundler": "^2.3.2",
     "glob": "^10.3.10",
     "hypercore-id-encoding": "^1.0.2",
     "hyperdrive": "^11.0.1",
