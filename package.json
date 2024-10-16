@@ -76,7 +76,7 @@
     "bare-process": "^3.0.0",
     "bare-subprocess": "^4.0.0",
     "bare-which": "^2.0.0",
-    "cmake-runtime": "^3.29.1",
+    "cmake-runtime": "^3.30.6-0",
     "commander": "^11.1.0",
     "corestore": "^6.4.3",
     "decompress": "^4.2.1",
